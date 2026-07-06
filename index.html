@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Asterix | Autonomous Forest Patrolling Vehicle</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Premium Header -->
+    <header class="header">
+        <div class="logo-container">
+            <span class="logo-accent">TEAM ASTERIX</span>
+            <span class="logo-badge">aBAJA 2026</span>
+        </div>
+        <nav class="nav">
+            <a href="#pitch-hub" class="nav-link active" id="nav-pitch">Pitch Hub</a>
+            <a href="#sim-lab" class="nav-link" id="nav-sim">Simulation Lab</a>
+            <a href="#calculator" class="nav-link" id="nav-calc">Financials</a>
+        </nav>
+        <div class="action-btn-container">
+            <a href="#calculator" class="btn btn-primary glow-effect">View Bid Plan</a>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="main-container">
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="tagline">Next-Generation Forest Protection</div>
+                <h1 class="hero-title">Autonomous. Clean. <br><span class="gradient-text">Rugged Patrol.</span></h1>
+                <p class="hero-subtitle">
+                    A purpose-built electric all-terrain vehicle designed for the Forest Department to monitor, detect, and protect sensitive ecological ranges.
+                </p>
+                <div class="hero-actions">
+                    <a href="#sim-lab" class="btn btn-primary glow-effect">Launch Simulations</a>
+                    <a href="#pitch-hub" class="btn btn-secondary">Read Tender Pitch</a>
+                </div>
+            </div>
+            <div class="hero-image-wrapper">
+                <img src="assets/buggy.png" alt="Van-Rakshak Autonomous Buggy Prototype" class="hero-img">
+                <div class="img-glow-backdrop"></div>
+            </div>
+        </section>
+
+        <!-- PITCH HUB -->
+        <section id="pitch-hub" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Proposal Overview</span>
+                <h2 class="section-title">Tender Bid Summary</h2>
+            </div>
+
+            <!-- Pitch Tabs -->
+            <div class="tabs-wrapper">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchPitchTab('tab-specs', this)">Compliance & Specs</button>
+                    <button class="tab-btn" onclick="switchPitchTab('tab-usps', this)">Unique Selling Points</button>
+                    <button class="tab-btn" onclick="switchPitchTab('tab-support', this)">Sales & Service</button>
+                    <button class="tab-btn" onclick="switchPitchTab('tab-scope', this)">Scope of Work</button>
+                </div>
+
+                <div class="tab-content active" id="tab-specs">
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <h3>Chassis & Mechanicals</h3>
+                            <ul>
+                                <li><strong>Frame:</strong> High-strength tubular steel space frame (aBAJA compliant).</li>
+                                <li><strong>Suspension:</strong> Double-wishbone off-road suspension with 8-inch travel.</li>
+                                <li><strong>Dimensions:</strong> Width: 162 cm (64 in) | Track-friendly for walking beats.</li>
+                                <li><strong>Tires:</strong> High-traction 23-inch knobby mud terrain tires.</li>
+                            </ul>
+                        </div>
+                        <div class="spec-card">
+                            <h3>Powertrain & Battery</h3>
+                            <ul>
+                                <li><strong>Voltage System:</strong> 72V Nominal Category II Tractive System.</li>
+                                <li><strong>Motor:</strong> 9 kW Brushless DC (BLDC) Motor with regenerative braking.</li>
+                                <li><strong>Battery:</strong> AIS 156 Certified Lithium-Ion Pack (80 Ah Capacity).</li>
+                                <li><strong>Acoustics:</strong> Extremely silent patrol mode (≤ 70 dB).</li>
+                            </ul>
+                        </div>
+                        <div class="spec-card">
+                            <h3>Autonomy & Perception</h3>
+                            <ul>
+                                <li><strong>Supervisory Controller:</strong> Nvidia Jetson Orin Nano Developer Kit.</li>
+                                <li><strong>Sensors:</strong> Roof-mounted LiDAR, Stereo Perception Cameras, RTK-GNSS, IMU.</li>
+                                <li><strong>Actuation:</strong> Drive-by-Wire (DBW) Throttle, Brakes, and Steer.</li>
+                                <li><strong>Safety Override:</strong> Dual-redundant instant torque driver override.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-usps">
+                    <div class="usps-container">
+                        <div class="usp-item">
+                            <div class="usp-icon">🔇</div>
+                            <h4>Silent Operation</h4>
+                            <p>Electric propulsion permits rangers to patrol ranges without alerting poachers or disturbing mating patterns of native wildlife.</p>
+                        </div>
+                        <div class="usp-item">
+                            <div class="usp-icon">🌲</div>
+                            <h4>Forest-Tailored Perception</h4>
+                            <p>Custom path-following models trained for dirty, unlined trails rather than municipal paved lanes.</p>
+                        </div>
+                        <div class="usp-item">
+                            <div class="usp-icon">🪙</div>
+                            <h4>Sub-3 Lakh Autonomy Package</h4>
+                            <p>Optimized drive-by-wire integration keeps autonomous hardware upgrades highly affordable for bulk fleet deployment.</p>
+                        </div>
+                        <div class="usp-item">
+                            <div class="usp-icon">⚡</div>
+                            <h4>Fail-Safe Override</h4>
+                            <p>Driver manual intervention releases actuators in under 100 ms, prioritizing human control and safety above all.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-support">
+                    <div class="support-grid">
+                        <div class="support-text">
+                            <h3>Remote Range Support Strategy</h3>
+                            <p>Forest beats are isolated, far from industrial mechanics. We address this directly with our service model:</p>
+                            <div class="support-bullets">
+                                <div class="bullet-item">
+                                    <span class="bullet-check">✓</span>
+                                    <div><strong>24/48-Hour Spares SLA:</strong> Stocked parts hubs located at Forest Circle Headquarters.</div>
+                                </div>
+                                <div class="bullet-item">
+                                    <span class="bullet-check">✓</span>
+                                    <div><strong>IP67 Modular Swapping:</strong> Computer, BMS, and motor control units are hot-swappable in the field using simple clamps.</div>
+                                </div>
+                                <div class="bullet-item">
+                                    <span class="bullet-check">✓</span>
+                                    <div><strong>Ranger Training & App Diagnostics:</strong> Quick bluetooth connectivity on tablets maps any component failure instantly.</div>
+                                </div>
+                            </div>
+                            <div class="support-diagram">
+                                <div class="diagram-box">Forest Headquarters (Circle Depot)</div>
+                                <div class="diagram-arrow">⬇ Dispatch Spares (SLA &lt; 24h)</div>
+                                <div class="diagram-box">Beat Rangers (Field Assembly)</div>
+                                <div class="diagram-arrow">⬇ Modular Swap (Tool-less)</div>
+                                <div class="diagram-box active-box">Patrol Operations Restored</div>
+                            </div>
+                        </div>
+                        <div class="support-visual">
+                            <img src="assets/service.png" alt="Ranger Field Maintenance Service" class="tab-img">
+                            <div class="img-caption">Field-swappable modular electronics kit being serviced in a forest range station.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-scope">
+                    <div class="scope-grid">
+                        <div class="scope-timeline">
+                            <div class="timeline-step">
+                                <div class="step-num">01</div>
+                                <h4>Site Calibration</h4>
+                                <p>Map specific beat trails, customize perception models for local foliage density and animal profiles.</p>
+                            </div>
+                            <div class="timeline-step">
+                                <div class="step-num">02</div>
+                                <h4>Pilot Deploy</h4>
+                                <p>Deploy a 2-buggy fleet in a pilot range for 3 months to train local guards and stress-test batteries.</p>
+                            </div>
+                            <div class="timeline-step">
+                                <div class="step-num">03</div>
+                                <h4>Fleet Rollout</h4>
+                                <p>Deliver main order buggy lots, launch localized charging docks, and activate the parts SLA contract.</p>
+                            </div>
+                        </div>
+                        <div class="scope-visual">
+                            <img src="assets/map.png" alt="Forest Patrol Range Mapping Infographic" class="tab-img">
+                            <div class="img-caption">Visual map of geofenced autonomous patrol zones and charging depots.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SIMULATION LAB -->
+        <section id="sim-lab" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Interactive Demos</span>
+                <h2 class="section-title">Autonomous Simulation Suite</h2>
+                <p class="section-desc">Experience our drive-by-wire and perception algorithms running in real time. Adjust values and watch how the vehicle handles situations.</p>
+            </div>
+
+            <div class="sim-wrapper">
+                <!-- Side Controls for active simulation -->
+                <div class="sim-sidebar">
+                    <div class="sim-tabs">
+                        <button class="sim-tab-btn active" id="btn-sim-aeb" onclick="selectSim('aeb')">1. AEB (Emergency Braking)</button>
+                        <button class="sim-tab-btn" id="btn-sim-lka" onclick="selectSim('lka')">2. LKA (Lane Keep Assist)</button>
+                        <button class="sim-tab-btn" id="btn-sim-perc" onclick="selectSim('perc')">3. Perception Stack</button>
+                    </div>
+
+                    <!-- AEB Controls -->
+                    <div class="sim-control-panel" id="panel-aeb">
+                        <h3>AEB Configuration</h3>
+                        <div class="control-group">
+                            <label for="aeb-speed">Approach Speed: <span id="val-aeb-speed">25</span> km/h</label>
+                            <input type="range" id="aeb-speed" min="10" max="30" value="25" step="1">
+                        </div>
+                        <div class="control-group">
+                            <label for="aeb-dist">Obstacle Spawn Distance: <span id="val-aeb-dist">35</span> m</label>
+                            <input type="range" id="aeb-dist" min="20" max="50" value="35" step="1">
+                        </div>
+                        <div class="control-group">
+                            <label for="aeb-surface">Trail Surface Condition</label>
+                            <select id="aeb-surface">
+                                <option value="dry-dirt">Dry Dirt (Good Grip)</option>
+                                <option value="wet-mud">Wet Mud (Slippery)</option>
+                                <option value="gravel">Gravel / Stones</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary w-full" id="run-aeb-btn" onclick="startAEBSim()">Trigger Simulation</button>
+                    </div>
+
+                    <!-- LKA Controls -->
+                    <div class="sim-control-panel hidden" id="panel-lka">
+                        <h3>LKA Trail Configuration</h3>
+                        <div class="control-group">
+                            <label for="lka-control">Steering Mode</label>
+                            <select id="lka-control" onchange="toggleLkaMode()">
+                                <option value="auto">Autonomous Lane Keep (Active)</option>
+                                <option value="manual">Manual Driving (No Autonomy)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label for="lka-speed">Patrol Speed: <span id="val-lka-speed">20</span> km/h</label>
+                            <input type="range" id="lka-speed" min="10" max="30" value="20" step="1">
+                        </div>
+                        <p class="info-text">The simulation models steering alignment corrections relative to path margins detected by the onboard stereo camera.</p>
+                    </div>
+
+                    <!-- Perception Controls -->
+                    <div class="sim-control-panel hidden" id="panel-perc">
+                        <h3>Object Classification</h3>
+                        <p class="info-text">Click the targets on the forest camera view to classify targets and trigger drive-by-wire responses.</p>
+                        <div class="perc-targets-list">
+                            <button class="btn btn-secondary target-btn" onclick="triggerPerceptionTarget('deer')">Wildlife (Deer)</button>
+                            <button class="btn btn-secondary target-btn" onclick="triggerPerceptionTarget('poacher')">Unidentified Human</button>
+                            <button class="btn btn-secondary target-btn" onclick="triggerPerceptionTarget('tree')">Fallen Tree / Blockage</button>
+                            <button class="btn btn-secondary target-btn" onclick="triggerPerceptionTarget('clear')">Reset Feed</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Visual Output Screen -->
+                <div class="sim-viewport">
+                    <!-- AEB Canvas View -->
+                    <div class="viewport-content" id="view-aeb">
+                        <div class="telemetry-bar">
+                            <div class="telemetry-item">Speed: <span id="tel-aeb-speed">0.0</span> km/h</div>
+                            <div class="telemetry-item">Brake Pressure: <span id="tel-aeb-brake">0</span>%</div>
+                            <div class="telemetry-item">Status: <span id="tel-aeb-status">Standby</span></div>
+                        </div>
+                        <canvas id="canvas-aeb" width="700" height="300"></canvas>
+                        <div class="plots-container">
+                            <div class="plot-box">
+                                <h4>Deceleration Curve</h4>
+                                <canvas id="chart-aeb" width="300" height="80"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LKA Canvas View -->
+                    <div class="viewport-content hidden" id="view-lka">
+                        <div class="telemetry-bar">
+                            <div class="telemetry-item">LKA Switch: <span id="tel-lka-status" class="status-on">ACTIVE</span></div>
+                            <div class="telemetry-item">Steering Correction: <span id="tel-lka-steer">0.0°</span></div>
+                            <div class="telemetry-item">Path Deviation: <span id="tel-lka-dev">0.00m</span></div>
+                        </div>
+                        <canvas id="canvas-lka" width="700" height="350"></canvas>
+                    </div>
+
+                    <!-- Perception Frame View -->
+                    <div class="viewport-content hidden" id="view-perc">
+                        <div class="camera-frame">
+                            <img src="assets/perception.png" alt="Forest camera feed" class="camera-img">
+                            <div class="camera-scanline"></div>
+                            
+                            <!-- Bounding boxes absolute-positioned dynamically by JS -->
+                            <div class="bbox hidden" id="bbox-deer">
+                                <span class="bbox-label">Target: Wildlife (Deer) | Conf: 97.4% | Dist: 12.4m</span>
+                            </div>
+                            <div class="bbox hidden" id="bbox-poacher">
+                                <span class="bbox-label alert-label">Target: Intruder | Conf: 91.8% | Dist: 18.2m</span>
+                            </div>
+                            <div class="bbox hidden" id="bbox-tree">
+                                <span class="bbox-label warning-label">Target: Fallen Tree | Conf: 99.1% | Dist: 8.6m</span>
+                            </div>
+                        </div>
+                        <div class="perception-telemetry">
+                            <h4>Drive-By-Wire Decision Log</h4>
+                            <p id="perc-log">Select an object in the controls panel to analyze perception data.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINANCIAL & CARBON CALCULATOR -->
+        <section id="calculator" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Value Proposition</span>
+                <h2 class="section-title">Bid Valuation & ROI Calculator</h2>
+                <p class="section-desc">Estimate your operational savings and environmental impact by substituting conventional diesel ATVs with the Van-Rakshak electric fleet.</p>
+            </div>
+
+            <div class="calc-grid">
+                <!-- Inputs -->
+                <div class="calc-panel">
+                    <h3>Operational Parameters</h3>
+                    
+                    <div class="control-group">
+                        <div class="label-wrapper">
+                            <label for="calc-fleet">Fleet Size</label>
+                            <span class="val-display" id="val-calc-fleet">5 Vehicles</span>
+                        </div>
+                        <input type="range" id="calc-fleet" min="1" max="25" value="5">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="label-wrapper">
+                            <label for="calc-dist">Daily Patrol beat (per vehicle)</label>
+                            <span class="val-display" id="val-calc-dist">40 km</span>
+                        </div>
+                        <input type="range" id="calc-dist" min="10" max="100" value="40" step="5">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="label-wrapper">
+                            <label for="calc-diesel">Local Diesel Cost (per Liter)</label>
+                            <span class="val-display" id="val-calc-diesel">₹95</span>
+                        </div>
+                        <input type="range" id="calc-diesel" min="80" max="110" value="95">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="label-wrapper">
+                            <label for="calc-years">Project Evaluation Period</label>
+                            <span class="val-display" id="val-calc-years">5 Years</span>
+                        </div>
+                        <input type="range" id="calc-years" min="1" max="10" value="5">
+                    </div>
+                </div>
+
+                <!-- Outputs -->
+                <div class="calc-results">
+                    <div class="metric-card green-card">
+                        <span class="metric-title">TOTAL FUEL SAVINGS</span>
+                        <h3 class="metric-val" id="res-savings">₹0.0 Lakhs</h3>
+                        <p class="metric-desc">Operational cost reduction compared to diesel ATVs.</p>
+                    </div>
+
+                    <div class="metric-card">
+                        <span class="metric-title">CO2 EMISSIONS PREVENTED</span>
+                        <h3 class="metric-val text-green" id="res-co2">0.0 Tons</h3>
+                        <p class="metric-desc">Offsets generated by zero-tailpipe electric patrol.</p>
+                    </div>
+
+                    <div class="metric-card">
+                        <span class="metric-title">ESTIMATED PAYBACK PERIOD</span>
+                        <h3 class="metric-val" id="res-payback">0 Months</h3>
+                        <p class="metric-desc">Time to recover the initial fleet acquisition delta cost.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 aBAJA SAEINDIA Collegiate Design Entry. Developed for forest monitoring, research, and ecological patrol bids.</p>
+        <p class="footer-subtext">Designed to comply strictly with the aBAJA 2026 Rulebook parameters (72V Tractive System, 9 kW Limit, Sub-3 Lakh Autonomy Cost).</p>
+    </footer>
+
+    <script src="simulations.js"></script>
+</body>
+</html>
