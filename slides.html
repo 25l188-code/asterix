@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACS Presentation Slides | Team Asterix</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #090e0a;
+            --bg-slate: #121a14;
+            --bg-card: #18231b;
+            --primary: #1d723b;
+            --primary-glow: #2ce068;
+            --accent: #ff9f1c;
+            --text: #f1f5f2;
+            --text-muted: #8b9a90;
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Presentation Wrapper */
+        .presentation-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Slide Container */
+        .slide {
+            background-color: var(--bg-slate);
+            border: 1px solid rgba(44, 224, 104, 0.15);
+            border-radius: var(--border-radius);
+            min-height: 600px;
+            aspect-ratio: 16 / 9;
+            padding: 50px 60px;
+            margin-bottom: 50px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            page-break-after: always;
+        }
+
+        /* Slide header */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(44, 224, 104, 0.1);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .slide-tag {
+            color: var(--primary-glow);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .slide-title {
+            font-size: 2.2rem;
+            color: var(--text);
+            margin-top: 5px;
+        }
+
+        /* Slide content */
+        .slide-body {
+            flex-grow: 1;
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .slide-text-full {
+            width: 100%;
+        }
+
+        .slide-text {
+            flex: 1.2;
+        }
+
+        .slide-visual {
+            flex: 0.8;
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Lists and typography */
+        .slide ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .slide li {
+            margin-bottom: 16px;
+            position: relative;
+            padding-left: 28px;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+        }
+
+        .slide li strong {
+            color: var(--text);
+        }
+
+        .slide li::before {
+            content: '✓';
+            color: var(--primary-glow);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .highlight-text {
+            color: var(--primary-glow);
+            font-weight: 600;
+        }
+
+        /* Slide Footer */
+        .slide-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 15px;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .logo-text {
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: 1px;
+        }
+
+        /* Special Slide Styles */
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #090e0a 0%, #121a14 100%);
+        }
+
+        .title-slide .hero-tagline {
+            color: var(--accent);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .title-slide h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            line-height: 1.1;
+        }
+
+        .title-slide blockquote {
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            border-left: none;
+            margin: 20px 0;
+        }
+
+        /* Diagram stylings */
+        .diagram-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .diagram-node {
+            background-color: var(--primary);
+            border: 1px solid var(--primary-glow);
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .diagram-node.secondary {
+            background-color: var(--bg-card);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .diagram-node.active {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .diagram-arrow {
+            font-size: 1.2rem;
+            color: var(--primary-glow);
+            margin: 0;
+        }
+
+        .pod-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .pod-card {
+            background-color: var(--bg-slate);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+        }
+
+        .pod-card h4 {
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        /* Printable optimization */
+        @media print {
+            body {
+                background-color: #ffffff;
+                color: #000000;
+            }
+            .slide {
+                border: none;
+                box-shadow: none;
+                margin: 0;
+                padding: 30px;
+                width: 100%;
+                height: 100%;
+                aspect-ratio: 16 / 9;
+                background-color: #ffffff;
+                color: #000000;
+                page-break-after: always;
+            }
+            .slide-header, .slide-footer {
+                border-color: #cccccc;
+            }
+            .slide-tag {
+                color: #1d723b;
+            }
+            .slide-title {
+                color: #000000;
+            }
+            .slide-visual, .diagram-node.secondary, .pod-card {
+                background-color: #eeeeee;
+                border-color: #cccccc;
+                color: #000000;
+            }
+            .slide li {
+                color: #333333;
+            }
+            .slide li::before {
+                color: #1d723b;
+            }
+            .diagram-node {
+                background-color: #1d723b;
+                color: #ffffff;
+                border-color: #121a14;
+            }
+            .diagram-arrow {
+                color: #1d723b;
+            }
+            .title-slide {
+                background: #ffffff;
+                color: #000000;
+            }
+            .title-slide .hero-tagline {
+                color: #1d723b;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container">
+
+        <!-- SLIDE 1 -->
+        <div class="slide title-slide">
+            <div class="hero-tagline">TEAM ASTERIX</div>
+            <h1>Autonomous Conservation<br><span class="highlight-text">System (ACS)</span></h1>
+            <blockquote>"Ground when possible. Air when necessary. Disturb nature as little as possible."</blockquote>
+            <div style="font-size: 0.95rem; color: var(--text-muted); margin-top: 20px;">
+                Cooperative Ground-Air Swarm Platform for Wilderness Protection
+            </div>
+            <div style="font-size: 0.8rem; color: var(--primary-glow); margin-top: 40px; border: 1px solid rgba(44, 224, 104, 0.2); padding: 8px 16px; border-radius: 20px;">
+                aBAJA 2026 Engineering Competition Entry
+            </div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">The Challenge</span>
+                    <h2 class="slide-title">The Reach vs. Ecological Impact Dilemma</h2>
+                </div>
+                <div class="logo-text">ACS / 02</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text">
+                    <ul>
+                        <li><strong>Ground Patrolling Impact:</strong> Heavy standard ATVs cause critical soil compaction, destroy sensitive forest root networks, and disturb wildlife feeding/mating beats with exhaust and loud engine noises.</li>
+                        <li><strong>Aerial Patrolling Limitations:</strong> Commercial drones provide excellent line-of-sight reach but suffer from short flight times (20–30 mins), tiny payload capacities, and cannot take physical soil or river samples.</li>
+                        <li><strong>Isolation & Blindspots:</strong> Thick forest foliage blocks GPS and radio lines of sight, leaving rangers blind to poaching or wild fires in deep valleys.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual">
+                    <div style="font-size: 3rem;">🌲</div>
+                    <h3 style="margin-top:10px; color:var(--accent);">Zero-Disturbance</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-top:5px;">How do we protect deep forest regions without entering them with heavy machinery?</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Autonomous Conservation System</span>
+                <span>Team Asterix</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">The Innovation</span>
+                    <h2 class="slide-title">The Cooperative Ground-Air Swarm Solution</h2>
+                </div>
+                <div class="logo-text">ACS / 03</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text">
+                    <ul>
+                        <li><strong>A Shared Ecosystem:</strong> Moving away from a standalone buggy. We propose a mobile coordinate system combining an AEOUV (ground hub) and EcoWing-U drones (aerial extensions).</li>
+                        <li><strong>Role of the AEOUV:</strong> Stays strictly on designated forest logging trails. Serves as a mobile charging grid, computing core, robotic sampler, and drone airport.</li>
+                        <li><strong>Role of the Drones:</strong> Dispatched dynamically from the vehicle to deploy sensors, drop seeds, or administer vaccines in trackless valleys.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual">
+                    <div style="font-size: 3.5rem;">🛸 🤝 🚜</div>
+                    <p style="font-size:0.9rem; color:var(--primary-glow); font-weight:600; margin-top:10px;">Swarm Symbiosis</p>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Ground provides energy & computing. Air provides reach & speed.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Autonomous Conservation System</span>
+                <span>Team Asterix</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 4 -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Swarm Intelligence</span>
+                    <h2 class="slide-title">System Architecture (3-Tier Model)</h2>
+                </div>
+                <div class="logo-text">ACS / 04</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text">
+                    <ul>
+                        <li><strong>Tier 1: Central HQ (Strategic AI):</strong> High-level pathing, satellite data analytics, and regional drone-fleet coordination.</li>
+                        <li><strong>Tier 2: AEOUV Ground Hub (Edge AI):</strong> Real-time self-driving path calculations, edge target-recognition, and local swarm management.</li>
+                        <li><strong>Tier 3: Aerial & Static Swarm (Task Execution):</strong> VTOL drones executing tasks and tree-mounted Smart Pods forming a local sensor mesh.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual">
+                    <div class="diagram-container">
+                        <div class="diagram-node">HQ Central Command (Global AI)</div>
+                        <div class="diagram-arrow">▼ (Satellite/5G)</div>
+                        <div class="diagram-node secondary">AEOUV Mobile Hub (Edge AI)</div>
+                        <div class="diagram-arrow">▼ (Mesh Radio)</div>
+                        <div class="diagram-node active">EcoWing-U Drones & Smart Pods</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Autonomous Conservation System</span>
+                <span>Team Asterix</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 5 -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Ground Platform</span>
+                    <h2 class="slide-title">AEOUV: Mobile Base Station & Lab</h2>
+                </div>
+                <div class="logo-text">ACS / 05</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text">
+                    <ul>
+                        <li><strong>Environmental Diagnostics:</strong> Integrated meteorological station monitoring real-time humidity, temperature, wind, CO₂, and dust metrics.</li>
+                        <li><strong>3D Perception:</strong> Roof-mounted rotating LiDAR, stereo cameras, and mmWave radars for off-road autonomous trail navigation.</li>
+                        <li><strong>5-DOF Robotic Manipulator:</strong> Collects soil cores and water samples directly from trails with automatic tool-changing end-effectors.</li>
+                        <li><strong>Power & Logistics:</strong> High-capacity lithium battery pack that doubles as a mobile charging dock for three drones.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual">
+                    <div style="font-size: 3rem;">🤖 🧪 ⚡</div>
+                    <h4 style="margin-top:10px; color:var(--text);">Edge Server + Carrier</h4>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Heavy processing of video streams and sensor payloads takes place directly on the vehicle.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Autonomous Conservation System</span>
+                <span>Team Asterix</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 6 -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Aerial Platform</span>
+                    <h2 class="slide-title">EcoWing-U: Universal Conservation Drone</h2>
+                </div>
+                <div class="logo-text">ACS / 06</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text">
+                    <ul>
+                        <li><strong>Hybrid VTOL Design:</strong> Vertical rotors for ascending through tight forest canopies, switching to rear pusher propeller and folding wings for efficient 25 km forward cruise flight.</li>
+                        <li><strong>Single Manufacturing Line:</strong> All drones share the identical airframe, flight computers, navigation sensors, and batteries, reducing spare parts overhead.</li>
+                        <li><strong>Full Mission Redundancy:</strong> Drones have no fixed role. If Drone 1 is damaged, Drone 2 immediately clips onto the same Mission Pod to resume the task.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual">
+                    <div style="font-size: 3rem;">🦅 ⚙️</div>
+                    <h4 style="margin-top:10px; color:var(--text);">VTOL Carbon Fiber Airframe</h4>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Twin lift rotors, rear cruise propeller, and automatic hatch-docking interface.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Autonomous Conservation System</span>
+                <span>Team Asterix</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 7 -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Key Mechanical Innovation</span>
+                    <h2 class="slide-title">Adaptive Mission Bay (AMB)</h2>
+                </div>
+                <div class="logo-text">ACS / 07</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text">
+                    <ul>
+                        <li><strong>Automated Payload Swapping:</strong> Fully enclosed, weatherproof internal compartment storing a magazine of six Mission Pods.</li>
+                        <li><strong>Robotic Linear Shuttle:</strong> Replaces payloads in under 30 seconds without human hands.</li>
+                        <li><strong>Universal Interface:</strong> Uses high-strength electro-permanent alignment magnets, pairing power and data contacts instantly.</li>
+                        <li><strong>Sealed Roof Hatches:</strong> Roof hatches open only during launch/landing to keep internal electronics free from mud and rain.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual">
+                    <div style="font-size: 3rem;">🔄 🧲</div>
+                    <h4 style="margin-top:10px; color:var(--accent);">Sub-30s Swap Time</h4>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Internal rail shuttle transfers pods automatically from vehicle magazine to drone.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Autonomous Conservation System</span>
+                <span>Team Asterix</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 8 -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Universal Payloads</span>
+                    <h2 class="slide-title">Modular Mission Pods</h2>
+                </div>
+                <div class="logo-text">ACS / 08</div>
+            </div>
+            <div class="slide-body">
+                <div class="pod-grid">
+                    <div class="pod-card">
+                        <h4>1. Vaccination Pod</h4>
+                        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:4px;">CO₂-driven micro-dart launcher and targeting optics for remote vaccine delivery to wildlife.</p>
+                    </div>
+                    <div class="pod-card">
+                        <h4>2. Seed Planting Pod</h4>
+                        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:4px;">Drops biodegradable capsule seeds wrapped in nutrient shell and water-absorbent casing.</p>
+                    </div>
+                    <div class="pod-card">
+                        <h4>3. Sampling Pod</h4>
+                        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:4px;">Lowers specialized siphon tubes into remote rivers and swamps to collect and preserve samples.</p>
+                    </div>
+                    <div class="pod-card">
+                        <h4>4. Emergency Pod</h4>
+                        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:4px;">Drops emergency medical supplies, satellite signaling beacons, and walkie-talkies to ground rangers.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Autonomous Conservation System</span>
+                <span>Team Asterix</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 9 -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Persistent Monitoring</span>
+                    <h2 class="slide-title">Smart Pods & Forest Sensor Mesh</h2>
+                </div>
+                <div class="logo-text">ACS / 09</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text">
+                    <ul>
+                        <li><strong>Continuous Forest Auditing:</strong> Low-power nodes deployed by drones onto tree branches or rivers.</li>
+                        <li><strong>Diverse Sensors:</strong> Acoustic listening pods (detect gunshots/chainsaws), water quality probes, and motion-activated visual nodes.</li>
+                        <li><strong>Self-Healing Mesh Network:</strong> Since canopy trees block standard signals, pods automatically route data packets hop-by-hop back to the AEOUV.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual">
+                    <div style="font-size: 3rem;">📡 🟢</div>
+                    <h4 style="margin-top:10px; color:var(--text);">Self-Configuring Network</h4>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Pods act as relay repeaters, removing communication blindspots in deep valleys.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Autonomous Conservation System</span>
+                <span>Team Asterix</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 10 -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Commercial Value</span>
+                    <h2 class="slide-title">System ROI & Positioning</h2>
+                </div>
+                <div class="logo-text">ACS / 10</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text">
+                    <ul>
+                        <li><strong>Operational Cost Reduction:</strong> Shifting patrol operations from multiple high-maintenance diesel jeeps to a single electric ground hub and drones.</li>
+                        <li><strong>Zero Soil & Habit Damage:</strong> Eliminates off-road vehicle driving, stopping soil erosion and animal migration routing disruption.</li>
+                        <li><strong>Auditable Conservation:</strong> High-resolution seed placement maps and water logs provide immediate audits for carbon credit and NGO funding.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual">
+                    <div style="font-size: 3rem;">📈 💰</div>
+                    <h4 style="margin-top:10px; color:var(--primary-glow);">Competitive Advantage</h4>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">ACS is positioned as a comprehensive conservation platform, not just a hardware ATV.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Autonomous Conservation System</span>
+                <span>Team Asterix</span>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,4 +1,783 @@
-// PAGE & PITCH HUB NAVIGATION
+// ============================================================================
+// ACS SWARM SIMULATOR & TELEMETRY ENGINE
+// ============================================================================
+
+let canvas, ctx;
+let animationId;
+let simActive = true;
+
+// Swarm State Variables
+let aeouv;
+let drones = [];
+let smartPods = [];
+let animals = [];
+let intruders = [];
+let particles = [];
+let sprouts = [];
+
+// Log Console
+const logLinesContainer = document.getElementById('log-console-lines');
+
+// Inventory
+let inventory = {
+    vac: 2,
+    seed: 2,
+    samp: 1,
+    em: 1
+};
+
+// Map Configurations
+const trails = [
+    { x: 50, y: 350 },
+    { x: 180, y: 320 },
+    { x: 300, y: 280 },
+    { x: 420, y: 290 },
+    { x: 550, y: 250 },
+    { x: 650, y: 200 }
+];
+
+const riverPoints = [
+    { x: 0, y: 150 },
+    { x: 120, y: 180 },
+    { x: 250, y: 200 },
+    { x: 400, y: 160 },
+    { x: 550, y: 120 },
+    { x: 700, y: 80 }
+];
+
+// ----------------------------------------------------------------------------
+// Initializer
+// ----------------------------------------------------------------------------
+window.onload = function() {
+    initSwarmSimulator();
+    initCalculator();
+    
+    // Listen for clicks on the canvas to deploy pods
+    canvas.addEventListener('click', function(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const clickY = e.clientY - rect.top;
+        
+        // Only deploy if clicked inside canvas bounds and not on UI elements
+        if (clickX > 0 && clickX < canvas.width && clickY > 0 && clickY < canvas.height) {
+            deploySmartPodAt(clickX, clickY);
+        }
+    });
+};
+
+function initSwarmSimulator() {
+    canvas = document.getElementById('canvas-swarm');
+    ctx = canvas.getContext('2d');
+    
+    // 1. Initialize AEOUV
+    aeouv = {
+        x: trails[0].x,
+        y: trails[0].y,
+        targetIndex: 1,
+        speed: 0.8,
+        battery: 94.2,
+        state: 'Patrolling', // Patrolling, Stopped, Sampling, Swapping
+        armProgress: 0,
+        direction: 1 // 1 forward, -1 backward
+    };
+    
+    // 2. Initialize 3 Universal Drones (EcoWing-U)
+    drones = [
+        { id: 1, x: aeouv.x - 10, y: aeouv.y - 12, battery: 100, state: 'DOCKED', targetX: null, targetY: null, speed: 3.5, activePod: null, returning: false, altitude: 0, angle: 0 },
+        { id: 2, x: aeouv.x, y: aeouv.y - 12, battery: 100, state: 'DOCKED', targetX: null, targetY: null, speed: 3.5, activePod: null, returning: false, altitude: 0, angle: 120 },
+        { id: 3, x: aeouv.x + 10, y: aeouv.y - 12, battery: 100, state: 'DOCKED', targetX: null, targetY: null, speed: 3.5, activePod: null, returning: false, altitude: 0, angle: 240 }
+    ];
+    
+    // 3. Initialize Deployed Smart Pods
+    smartPods = [
+        { id: 1, x: 100, y: 100, type: 'Acoustic', state: 'Active', pulseRadius: 0, targetPulse: 0 },
+        { id: 2, x: 350, y: 80, type: 'Acoustic', state: 'Active', pulseRadius: 0, targetPulse: 0 },
+        { id: 3, x: 580, y: 150, type: 'Camera', state: 'Active', pulseRadius: 0, targetPulse: 0 },
+        { id: 4, x: 230, y: 210, type: 'pH River', state: 'Active', pulseRadius: 0, targetPulse: 0 }
+    ];
+    
+    // 4. Initialize Wildlife
+    animals = [
+        { x: 120, y: 80, type: 'Deer', speedX: 0.2, speedY: 0.1, state: 'Grazing' },
+        { x: 480, y: 60, type: 'Leopard', speedX: -0.3, speedY: 0.1, state: 'Stalking' },
+        { x: 300, y: 130, type: 'Deer', speedX: 0.15, speedY: -0.15, state: 'Drinking' }
+    ];
+    
+    // Start Game Loop
+    if (animationId) cancelAnimationFrame(animationId);
+    runSwarmLoop();
+}
+
+// ----------------------------------------------------------------------------
+// Swarm Render & Physics Loop
+// ----------------------------------------------------------------------------
+function runSwarmLoop() {
+    if (!simActive) return;
+    
+    updatePhysics();
+    drawScene();
+    updateTelemetryUI();
+    
+    animationId = requestAnimationFrame(runSwarmLoop);
+}
+
+function updatePhysics() {
+    // 1. Move AEOUV along trails
+    if (aeouv.state === 'Patrolling') {
+        let target = trails[aeouv.targetIndex];
+        let dx = target.x - aeouv.x;
+        let dy = target.y - aeouv.y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist < 2) {
+            aeouv.targetIndex += aeouv.direction;
+            if (aeouv.targetIndex >= trails.length || aeouv.targetIndex < 0) {
+                aeouv.direction *= -1;
+                aeouv.targetIndex += aeouv.direction;
+            }
+        } else {
+            aeouv.x += (dx / dist) * aeouv.speed;
+            aeouv.y += (dy / dist) * aeouv.speed;
+        }
+        
+        // Slowly drain main battery
+        aeouv.battery = Math.max(0, aeouv.battery - 0.002);
+    }
+    
+    // 2. Manage Drones
+    drones.forEach(drone => {
+        if (drone.state === 'DOCKED') {
+            // Keep locked to AEOUV position
+            let offset = (drone.id - 2) * 12; // Spread drones slightly
+            drone.x = aeouv.x + offset;
+            drone.y = aeouv.y - 12;
+            drone.altitude = 0;
+            
+            // Charge docked drone batteries
+            if (drone.battery < 100) {
+                drone.battery = Math.min(100, drone.battery + 0.1);
+            }
+        }
+        else if (drone.state === 'LAUNCHING') {
+            drone.altitude += 1.5;
+            if (drone.altitude >= 40) {
+                drone.state = 'FLYING';
+                addLog(`[DRONE ${drone.id}] Alt cruise level reached. Navigating to mission site.`);
+            }
+        }
+        else if (drone.state === 'FLYING') {
+            let dx = drone.targetX - drone.x;
+            let dy = drone.targetY - drone.y;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+            
+            if (dist < 4) {
+                drone.state = 'MISSION';
+                drone.missionTimer = 120; // 2 seconds at 60 FPS
+                addLog(`[DRONE ${drone.id}] Arrived at target coordinates. Commencing payload deployment.`);
+            } else {
+                drone.x += (dx / dist) * drone.speed;
+                drone.y += (dy / dist) * drone.speed;
+            }
+            drone.battery = Math.max(0, drone.battery - 0.05);
+        }
+        else if (drone.state === 'MISSION') {
+            drone.missionTimer--;
+            
+            // Deploy particles based on active pod
+            if (drone.activePod === 'seed' && drone.missionTimer % 15 === 0) {
+                particles.push({
+                    x: drone.x,
+                    y: drone.y,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: 1.5 + Math.random(),
+                    radius: 3,
+                    color: '#2ce068',
+                    life: 40,
+                    type: 'seed'
+                });
+            }
+            else if (drone.activePod === 'vac' && drone.missionTimer === 90) {
+                // Shoot a dart at poacher/animal
+                particles.push({
+                    x: drone.x,
+                    y: drone.y,
+                    vx: 0,
+                    vy: 2.5,
+                    radius: 2,
+                    color: '#ff3b30',
+                    life: 25,
+                    type: 'dart',
+                    tx: drone.targetX,
+                    ty: drone.targetY + 20
+                });
+            }
+            
+            if (drone.missionTimer <= 0) {
+                drone.state = 'RETURNING';
+                addLog(`[DRONE ${drone.id}] Payload deployed. Returning to AEOUV ground hub.`);
+            }
+            drone.battery = Math.max(0, drone.battery - 0.08);
+        }
+        else if (drone.state === 'RETURNING') {
+            let dx = aeouv.x - drone.x;
+            let dy = (aeouv.y - 12) - drone.y;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+            
+            if (dist < 6) {
+                drone.state = 'LANDING';
+            } else {
+                drone.x += (dx / dist) * drone.speed;
+                drone.y += (dy / dist) * drone.speed;
+            }
+            drone.battery = Math.max(0, drone.battery - 0.05);
+        }
+        else if (drone.state === 'LANDING') {
+            drone.altitude -= 1.5;
+            if (drone.altitude <= 0) {
+                drone.state = 'DOCKED';
+                drone.activePod = null;
+                addLog(`[DRONE ${drone.id}] Touchdown confirmed. Commencing power charging.`);
+                
+                // If AEOUV was stopped waiting for this drone, resume patrol
+                if (aeouv.state === 'Stopped' && !drones.some(d => d.state !== 'DOCKED')) {
+                    aeouv.state = 'Patrolling';
+                    document.getElementById('scenario-details').innerText = "Swarm is in passive patrol mode. The AEOUV ground vehicle navigates the trail, collecting local weather telemetry.";
+                }
+            }
+        }
+    });
+    
+    // 3. Move Animals
+    animals.forEach(animal => {
+        animal.x += animal.speedX;
+        animal.y += animal.speedY;
+        
+        // Keep inside canvas bounds and in forest area (upper half mostly)
+        if (animal.x < 20 || animal.x > canvas.width - 20) animal.speedX *= -1;
+        if (animal.y < 30 || animal.y > 220) animal.speedY *= -1;
+        
+        // Randomly change state
+        if (Math.random() < 0.005) {
+            animal.state = Math.random() > 0.5 ? 'Moving' : 'Grazing';
+        }
+    });
+    
+    // 4. Move Intruders (Poachers)
+    intruders.forEach(intruder => {
+        intruder.x += intruder.speedX;
+        intruder.y += intruder.speedY;
+        
+        if (intruder.x < 100 || intruder.x > canvas.width - 100) intruder.speedX *= -1;
+        if (intruder.y < 40 || intruder.y > 180) intruder.speedY *= -1;
+    });
+    
+    // 5. Update Particles
+    particles = particles.filter(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life--;
+        
+        // Drop effect landing
+        if (p.life <= 0) {
+            if (p.type === 'seed') {
+                sprouts.push({ x: p.x, y: p.y + 10, radius: 1, maxRadius: 4 });
+            }
+            return false;
+        }
+        return true;
+    });
+    
+    // Grow Sprouts
+    sprouts.forEach(s => {
+        if (s.radius < s.maxRadius) s.radius += 0.05;
+    });
+    
+    // 6. Update smart pod pulse waves
+    smartPods.forEach(pod => {
+        if (pod.pulseRadius < pod.targetPulse) {
+            pod.pulseRadius += 2;
+        } else {
+            pod.pulseRadius = 0;
+            pod.targetPulse = 0;
+        }
+    });
+}
+
+// ----------------------------------------------------------------------------
+// Canvas Draw Suite
+// ----------------------------------------------------------------------------
+function drawScene() {
+    // Clear canvas
+    ctx.fillStyle = '#060a07';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // 1. Draw Forest Background elements
+    // Canopy areas
+    ctx.fillStyle = 'rgba(29, 114, 59, 0.08)';
+    ctx.beginPath();
+    ctx.arc(150, 100, 120, 0, Math.PI * 2);
+    ctx.arc(350, 90, 110, 0, Math.PI * 2);
+    ctx.arc(580, 110, 130, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // 2. Draw River
+    ctx.strokeStyle = 'rgba(0, 122, 255, 0.25)';
+    ctx.lineWidth = 14;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(riverPoints[0].x, riverPoints[0].y);
+    for (let i = 1; i < riverPoints.length; i++) {
+        ctx.lineTo(riverPoints[i].x, riverPoints[i].y);
+    }
+    ctx.stroke();
+    
+    // 3. Draw Trail Path
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+    ctx.lineWidth = 10;
+    ctx.beginPath();
+    ctx.moveTo(trails[0].x, trails[0].y);
+    for (let i = 1; i < trails.length; i++) {
+        ctx.lineTo(trails[i].x, trails[i].y);
+    }
+    ctx.stroke();
+    
+    // 4. Draw Sprouts (Reforested zones)
+    sprouts.forEach(s => {
+        ctx.fillStyle = '#2ce068';
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(44, 224, 104, 0.4)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius + 1.5, 0, Math.PI * 2);
+        ctx.stroke();
+    });
+    
+    // 5. Draw Mesh Network Connections
+    ctx.strokeStyle = 'rgba(44, 224, 104, 0.12)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 4]);
+    for (let i = 0; i < smartPods.length; i++) {
+        for (let j = i + 1; j < smartPods.length; j++) {
+            let p1 = smartPods[i];
+            let p2 = smartPods[j];
+            let dist = Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
+            // Draw mesh connection if nodes are within 300px
+            if (dist < 300) {
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+            }
+        }
+        
+        // Connect mesh to AEOUV
+        let pod = smartPods[i];
+        let dToAeouv = Math.sqrt((pod.x - aeouv.x) ** 2 + (pod.y - aeouv.y) ** 2);
+        if (dToAeouv < 250) {
+            ctx.strokeStyle = 'rgba(44, 224, 104, 0.25)';
+            ctx.beginPath();
+            ctx.moveTo(pod.x, pod.y);
+            ctx.lineTo(aeouv.x, aeouv.y - 12);
+            ctx.stroke();
+        }
+    }
+    ctx.setLineDash([]); // Reset dash line
+    
+    // 6. Draw Smart Pod Nodes
+    smartPods.forEach(pod => {
+        ctx.fillStyle = pod.state === 'Triggered' ? '#ff3b30' : '#2ce068';
+        ctx.beginPath();
+        ctx.arc(pod.x, pod.y, 6, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw sensor node outline
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(pod.x, pod.y, 8, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        // Label
+        ctx.fillStyle = 'rgba(255,255,255,0.6)';
+        ctx.font = '9px Outfit';
+        ctx.fillText(`${pod.type} #${pod.id}`, pod.x - 22, pod.y - 12);
+        
+        // Render pulse wave if triggered
+        if (pod.pulseRadius > 0) {
+            ctx.strokeStyle = pod.state === 'Triggered' ? 'rgba(255, 59, 48, 0.4)' : 'rgba(44, 224, 104, 0.4)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(pod.x, pod.y, pod.pulseRadius, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+    });
+    
+    // 7. Draw Wildlife
+    animals.forEach(animal => {
+        ctx.fillStyle = '#ff9f1c';
+        ctx.beginPath();
+        ctx.arc(animal.x, animal.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Label
+        ctx.fillStyle = 'rgba(255,255,255,0.4)';
+        ctx.font = '8px Inter';
+        ctx.fillText(animal.type, animal.x - 10, animal.y - 8);
+    });
+    
+    // 8. Draw Intruders
+    intruders.forEach(intruder => {
+        ctx.fillStyle = '#ff3b30';
+        ctx.beginPath();
+        ctx.arc(intruder.x, intruder.y, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = 'rgba(255, 59, 48, 0.8)';
+        ctx.font = '8px Courier New';
+        ctx.fillText('INTRUDER', intruder.x - 20, intruder.y - 10);
+    });
+    
+    // 9. Draw AEOUV Vehicle Base
+    drawAEOUV();
+    
+    // 10. Draw Particles (seed drop, darts)
+    particles.forEach(p => {
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+    });
+    
+    // 11. Draw Drones
+    drones.forEach(drone => {
+        if (drone.state !== 'DOCKED') {
+            drawDrone(drone);
+        }
+    });
+}
+
+function drawAEOUV() {
+    // Draw body
+    ctx.fillStyle = '#18231b';
+    ctx.strokeStyle = '#2ce068';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.rect(aeouv.x - 15, aeouv.y - 8, 30, 16);
+    ctx.fill();
+    ctx.stroke();
+    
+    // Draw wheels
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(aeouv.x - 14, aeouv.y - 11, 8, 4);
+    ctx.fillRect(aeouv.x + 6, aeouv.y - 11, 8, 4);
+    ctx.fillRect(aeouv.x - 14, aeouv.y + 7, 8, 4);
+    ctx.fillRect(aeouv.x + 6, aeouv.y + 7, 8, 4);
+    
+    // Draw LiDAR spinner (rotating line)
+    ctx.strokeStyle = 'rgba(44, 224, 104, 0.8)';
+    ctx.lineWidth = 1;
+    let angle = (Date.now() / 200) % (Math.PI * 2);
+    ctx.beginPath();
+    ctx.moveTo(aeouv.x, aeouv.y);
+    ctx.lineTo(aeouv.x + Math.cos(angle) * 20, aeouv.y + Math.sin(angle) * 20);
+    ctx.stroke();
+    
+    // Draw rotating scan sweep cone
+    ctx.fillStyle = 'rgba(44, 224, 104, 0.05)';
+    ctx.beginPath();
+    ctx.moveTo(aeouv.x, aeouv.y);
+    ctx.arc(aeouv.x, aeouv.y, 20, angle - 0.2, angle + 0.2);
+    ctx.closePath();
+    ctx.fill();
+    
+    // Robotic Arm rendering (when Sampling)
+    if (aeouv.state === 'Sampling') {
+        ctx.strokeStyle = '#ff9f1c';
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = 'round';
+        
+        let armX1 = aeouv.x;
+        let armY1 = aeouv.y;
+        
+        // Arm joint dynamics
+        let armX2 = aeouv.x - 20 * Math.sin(aeouv.armProgress);
+        let armY2 = aeouv.y - 30 * Math.sin(aeouv.armProgress);
+        
+        ctx.beginPath();
+        ctx.moveTo(armX1, armY1);
+        ctx.lineTo(armX2, armY2);
+        ctx.stroke();
+        
+        // Sampling ripples
+        ctx.strokeStyle = 'rgba(255, 159, 28, 0.3)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(armX2, armY2, (Date.now() / 15) % 15, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+}
+
+function drawDrone(drone) {
+    // Offset height (perspective altitude shadow)
+    let alt = drone.altitude;
+    
+    // Draw shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    ctx.beginPath();
+    ctx.arc(drone.x, drone.y + alt * 0.4, 4, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Draw drone body
+    ctx.fillStyle = drone.activePod ? '#2ce068' : '#ffffff';
+    ctx.beginPath();
+    ctx.arc(drone.x, drone.y - alt, 6, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Draw rotors (lines)
+    ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+    ctx.lineWidth = 1.5;
+    let rAngle = (Date.now() / 50) % (Math.PI * 2);
+    
+    ctx.beginPath();
+    ctx.moveTo(drone.x - 10, drone.y - alt);
+    ctx.lineTo(drone.x + 10, drone.y - alt);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.moveTo(drone.x, drone.y - 10 - alt);
+    ctx.lineTo(drone.x, drone.y + 10 - alt);
+    ctx.stroke();
+    
+    // Active label
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.font = '8px Outfit';
+    ctx.fillText(`D${drone.id}`, drone.x - 5, drone.y - alt - 14);
+    
+    // Draw camera scan cone if in MISSION mode (scouting)
+    if (drone.state === 'MISSION') {
+        ctx.fillStyle = 'rgba(44, 224, 104, 0.1)';
+        ctx.strokeStyle = 'rgba(44, 224, 104, 0.3)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(drone.x, drone.y - alt);
+        ctx.lineTo(drone.targetX - 25, drone.targetY + 25);
+        ctx.lineTo(drone.targetX + 25, drone.targetY + 25);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        
+        // Target bounding box overlay
+        ctx.strokeStyle = drone.activePod === 'vac' ? '#ff3b30' : '#2ce068';
+        ctx.strokeRect(drone.targetX - 12, drone.targetY - 12, 24, 24);
+        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.font = '7px Courier New';
+        ctx.fillText('TARGET DETECTED', drone.targetX - 28, drone.targetY - 16);
+    }
+}
+
+// ----------------------------------------------------------------------------
+// Swarm Telemetry & Log Console Updates
+// ----------------------------------------------------------------------------
+function updateTelemetryUI() {
+    // AEOUV battery display
+    document.getElementById('tel-aeouv-bat').innerText = aeouv.battery.toFixed(1);
+    
+    // Drones status displays
+    for (let i = 1; i <= 3; i++) {
+        let d = drones[i - 1];
+        let statusEl = document.getElementById(`tel-d${i}-status`);
+        let batEl = document.getElementById(`tel-d${i}-bat`);
+        
+        batEl.innerText = d.battery.toFixed(0);
+        statusEl.innerText = d.state;
+        
+        if (d.state === 'DOCKED') {
+            statusEl.className = 'status-off';
+        } else if (d.state === 'FLYING' || d.state === 'LAUNCHING') {
+            statusEl.className = 'status-on';
+        } else if (d.state === 'MISSION') {
+            statusEl.className = 'status-on';
+            statusEl.style.color = '#ff9f1c'; // Alert status
+        } else {
+            statusEl.className = 'status-off';
+        }
+    }
+    
+    // Update inventory badges UI
+    document.getElementById('inv-vac').innerText = inventory.vac;
+    document.getElementById('inv-seed').innerText = inventory.seed;
+    document.getElementById('inv-samp').innerText = inventory.samp;
+    document.getElementById('inv-em').innerText = inventory.em;
+}
+
+function addLog(text, colorClass = '') {
+    const p = document.createElement('div');
+    p.className = `log-line ${colorClass}`;
+    p.innerText = `${new Date().toLocaleTimeString()} ${text}`;
+    logLinesContainer.appendChild(p);
+    
+    // Auto-scroll
+    logLinesContainer.scrollTop = logLinesContainer.scrollHeight;
+}
+
+// ----------------------------------------------------------------------------
+// Swarm Control Logic - Scenarios Trigger
+// ----------------------------------------------------------------------------
+function triggerScenario(type) {
+    if (type === 'poacher') {
+        // Spawn poacher if none active
+        if (intruders.length === 0) {
+            let px = 380;
+            let py = 60;
+            intruders.push({ x: px, y: py, speedX: 0.1, speedY: 0 });
+            
+            // Trigger Acoustic Pod pulse
+            let pod = smartPods[1]; // Pod #2 is closest to (380, 60)
+            pod.state = 'Triggered';
+            pod.targetPulse = 180;
+            
+            addLog(`[MESH NET] Acoustic Pod #2 triggered: Chainsaw signatures detected in valley.`, 'text-red');
+            document.getElementById('scenario-details').innerText = "ALERT: Poacher intrusion detected by tree-mounted acoustic sensors. Swarm AI is organizing a dynamic response.";
+            
+            // AEOUV halts
+            aeouv.state = 'Stopped';
+            
+            // Swaps pod and launches Drone 1
+            setTimeout(() => {
+                addLog(`[AEOUV] Swapping Drone 1 to Vaccination/Scout Pod in AMB (Estimated time: 25s)`);
+                inventory.vac = Math.max(0, inventory.vac - 1);
+                
+                setTimeout(() => {
+                    let d = drones[0];
+                    d.state = 'LAUNCHING';
+                    d.activePod = 'vac';
+                    d.targetX = px;
+                    d.targetY = py;
+                    addLog(`[AEOUV] Drone 1 launched with Vaccination/Scout Pod. Flying to target coordinates.`, 'text-green');
+                    
+                    // Capture poacher
+                    setTimeout(() => {
+                        intruders = [];
+                        pod.state = 'Active';
+                        addLog(`[DRONE 1] Neutralization/treatment dart successfully delivered. Intruder cleared.`, 'text-orange');
+                    }, 4500);
+                    
+                }, 2000);
+            }, 1000);
+        }
+    }
+    else if (type === 'seed') {
+        // Find first docked drone
+        let idleDrone = drones.find(d => d.state === 'DOCKED');
+        if (idleDrone) {
+            addLog(`[AEOUV] Reforestation directive received. Swapping Drone ${idleDrone.id} to Seed Pod.`);
+            inventory.seed = Math.max(0, inventory.seed - 1);
+            
+            aeouv.state = 'Stopped';
+            
+            setTimeout(() => {
+                idleDrone.state = 'LAUNCHING';
+                idleDrone.activePod = 'seed';
+                // Pick a barren area coordinates (left/mid-left)
+                idleDrone.targetX = 180;
+                idleDrone.targetY = 70;
+                addLog(`[AEOUV] Drone ${idleDrone.id} deployed for afforestation seed drop.`, 'text-green');
+                document.getElementById('scenario-details').innerText = "MISSION: Deploying drone with seed capsules to launch aerial reforestation drop on steep clearing.";
+            }, 2000);
+        } else {
+            addLog(`[SYSTEM] Swarm error: No docked drones currently available.`, 'text-red');
+        }
+    }
+    else if (type === 'sampling') {
+        // Move AEOUV close to river sampling point
+        addLog(`[AEOUV] Robotic Arm sampling command received. Navigating to nearest river beat.`);
+        aeouv.state = 'Patrolling';
+        aeouv.speed = 1.8; // Speed up
+        
+        let checkSampling = setInterval(() => {
+            // Distance to river point #3 (250, 200) or check if on trail near river
+            let dx = aeouv.x - 280;
+            let dy = aeouv.y - 290;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+            
+            if (dist < 30) {
+                clearInterval(checkSampling);
+                aeouv.state = 'Sampling';
+                aeouv.armProgress = 0.1;
+                addLog(`[AEOUV] River waypoint reached. Deploying 5-DOF arm.`, 'text-green');
+                document.getElementById('scenario-details').innerText = "SAMPLING: Ground hub deploying robotic arm to collect river water. Diagnostics run locally.";
+                
+                // Arm sweep animation loop
+                let armLoop = setInterval(() => {
+                    aeouv.armProgress += 0.05;
+                    if (aeouv.armProgress >= Math.PI / 3.2) {
+                        clearInterval(armLoop);
+                        // Complete sampling
+                        aeouv.state = 'Patrolling';
+                        aeouv.speed = 0.8;
+                        addLog(`[AEOUV] Water sample collected and cataloged. pH = 7.1, Dissolved Oxygen = 8.2mg/L.`, 'text-orange');
+                        document.getElementById('scenario-details').innerText = "Swarm is in passive patrol mode. The AEOUV ground vehicle navigates the trail, collecting local weather telemetry.";
+                    }
+                }, 100);
+            }
+        }, 100);
+    }
+    else if (type === 'deploy-pod') {
+        // Deploy pod at a random coordinate
+        let rx = 100 + Math.random() * (canvas.width - 200);
+        let ry = 80 + Math.random() * 120;
+        deploySmartPodAt(rx, ry);
+    }
+}
+
+function deploySmartPodAt(x, y) {
+    let idleDrone = drones.find(d => d.state === 'DOCKED');
+    if (idleDrone) {
+        addLog(`[AEOUV] Swapping Drone ${idleDrone.id} to Delivery Pod to drop new Smart Pod.`);
+        inventory.em = Math.max(0, inventory.em - 1);
+        
+        aeouv.state = 'Stopped';
+        
+        setTimeout(() => {
+            idleDrone.state = 'LAUNCHING';
+            idleDrone.activePod = 'em';
+            idleDrone.targetX = x;
+            idleDrone.targetY = y;
+            addLog(`[AEOUV] Drone ${idleDrone.id} dispatched to place Smart Pod at (${x.toFixed(0)}, ${y.toFixed(0)}).`, 'text-green');
+            document.getElementById('scenario-details').innerText = `DEPLOYMENT: Swarming Drone ${idleDrone.id} placing passive monitoring node at targeted coordinate.`;
+            
+            // Once drone reaches, insert a new Smart Pod
+            let checkArrived = setInterval(() => {
+                if (idleDrone.state === 'MISSION') {
+                    clearInterval(checkArrived);
+                    
+                    // Create new pod in system
+                    let newId = smartPods.length + 1;
+                    smartPods.push({
+                        id: newId,
+                        x: x,
+                        y: y,
+                        type: 'Mesh Node',
+                        state: 'Active',
+                        pulseRadius: 0,
+                        targetPulse: 100
+                    });
+                    
+                    addLog(`[SYSTEM] Mesh Node #${newId} placed successfully. Linking with adjacent nodes.`, 'text-orange');
+                }
+            }, 200);
+            
+        }, 2000);
+    } else {
+        addLog(`[SYSTEM] Swarm error: No docked drones currently available.`, 'text-red');
+    }
+}
+
+// ----------------------------------------------------------------------------
+// Pitch Hub Tab Selection
+// ----------------------------------------------------------------------------
 function switchPitchTab(tabId, element) {
     const tabs = document.querySelectorAll('#pitch-hub .tab-content');
     const buttons = document.querySelectorAll('#pitch-hub .tab-btn');
@@ -10,689 +789,55 @@ function switchPitchTab(tabId, element) {
     element.classList.add('active');
 }
 
-// SIMULATION TABS SELECTION
-function selectSim(simId) {
-    const panels = document.querySelectorAll('.sim-control-panel');
-    const viewports = document.querySelectorAll('.viewport-content');
-    const buttons = document.querySelectorAll('.sim-tab-btn');
+// ----------------------------------------------------------------------------
+// ROI Financial Calculator
+// ----------------------------------------------------------------------------
+function initCalculator() {
+    const fleetSlider = document.getElementById('calc-fleet');
+    const distSlider = document.getElementById('calc-dist');
+    const dieselSlider = document.getElementById('calc-diesel');
+    const yearsSlider = document.getElementById('calc-years');
     
-    panels.forEach(panel => panel.classList.add('hidden'));
-    viewports.forEach(view => view.classList.add('hidden'));
-    buttons.forEach(btn => btn.classList.remove('active'));
+    // Event listeners
+    fleetSlider.addEventListener('input', updateCalcDisplay);
+    distSlider.addEventListener('input', updateCalcDisplay);
+    dieselSlider.addEventListener('input', updateCalcDisplay);
+    yearsSlider.addEventListener('input', updateCalcDisplay);
     
-    document.getElementById(`panel-${simId}`).classList.remove('hidden');
-    document.getElementById(`view-${simId}`).classList.remove('hidden');
-    document.getElementById(`btn-sim-${simId}`).classList.add('active');
-
-    // Trigger resizing/refit of canvases if running
-    if (simId === 'aeb') initAEBCanvas();
-    if (simId === 'lka') initLKACanvas();
+    // Initial calculate
+    updateCalcDisplay();
 }
 
-// -------------------------------------------------------------
-// 1. AEB (AUTONOMOUS EMERGENCY BRAKING) SIMULATOR
-// -------------------------------------------------------------
-let aebCanvas, aebCtx;
-let aebChartCanvas, aebChartCtx;
-let aebAnimationId;
-let aebRunning = false;
-let aebX = 50; // Buggy X coordinate
-let aebSpeed = 25; // Speed in km/h
-let aebDist = 35; // Distance in m
-let aebFriction = 0.6; // Coefficient of friction (based on surface)
-let aebState = 'Standby'; // Standby, Driving, Braking, Safe Stop, Collision
-let aebObstacleX = 550;
-let aebBuggyWidth = 80;
-let aebScale = 10; // 10 pixels = 1 meter
-let aebDataPoints = []; // Deceleration data points for graphing
-
-// Controls & Telemetry Elements
-const sliderAebSpeed = document.getElementById('aeb-speed');
-const sliderAebDist = document.getElementById('aeb-dist');
-const selectAebSurface = document.getElementById('aeb-surface');
-const telAebSpeed = document.getElementById('tel-aeb-speed');
-const telAebBrake = document.getElementById('tel-aeb-brake');
-const telAebStatus = document.getElementById('tel-aeb-status');
-
-sliderAebSpeed.addEventListener('input', (e) => {
-    document.getElementById('val-aeb-speed').innerText = e.target.value;
-    resetAEB();
-});
-sliderAebDist.addEventListener('input', (e) => {
-    document.getElementById('val-aeb-dist').innerText = e.target.value;
-    resetAEB();
-});
-selectAebSurface.addEventListener('change', () => {
-    resetAEB();
-});
-
-function initAEBCanvas() {
-    aebCanvas = document.getElementById('canvas-aeb');
-    aebCtx = aebCanvas.getContext('2d');
-    aebChartCanvas = document.getElementById('chart-aeb');
-    aebChartCtx = aebChartCanvas.getContext('2d');
+function updateCalcDisplay() {
+    const fleet = parseFloat(document.getElementById('calc-fleet').value);
+    const dist = parseFloat(document.getElementById('calc-dist').value);
+    const diesel = parseFloat(document.getElementById('calc-diesel').value);
+    const years = parseFloat(document.getElementById('calc-years').value);
     
-    drawAEBScene();
-    drawAEBPlot();
-}
-
-function resetAEB() {
-    cancelAnimationFrame(aebAnimationId);
-    aebRunning = false;
-    aebX = 50;
-    aebSpeed = parseFloat(sliderAebSpeed.value);
-    aebDist = parseFloat(sliderAebDist.value);
-    
-    // Set friction based on surface selection
-    const surface = selectAebSurface.value;
-    if (surface === 'dry-dirt') aebFriction = 0.65;
-    else if (surface === 'wet-mud') aebFriction = 0.35;
-    else if (surface === 'gravel') aebFriction = 0.50;
-
-    aebObstacleX = 100 + (aebDist * aebScale);
-    aebState = 'Standby';
-    aebDataPoints = [];
-    
-    telAebSpeed.innerText = aebSpeed.toFixed(1);
-    telAebBrake.innerText = '0';
-    telAebStatus.innerText = aebState;
-    telAebStatus.className = 'status-off';
-    
-    drawAEBScene();
-    drawAEBPlot();
-}
-
-function drawAEBScene() {
-    aebCtx.clearRect(0, 0, aebCanvas.width, aebCanvas.height);
-    
-    // Draw Ground
-    aebCtx.fillStyle = '#1c241f';
-    aebCtx.fillRect(0, 200, aebCanvas.width, aebCanvas.height - 200);
-    aebCtx.strokeStyle = 'rgba(44, 224, 104, 0.2)';
-    aebCtx.lineWidth = 2;
-    aebCtx.beginPath();
-    aebCtx.moveTo(0, 200);
-    aebCtx.lineTo(aebCanvas.width, 200);
-    aebCtx.stroke();
-    
-    // Draw Sky Background
-    aebCtx.fillStyle = '#0b110d';
-    aebCtx.fillRect(0, 0, aebCanvas.width, 200);
-    
-    // Draw background trees (simplified vectors)
-    aebCtx.fillStyle = 'rgba(29, 114, 59, 0.1)';
-    for (let i = 20; i < aebCanvas.width; i += 80) {
-        aebCtx.beginPath();
-        aebCtx.moveTo(i, 200);
-        aebCtx.lineTo(i + 30, 110);
-        aebCtx.lineTo(i + 60, 200);
-        aebCtx.fill();
-    }
-
-    // Draw Distance Markers
-    aebCtx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-    aebCtx.font = '10px Inter';
-    for (let x = 100; x < aebCanvas.width; x += 100) {
-        aebCtx.fillRect(x, 195, 2, 10);
-        let distLabel = ((x - 100) / aebScale).toFixed(0) + 'm';
-        aebCtx.fillText(distLabel, x - 10, 220);
-    }
-    
-    // Draw Active Sensor Range (LiDAR/Camera Scan Wedge)
-    if (aebState === 'Driving' || aebState === 'Braking') {
-        const gradient = aebCtx.createRadialGradient(aebX + aebBuggyWidth, 150, 5, aebX + aebBuggyWidth, 150, 200);
-        if (aebState === 'Braking') {
-            gradient.addColorStop(0, 'rgba(255, 59, 48, 0.25)');
-            gradient.addColorStop(1, 'rgba(255, 59, 48, 0)');
-        } else {
-            gradient.addColorStop(0, 'rgba(44, 224, 104, 0.25)');
-            gradient.addColorStop(1, 'rgba(44, 224, 104, 0)');
-        }
-        aebCtx.fillStyle = gradient;
-        aebCtx.beginPath();
-        aebCtx.moveTo(aebX + aebBuggyWidth - 10, 140);
-        aebCtx.lineTo(aebX + aebBuggyWidth + 180, 110);
-        aebCtx.lineTo(aebX + aebBuggyWidth + 180, 190);
-        aebCtx.closePath();
-        aebCtx.fill();
-    }
-
-    // Draw Obstacle (Fallen Log / Tree)
-    aebCtx.fillStyle = '#8b5a2b';
-    aebCtx.strokeStyle = '#5c3a21';
-    aebCtx.lineWidth = 3;
-    aebCtx.fillRect(aebObstacleX, 160, 20, 40);
-    aebCtx.strokeRect(aebObstacleX, 160, 20, 40);
-    // Draw warning flag on obstacle
-    aebCtx.fillStyle = varColor('accent-red');
-    aebCtx.beginPath();
-    aebCtx.moveTo(aebObstacleX + 10, 160);
-    aebCtx.lineTo(aebObstacleX - 10, 145);
-    aebCtx.lineTo(aebObstacleX + 10, 130);
-    aebCtx.fill();
-    aebCtx.strokeStyle = '#fff';
-    aebCtx.beginPath();
-    aebCtx.moveTo(aebObstacleX + 10, 160);
-    aebCtx.lineTo(aebObstacleX + 10, 130);
-    aebCtx.stroke();
-
-    // Draw Vehicle (Stylized aBAJA Buggy)
-    drawBuggy(aebX, 150);
-}
-
-function drawBuggy(x, y) {
-    // Wheels
-    aebCtx.fillStyle = '#050706';
-    aebCtx.beginPath();
-    aebCtx.arc(x + 15, y + 40, 16, 0, Math.PI * 2);
-    aebCtx.arc(x + 65, y + 40, 16, 0, Math.PI * 2);
-    aebCtx.fill();
-    
-    // Hubcaps (green accent)
-    aebCtx.fillStyle = varColor('primary-glow');
-    aebCtx.beginPath();
-    aebCtx.arc(x + 15, y + 40, 6, 0, Math.PI * 2);
-    aebCtx.arc(x + 65, y + 40, 6, 0, Math.PI * 2);
-    aebCtx.fill();
-
-    // Roll cage frame structure
-    aebCtx.strokeStyle = varColor('text');
-    aebCtx.lineWidth = 3;
-    
-    // Roll Cage lines
-    aebCtx.beginPath();
-    aebCtx.moveTo(x + 5, y + 25); // Lower back
-    aebCtx.lineTo(x + 20, y - 5); // RRH Top
-    aebCtx.lineTo(x + 50, y - 5); // RHO Top
-    aebCtx.lineTo(x + 75, y + 20); // Front Brace
-    aebCtx.lineTo(x + 65, y + 35); // Front frame lower
-    aebCtx.lineTo(x + 5, y + 35); // LFS bottom
-    aebCtx.closePath();
-    aebCtx.stroke();
-    
-    // Diagonal brace
-    aebCtx.beginPath();
-    aebCtx.moveTo(x + 20, y - 5);
-    aebCtx.lineTo(x + 35, y + 35);
-    aebCtx.stroke();
-
-    // Body panel (glowing gradient body panel)
-    aebCtx.fillStyle = varColor('primary');
-    aebCtx.fillRect(x + 10, y + 15, 45, 20);
-    aebCtx.fillStyle = varColor('primary-glow');
-    aebCtx.fillRect(x + 55, y + 20, 15, 15);
-    
-    // Dashboard TSAL/ASAL lights (pulsing display)
-    const time = Date.now() * 0.005;
-    const pulse = Math.sin(time) > 0;
-    
-    // ASAL Active Indicator on Buggy top
-    aebCtx.fillStyle = (pulse && aebState === 'Braking') ? varColor('accent-red') : varColor('accent');
-    aebCtx.beginPath();
-    aebCtx.arc(x + 35, y - 8, 4, 0, Math.PI * 2);
-    aebCtx.fill();
-}
-
-function startAEBSim() {
-    if (aebRunning) return;
-    resetAEB();
-    aebRunning = true;
-    aebState = 'Driving';
-    telAebStatus.className = 'status-on';
-    runAEBLoop();
-}
-
-function runAEBLoop() {
-    if (!aebRunning) return;
-    
-    // Physics parameters
-    let velocityMS = (aebSpeed * 1000) / 3600; // km/h to m/s
-    const gravity = 9.81;
-    const decelMax = aebFriction * gravity; // m/s^2 deceleration
-    const dt = 1 / 60; // frame time
-
-    const buggyFrontX = aebX + aebBuggyWidth;
-    const distanceToObstacle = (aebObstacleX - buggyFrontX) / aebScale; // in meters
-    
-    // AEB Algorithmic Decision Window
-    // Stopping distance formula: d = v^2 / (2 * a)
-    // Add reaction time buffer (say 150ms computational reaction)
-    const reactionBuffer = 0.15;
-    const requiredStoppingDist = (velocityMS * velocityMS) / (2 * decelMax) + (velocityMS * reactionBuffer);
-    
-    let brakePressure = 0;
-    
-    if (distanceToObstacle <= requiredStoppingDist && aebSpeed > 0) {
-        aebState = 'Braking';
-        // Decelerate vehicle
-        velocityMS -= decelMax * dt;
-        aebSpeed = (velocityMS * 3600) / 1000;
-        
-        if (aebSpeed < 0.1) {
-            aebSpeed = 0;
-            aebState = 'Safe Stop';
-        }
-        
-        brakePressure = 100; // Full braking
-    } else if (aebSpeed > 0) {
-        // Drive at constant configured speed
-        aebX += (velocityMS * aebScale) * dt;
-    }
-    
-    // Check Collision
-    if (buggyFrontX >= aebObstacleX && aebSpeed > 0) {
-        aebSpeed = 0;
-        aebState = 'Collision';
-        brakePressure = 0;
-        aebRunning = false;
-    }
-    
-    // Update Telemetry
-    telAebSpeed.innerText = aebSpeed.toFixed(1);
-    telAebBrake.innerText = brakePressure.toFixed(0);
-    telAebStatus.innerText = aebState;
-    
-    if (aebState === 'Braking') {
-        telAebStatus.className = 'status-on';
-        telAebStatus.style.color = varColor('accent');
-    } else if (aebState === 'Safe Stop') {
-        telAebStatus.className = 'status-on';
-        telAebStatus.style.color = varColor('primary-glow');
-        aebRunning = false;
-    } else if (aebState === 'Collision') {
-        telAebStatus.className = 'status-off';
-        telAebStatus.style.color = varColor('accent-red');
-    }
-
-    // Save Data point for deceleration graph
-    if (aebState === 'Braking' || aebState === 'Safe Stop') {
-        aebDataPoints.push({
-            dist: distanceToObstacle,
-            speed: aebSpeed
-        });
-    }
-
-    drawAEBScene();
-    drawAEBPlot();
-    
-    if (aebRunning) {
-        aebAnimationId = requestAnimationFrame(runAEBLoop);
-    }
-}
-
-function drawAEBPlot() {
-    aebChartCtx.clearRect(0, 0, aebChartCanvas.width, aebChartCanvas.height);
-    
-    // Draw grid lines
-    aebChartCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-    aebChartCtx.lineWidth = 1;
-    for (let i = 20; i < aebChartCanvas.width; i += 40) {
-        aebChartCtx.beginPath();
-        aebChartCtx.moveTo(i, 0);
-        aebChartCtx.lineTo(i, aebChartCanvas.height);
-        aebChartCtx.stroke();
-    }
-    
-    // If no data points, draw a straight baseline
-    aebChartCtx.strokeStyle = varColor('primary-glow');
-    aebChartCtx.lineWidth = 2;
-    aebChartCtx.beginPath();
-    
-    if (aebDataPoints.length === 0) {
-        aebChartCtx.moveTo(0, 30);
-        aebChartCtx.lineTo(aebChartCanvas.width, 30);
-        aebChartCtx.stroke();
-        return;
-    }
-    
-    // Plot decel curve points
-    const maxVal = parseFloat(sliderAebSpeed.value);
-    aebChartCtx.moveTo(0, 10 + (1 - aebDataPoints[0].speed / maxVal) * (aebChartCanvas.height - 20));
-    
-    for (let i = 1; i < aebDataPoints.length; i++) {
-        let x = (i / aebDataPoints.length) * aebChartCanvas.width;
-        let y = 10 + (1 - aebDataPoints[i].speed / maxVal) * (aebChartCanvas.height - 20);
-        aebChartCtx.lineTo(x, y);
-    }
-    aebChartCtx.stroke();
-}
-
-// Helper to resolve CSS variable colors
-function varColor(name) {
-    return getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
-}
-
-// -------------------------------------------------------------
-// 2. LKA (LANE KEEP ASSIST) SIMULATOR
-// -------------------------------------------------------------
-let lkaCanvas, lkaCtx;
-let lkaAnimationId;
-let lkaRunning = false;
-let lkaMode = 'auto'; // auto, manual
-let buggyLkaSpeed = 20;
-let buggyLkaX = 350;
-let buggyLkaY = 280;
-let steerAngle = 0; // steering correction angle
-let trackAngle = 0; // Winding track current angle
-let lkaFrame = 0;
-let roadCurves = []; // curve segments of forest track
-let deviation = 0; // deviation from lane center
-
-const selectLkaControl = document.getElementById('lka-control');
-const sliderLkaSpeed = document.getElementById('lka-speed');
-const telLkaStatus = document.getElementById('tel-lka-status');
-const telLkaSteer = document.getElementById('tel-lka-steer');
-const telLkaDev = document.getElementById('tel-lka-dev');
-
-sliderLkaSpeed.addEventListener('input', (e) => {
-    document.getElementById('val-lka-speed').innerText = e.target.value;
-    buggyLkaSpeed = parseFloat(e.target.value);
-});
-
-function toggleLkaMode() {
-    lkaMode = selectLkaControl.value;
-    if (lkaMode === 'auto') {
-        telLkaStatus.innerText = 'ACTIVE';
-        telLkaStatus.className = 'status-on';
-    } else {
-        telLkaStatus.innerText = 'OVERRIDDEN';
-        telLkaStatus.className = 'status-off';
-        telLkaStatus.style.color = varColor('accent');
-    }
-}
-
-function initLKACanvas() {
-    lkaCanvas = document.getElementById('canvas-lka');
-    lkaCtx = lkaCanvas.getContext('2d');
-    
-    // Initialize curve elements of path
-    roadCurves = [];
-    let curX = 350;
-    for (let y = lkaCanvas.height; y > -500; y -= 10) {
-        roadCurves.push({
-            y: y,
-            x: curX
-        });
-    }
-    
-    lkaRunning = true;
-    runLKALoop();
-}
-
-function runLKALoop() {
-    if (!lkaRunning) return;
-    lkaFrame++;
-
-    lkaCtx.clearRect(0, 0, lkaCanvas.width, lkaCanvas.height);
-
-    // Draw background turf
-    lkaCtx.fillStyle = '#0c120e';
-    lkaCtx.fillRect(0, 0, lkaCanvas.width, lkaCanvas.height);
-    
-    // Generate curved dirt track
-    // Curve coordinates move downward to simulate movement
-    const movementIncrement = (buggyLkaSpeed * 0.18); // scaled motion speed
-    
-    roadCurves.forEach(pt => {
-        pt.y += movementIncrement;
-    });
-
-    // Remove nodes that leave viewport, and append new ones on top
-    if (roadCurves[0].y > lkaCanvas.height + 50) {
-        roadCurves.shift();
-        
-        let lastPt = roadCurves[roadCurves.length - 1];
-        // Calculate new winding curve path
-        let newX = lastPt.x + Math.sin(lkaFrame * 0.015) * 4;
-        // Clamp track within bounds
-        newX = Math.max(150, Math.min(lkaCanvas.width - 150, newX));
-        
-        roadCurves.push({
-            y: lastPt.y - 10,
-            x: newX
-        });
-    }
-
-    // Draw Winding Track (Dirt Road boundaries)
-    lkaCtx.strokeStyle = '#4e3b2b';
-    lkaCtx.lineWidth = 100; // Road width
-    lkaCtx.lineCap = 'round';
-    lkaCtx.lineJoin = 'round';
-    
-    lkaCtx.beginPath();
-    lkaCtx.moveTo(roadCurves[0].x, roadCurves[0].y);
-    for (let i = 1; i < roadCurves.length; i++) {
-        lkaCtx.lineTo(roadCurves[i].x, roadCurves[i].y);
-    }
-    lkaCtx.stroke();
-
-    // Draw center dashed lane markings (white trail lines)
-    lkaCtx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-    lkaCtx.lineWidth = 4;
-    lkaCtx.setLineDash([15, 25]);
-    lkaCtx.beginPath();
-    lkaCtx.moveTo(roadCurves[0].x, roadCurves[0].y);
-    for (let i = 1; i < roadCurves.length; i++) {
-        lkaCtx.lineTo(roadCurves[i].x, roadCurves[i].y);
-    }
-    lkaCtx.stroke();
-    lkaCtx.setLineDash([]); // reset
-
-    // Find the track center coordinate at the buggy's Y position (approx. Y=280)
-    let closestTrackPt = roadCurves.reduce((prev, curr) => {
-        return (Math.abs(curr.y - buggyLkaY) < Math.abs(prev.y - buggyLkaY) ? curr : prev);
-    });
-    
-    let trackCenterX = closestTrackPt.x;
-    
-    // Autonomous control loop vs Manual Drift
-    if (lkaMode === 'auto') {
-        // Simple proportional-derivative control to target track Center
-        const error = trackCenterX - buggyLkaX;
-        deviation = error / 30; // scaled to meters
-        
-        // Steering correction calculation
-        let targetSteer = error * 0.12; 
-        steerAngle += (targetSteer - steerAngle) * 0.15; // Smooth steering transition
-        
-        // Update buggy position
-        buggyLkaX += steerAngle * 0.3;
-    } else {
-        // Manual override: Let buggy drift away based on track curve
-        const drift = Math.sin(lkaFrame * 0.02) * 2;
-        buggyLkaX += drift;
-        deviation = (trackCenterX - buggyLkaX) / 30;
-        steerAngle = 0; // Steering center locked in manual
-    }
-
-    // Telemetry updates
-    telLkaSteer.innerText = (steerAngle * -1).toFixed(1) + '°';
-    telLkaDev.innerText = Math.abs(deviation).toFixed(2) + 'm';
-    
-    // If deviation too high, flash warning
-    if (Math.abs(deviation) > 1.2) {
-        telLkaDev.style.color = varColor('accent-red');
-        lkaCtx.strokeStyle = 'rgba(255, 59, 48, 0.3)';
-        lkaCtx.lineWidth = 10;
-        lkaCtx.strokeRect(0, 0, lkaCanvas.width, lkaCanvas.height); // Red screen alert border
-    } else {
-        telLkaDev.style.color = varColor('primary-glow');
-    }
-
-    // Draw LKA Buggy Vector
-    drawLKABuggy(buggyLkaX, buggyLkaY, steerAngle);
-
-    lkaAnimationId = requestAnimationFrame(runLKALoop);
-}
-
-function drawLKABuggy(x, y, steer) {
-    lkaCtx.save();
-    lkaCtx.translate(x, y);
-    
-    // Draw wheels (Front wheels turn with steer angle)
-    lkaCtx.fillStyle = '#0d130e';
-    
-    // Rear wheels (straight)
-    lkaCtx.fillRect(-26, 12, 10, 22);
-    lkaCtx.fillRect(16, 12, 10, 22);
-    
-    // Front wheels (turning)
-    lkaCtx.save();
-    lkaCtx.translate(-26, -20);
-    lkaCtx.rotate((steer * Math.PI) / 180);
-    lkaCtx.fillRect(-5, -11, 10, 22);
-    lkaCtx.restore();
-
-    lkaCtx.save();
-    lkaCtx.translate(16, -20);
-    lkaCtx.rotate((steer * Math.PI) / 180);
-    lkaCtx.fillRect(-5, -11, 10, 22);
-    lkaCtx.restore();
-
-    // Draw buggy chassis
-    lkaCtx.fillStyle = varColor('primary');
-    lkaCtx.fillRect(-18, -15, 36, 30);
-    
-    // Nose frame cone
-    lkaCtx.fillStyle = varColor('primary-glow');
-    lkaCtx.beginPath();
-    lkaCtx.moveTo(-18, -15);
-    lkaCtx.lineTo(0, -32);
-    lkaCtx.lineTo(18, -15);
-    lkaCtx.fill();
-    
-    // Roll cage lines (aerial top view)
-    lkaCtx.strokeStyle = '#fff';
-    lkaCtx.lineWidth = 2.5;
-    lkaCtx.strokeRect(-12, -15, 24, 25);
-    lkaCtx.beginPath();
-    lkaCtx.moveTo(-12, -15);
-    lkaCtx.lineTo(0, -32);
-    lkaCtx.lineTo(12, -15);
-    lkaCtx.stroke();
-    
-    // TSAL / ASAL beacons (Flashing blue/amber)
-    const active = Math.sin(lkaFrame * 0.2) > 0;
-    if (active) {
-        lkaCtx.fillStyle = varColor('primary-glow'); // ASAL Blue/Green
-        lkaCtx.beginPath();
-        lkaCtx.arc(-8, 5, 3, 0, Math.PI * 2);
-        lkaCtx.fill();
-        
-        lkaCtx.fillStyle = varColor('accent'); // TSAL Amber
-        lkaCtx.beginPath();
-        lkaCtx.arc(8, 5, 3, 0, Math.PI * 2);
-        lkaCtx.fill();
-    }
-
-    lkaCtx.restore();
-}
-
-// -------------------------------------------------------------
-// 3. PERCEPTION OBSTACLE DETECTION FEED
-// -------------------------------------------------------------
-const percLogElement = document.getElementById('perc-log');
-
-function triggerPerceptionTarget(targetType) {
-    const boxes = document.querySelectorAll('.bbox');
-    boxes.forEach(box => box.classList.add('hidden'));
-
-    if (targetType === 'clear') {
-        percLogElement.innerText = "Feed online. No immediate path threats detected. Resuming standard cruise.";
-        return;
-    }
-
-    // Un-hide targeted bounding box
-    document.getElementById(`bbox-${targetType}`).classList.remove('hidden');
-
-    // Update Decision log based on type
-    if (targetType === 'deer') {
-        percLogElement.innerHTML = `<strong>[TARGET DETECTED]</strong> Wildlife (Deer family) identified at 12.4 meters.<br>
-                                    <strong>[DBW DECISION]</strong> De-energized accelerator (TBW). Applied gentle 15% brake pressure (BBW).<br>
-                                    <strong>[SAFETY ACTION]</strong> Silent operation check passed. Avoided sounding horn to prevent animal panic. Wait for clear path.`;
-    } else if (targetType === 'poacher') {
-        percLogElement.innerHTML = `<strong>[ALERT: SECURITY THREAT]</strong> Human presence detected off-trail at 18.2 meters.<br>
-                                    <strong>[DBW DECISION]</strong> Speed throttled to stealth mode (10 km/h). Logged geolocation details via GNSS.<br>
-                                    <strong>[SAFETY ACTION]</strong> Transmitting thermal/camera image snippet to central command circle. Silent approach activated.`;
-    } else if (targetType === 'tree') {
-        percLogElement.innerHTML = `<strong>[ALERT: ROAD BLOCKAGE]</strong> Fallen timber obstacle detected at 8.6 meters.<br>
-                                    <strong>[DBW DECISION]</strong> Initiated Autonomous Emergency Braking (AEB). full 100% brake line lock.<br>
-                                    <strong>[SAFETY ACTION]</strong> Vehicle halted safely at 3.2m margin from log. Flashing hazard active lights (ASAL/TSAL).`;
-    }
-}
-
-// -------------------------------------------------------------
-// 4. FINANCIAL BID & ROI CALCULATOR
-// -------------------------------------------------------------
-const inputFleet = document.getElementById('calc-fleet');
-const inputDist = document.getElementById('calc-dist');
-const inputDiesel = document.getElementById('calc-diesel');
-const inputYears = document.getElementById('calc-years');
-
-// UI display fields
-const resSavings = document.getElementById('res-savings');
-const resCo2 = document.getElementById('res-co2');
-const resPayback = document.getElementById('res-payback');
-
-function runCalculator() {
-    const fleet = parseInt(inputFleet.value);
-    const dist = parseFloat(inputDist.value);
-    const dieselPrice = parseFloat(inputDiesel.value);
-    const years = parseInt(inputYears.value);
-
-    // Updates label displays
-    document.getElementById('val-calc-fleet').innerText = `${fleet} ${fleet === 1 ? 'Vehicle' : 'Vehicles'}`;
+    // Update value labels
+    document.getElementById('val-calc-fleet').innerText = `${fleet} System${fleet > 1 ? 's' : ''}`;
     document.getElementById('val-calc-dist').innerText = `${dist} km`;
-    document.getElementById('val-calc-diesel').innerText = `₹${dieselPrice}`;
-    document.getElementById('val-calc-years').innerText = `${years} ${years === 1 ? 'Year' : 'Years'}`;
-
-    // Math models:
-    // A standard diesel ATV runs about 8 km per Liter of diesel fuel.
-    // Daily liters per vehicle = patrol distance / 8
-    const dieselLitersPerDay = dist / 8;
-    const dieselFuelCostPerDay = dieselLitersPerDay * dieselPrice;
+    document.getElementById('val-calc-diesel').innerText = `₹${diesel}`;
+    document.getElementById('val-calc-years').innerText = `${years} Year${years > 1 ? 's' : ''}`;
     
-    // An electric buggy consumes approx 0.12 kWh of electricity per kilometer.
-    // Average agricultural/government electricity cost = ₹8 per kWh.
-    const elecKwhPerDay = dist * 0.12;
-    const elecFuelCostPerDay = elecKwhPerDay * 8; // ₹8 rate
+    // ROI Formulas
+    // 1. Total patrol cost saved compared to conventional patrol diesel vehicles
+    // Diesel vehicle consumes ~0.15 liters per km. Maintenance adds 30%.
+    const convPatrolCost = fleet * dist * 365 * years * 0.15 * diesel * 1.30;
+    // Electric vehicle cost is ~80% cheaper in electricity vs fuel and low maintenance.
+    const acsCost = convPatrolCost * 0.18;
+    const netSavings = (convPatrolCost - acsCost) / 100000; // in Lakhs
     
-    // Maintenance savings: Electric has ~60% fewer moving parts (no engine oils, filters, Spark plugs, CVT belts).
-    // Estimated yearly maintenance: Diesel ATV = ₹30,000 | Electric Buggy = ₹12,000.
-    const maintSavingsPerYear = 18000 * fleet;
-
-    // Operational Savings calculation
-    const fuelSavingsPerDay = (dieselFuelCostPerDay - elecFuelCostPerDay) * fleet;
-    const totalFuelSavings = (fuelSavingsPerDay * 365 * years) + (maintSavingsPerYear * years);
-    const totalSavingsLakhs = totalFuelSavings / 100000;
-
-    // CO2 calculation (1 Liter of burned diesel releases roughly 2.68 kg of CO2)
-    const yearlyLitersSaved = dieselLitersPerDay * 365 * fleet;
-    const totalCo2Saved = (yearlyLitersSaved * 2.68 * years) / 1000; // in metric Tons
-
-    // Payback period logic:
-    // Acquisition cost difference of Electric Buggy is roughly ₹1.5 Lakhs higher initially.
-    // Total investment delta = fleet * 150000.
-    // Payback months = Investment delta / Monthly savings.
-    const investmentDelta = fleet * 150000;
-    const monthlySavings = (fuelSavingsPerDay * 30.4) + (maintSavingsPerYear / 12);
-    const paybackMonths = monthlySavings > 0 ? (investmentDelta / monthlySavings) : 0;
-
-    // Update results onto cards
-    resSavings.innerText = `₹${totalSavingsLakhs.toFixed(1)} Lakhs`;
-    resCo2.innerText = `${totalCo2Saved.toFixed(1)} Tons`;
-    resPayback.innerText = paybackMonths > 0 ? `${Math.ceil(paybackMonths)} Months` : 'Instant';
+    // 2. CO2 emissions prevented (2.68 kg CO2 per liter diesel consumed)
+    const co2Saved = (fleet * dist * 365 * years * 0.15 * 2.68) / 1000; // in tons
+    
+    // 3. Habitat protection index (ratio of off-road footprint avoidance)
+    // Drones cover off-road areas with 0 weight on soil.
+    const footprintRatio = 92.5 + (fleet * 0.2); // baseline percentage
+    const finalRatio = Math.min(99.8, footprintRatio);
+    
+    // Update display values
+    document.getElementById('res-savings').innerText = `₹${netSavings.toFixed(1)} Lakhs`;
+    document.getElementById('res-co2').innerText = `${co2Saved.toFixed(0)} Tons`;
+    document.getElementById('res-payback').innerText = `${finalRatio.toFixed(1)} %`;
 }
-
-// Add event listeners to calculator inputs
-[inputFleet, inputDist, inputDiesel, inputYears].forEach(input => {
-    input.addEventListener('input', runCalculator);
-});
-
-// -------------------------------------------------------------
-// INITIALIZE ALL SYSTEMS ON LOAD
-// -------------------------------------------------------------
-window.onload = function() {
-    initAEBCanvas();
-    runCalculator();
-};

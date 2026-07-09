@@ -1013,3 +1013,144 @@ canvas {
     gap: 40px;
     align-items: center;
 }
+
+/* -------------------------------------------------------------
+   ACS Swarm Simulator Dashboard Styles
+   ------------------------------------------------------------- */
+
+/* Scenario control buttons */
+.scenario-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.scenario-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.scenario-btn:hover {
+    background: rgba(44, 224, 104, 0.08);
+    border-color: var(--primary-glow);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(44, 224, 104, 0.15);
+}
+
+.btn-icon {
+    font-size: 1.2rem;
+}
+
+/* Stats Card & Inventory */
+.sim-stats-card {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.sim-stats-card h4 {
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.pod-inventory {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.inventory-item {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.badge-vac { background-color: #ff3b30; }
+.badge-seed { background-color: #2ce068; }
+.badge-samp { background-color: #007aff; }
+.badge-em { background-color: #ff9f1c; }
+
+/* Description Box */
+.sim-description-box {
+    background: rgba(44, 224, 104, 0.03);
+    border-left: 3px solid var(--primary-glow);
+    border-radius: 4px;
+    padding: 14px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* Log Console */
+.log-console {
+    background: #040705;
+    border: 1px solid rgba(44, 224, 104, 0.15);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 20px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.log-console h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.log-lines {
+    height: 120px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+}
+
+.log-line {
+    color: var(--text-muted);
+    word-break: break-all;
+    line-height: 1.4;
+}
+
+.log-line.text-green {
+    color: var(--primary-glow);
+    text-shadow: 0 0 5px rgba(44, 224, 104, 0.3);
+}
+
+.log-line.text-red {
+    color: var(--accent-red);
+}
+
+.log-line.text-orange {
+    color: var(--accent);
+}
