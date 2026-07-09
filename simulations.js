@@ -155,44 +155,81 @@ function updatePhysics() {
             
             // Charge docked drone batteries
             if (drone.battery < 100) {
-                drone.battery = Math.min(100, drone.battery + 0.1);
+                drone.battery = Math.min(100, drone.battery + 0.15);
             }
         }
         else if (drone.state === 'LAUNCHING') {
             drone.altitude += 1.5;
+            // Spawn thrust particles downward
+            if (Math.random() < 0.4) {
+                particles.push({
+                    x: drone.x + (Math.random() - 0.5) * 6,
+                    y: drone.y + (Math.random() - 0.5) * 4,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: 1.5 + Math.random() * 0.5,
+                    radius: 1.5,
+                    color: 'rgba(44, 224, 104, 0.45)',
+                    life: 15,
+                    type: 'thrust'
+                });
+            }
             if (drone.altitude >= 40) {
                 drone.state = 'FLYING';
                 addLog(`[DRONE ${drone.id}] Alt cruise level reached. Navigating to mission site.`);
             }
         }
-        else if (drone.state === 'FLYING') {
-            let dx = drone.targetX - drone.x;
-            let dy = drone.targetY - drone.y;
+        else if (drone.state === 'FLYING' || drone.state === 'RETURNING') {
+            let tx = drone.targetX;
+            let ty = drone.targetY;
+            if (drone.state === 'RETURNING') {
+                tx = aeouv.x;
+                ty = aeouv.y - 12;
+            }
+            let dx = tx - drone.x;
+            let dy = ty - drone.y;
             let dist = Math.sqrt(dx * dx + dy * dy);
             
-            if (dist < 4) {
-                drone.state = 'MISSION';
-                drone.missionTimer = 120; // 2 seconds at 60 FPS
-                addLog(`[DRONE ${drone.id}] Arrived at target coordinates. Commencing payload deployment.`);
+            if (dist < 5) {
+                if (drone.state === 'FLYING') {
+                    drone.state = 'MISSION';
+                    drone.missionTimer = 120; // 2 seconds at 60 FPS
+                    addLog(`[DRONE ${drone.id}] Arrived at target coordinates. Commencing payload deployment.`);
+                } else {
+                    drone.state = 'LANDING';
+                }
             } else {
                 drone.x += (dx / dist) * drone.speed;
                 drone.y += (dy / dist) * drone.speed;
             }
-            drone.battery = Math.max(0, drone.battery - 0.05);
+            drone.battery = Math.max(0, drone.battery - 0.06);
+            
+            // Thrust tail particles
+            if (Math.random() < 0.3) {
+                particles.push({
+                    x: drone.x - (dx / dist) * 8 + (Math.random() - 0.5) * 3,
+                    y: (drone.y - drone.altitude) - (dy / dist) * 8 + (Math.random() - 0.5) * 3,
+                    vx: -(dx / dist) * 0.5 + (Math.random() - 0.5) * 0.2,
+                    vy: -(dy / dist) * 0.5 + (Math.random() - 0.5) * 0.2,
+                    radius: 1.5,
+                    color: 'rgba(44, 224, 104, 0.4)',
+                    life: 15,
+                    type: 'thrust'
+                });
+            }
         }
         else if (drone.state === 'MISSION') {
             drone.missionTimer--;
             
             // Deploy particles based on active pod
-            if (drone.activePod === 'seed' && drone.missionTimer % 15 === 0) {
+            if (drone.activePod === 'seed' && drone.missionTimer % 12 === 0) {
                 particles.push({
                     x: drone.x,
                     y: drone.y,
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: 1.5 + Math.random(),
+                    vx: (Math.random() - 0.5) * 0.6,
+                    vy: 2.0 + Math.random() * 0.8,
                     radius: 3,
                     color: '#2ce068',
-                    life: 40,
+                    life: 45,
                     type: 'seed'
                 });
             }
@@ -202,7 +239,7 @@ function updatePhysics() {
                     x: drone.x,
                     y: drone.y,
                     vx: 0,
-                    vy: 2.5,
+                    vy: 2.8,
                     radius: 2,
                     color: '#ff3b30',
                     life: 25,
@@ -217,19 +254,6 @@ function updatePhysics() {
                 addLog(`[DRONE ${drone.id}] Payload deployed. Returning to AEOUV ground hub.`);
             }
             drone.battery = Math.max(0, drone.battery - 0.08);
-        }
-        else if (drone.state === 'RETURNING') {
-            let dx = aeouv.x - drone.x;
-            let dy = (aeouv.y - 12) - drone.y;
-            let dist = Math.sqrt(dx * dx + dy * dy);
-            
-            if (dist < 6) {
-                drone.state = 'LANDING';
-            } else {
-                drone.x += (dx / dist) * drone.speed;
-                drone.y += (dy / dist) * drone.speed;
-            }
-            drone.battery = Math.max(0, drone.battery - 0.05);
         }
         else if (drone.state === 'LANDING') {
             drone.altitude -= 1.5;
@@ -287,9 +311,9 @@ function updatePhysics() {
         return true;
     });
     
-    // Grow Sprouts
+    // Grow Sprouts (Tree botanical growth)
     sprouts.forEach(s => {
-        if (s.radius < s.maxRadius) s.radius += 0.05;
+        if (s.radius < s.maxRadius) s.radius += 0.04;
     });
     
     // 6. Update smart pod pulse waves
@@ -312,15 +336,25 @@ function drawScene() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     // 1. Draw Forest Background elements
-    // Canopy areas
+    // Canopy areas with dynamic wind sway
+    let windSway = Math.sin(Date.now() / 650) * 4;
+    
     ctx.fillStyle = 'rgba(29, 114, 59, 0.08)';
     ctx.beginPath();
-    ctx.arc(150, 100, 120, 0, Math.PI * 2);
-    ctx.arc(350, 90, 110, 0, Math.PI * 2);
-    ctx.arc(580, 110, 130, 0, Math.PI * 2);
+    ctx.arc(150 + windSway * 0.5, 100, 120, 0, Math.PI * 2);
+    ctx.arc(350 + windSway * 0.7, 90, 110, 0, Math.PI * 2);
+    ctx.arc(580 + windSway * 0.5, 110, 130, 0, Math.PI * 2);
     ctx.fill();
     
-    // 2. Draw River
+    // Draw trees in canopy zones
+    drawTreeAt(120, 90, windSway);
+    drawTreeAt(180, 130, windSway * 1.2);
+    drawTreeAt(320, 80, windSway * 0.8);
+    drawTreeAt(380, 110, windSway * 1.1);
+    drawTreeAt(540, 100, windSway * 0.9);
+    drawTreeAt(620, 140, windSway * 1.3);
+    
+    // 2. Draw River with flowing ripple lines
     ctx.strokeStyle = 'rgba(0, 122, 255, 0.25)';
     ctx.lineWidth = 14;
     ctx.lineCap = 'round';
@@ -330,6 +364,19 @@ function drawScene() {
         ctx.lineTo(riverPoints[i].x, riverPoints[i].y);
     }
     ctx.stroke();
+    
+    // River current ripples flow animation
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.lineWidth = 1.5;
+    let rippleOffset = (Date.now() / 25) % 45;
+    ctx.setLineDash([10, 20]);
+    ctx.beginPath();
+    ctx.moveTo(riverPoints[0].x + rippleOffset, riverPoints[0].y);
+    for (let i = 1; i < riverPoints.length; i++) {
+        ctx.lineTo(riverPoints[i].x + rippleOffset, riverPoints[i].y);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
     
     // 3. Draw Trail Path
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
@@ -341,49 +388,80 @@ function drawScene() {
     }
     ctx.stroke();
     
-    // 4. Draw Sprouts (Reforested zones)
+    // 4. Draw Sprouts (Growing Tree nodes)
     sprouts.forEach(s => {
+        // Draw wood trunk
+        ctx.strokeStyle = '#8b5a2b';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x, s.y - s.radius * 2.2);
+        ctx.stroke();
+        
+        // Draw green leaves canopy
+        ctx.fillStyle = '#1d723b';
+        ctx.beginPath();
+        ctx.arc(s.x, s.y - s.radius * 2.2, s.radius * 1.6, 0, Math.PI * 2);
+        ctx.fill();
+        
         ctx.fillStyle = '#2ce068';
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.arc(s.x - s.radius * 0.4, s.y - s.radius * 2.5, s.radius * 0.8, 0, Math.PI * 2);
+        ctx.arc(s.x + s.radius * 0.4, s.y - s.radius * 2.0, s.radius * 0.7, 0, Math.PI * 2);
         ctx.fill();
-        ctx.strokeStyle = 'rgba(44, 224, 104, 0.4)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.radius + 1.5, 0, Math.PI * 2);
-        ctx.stroke();
     });
     
-    // 5. Draw Mesh Network Connections
-    ctx.strokeStyle = 'rgba(44, 224, 104, 0.12)';
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([4, 4]);
+    // 5. Draw Mesh Network Connections & Data Packet Pulses
+    let dataPulseProgress = (Date.now() / 20) % 100;
+    
     for (let i = 0; i < smartPods.length; i++) {
+        let p1 = smartPods[i];
+        
         for (let j = i + 1; j < smartPods.length; j++) {
-            let p1 = smartPods[i];
             let p2 = smartPods[j];
             let dist = Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
-            // Draw mesh connection if nodes are within 300px
+            
             if (dist < 300) {
+                // Base mesh lines
+                ctx.strokeStyle = 'rgba(44, 224, 104, 0.12)';
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([4, 4]);
                 ctx.beginPath();
                 ctx.moveTo(p1.x, p1.y);
                 ctx.lineTo(p2.x, p2.y);
                 ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Flowing data pulse particle
+                let ratio = dataPulseProgress / 100;
+                let pulseX = p1.x + (p2.x - p1.x) * ratio;
+                let pulseY = p1.y + (p2.y - p1.y) * ratio;
+                ctx.fillStyle = 'rgba(44, 224, 104, 0.7)';
+                ctx.beginPath();
+                ctx.arc(pulseX, pulseY, 2.5, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
         
-        // Connect mesh to AEOUV
-        let pod = smartPods[i];
-        let dToAeouv = Math.sqrt((pod.x - aeouv.x) ** 2 + (pod.y - aeouv.y) ** 2);
+        // Connect mesh to AEOUV base
+        let dToAeouv = Math.sqrt((p1.x - aeouv.x) ** 2 + (p1.y - aeouv.y) ** 2);
         if (dToAeouv < 250) {
             ctx.strokeStyle = 'rgba(44, 224, 104, 0.25)';
             ctx.beginPath();
-            ctx.moveTo(pod.x, pod.y);
+            ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(aeouv.x, aeouv.y - 12);
             ctx.stroke();
+            
+            // Flowing data pulse to vehicle
+            let ratio = dataPulseProgress / 100;
+            let pulseX = p1.x + (aeouv.x - p1.x) * ratio;
+            let pulseY = p1.y + ((aeouv.y - 12) - p1.y) * ratio;
+            ctx.fillStyle = 'rgba(44, 224, 104, 0.8)';
+            ctx.beginPath();
+            ctx.arc(pulseX, pulseY, 2.5, 0, Math.PI * 2);
+            ctx.fill();
         }
     }
-    ctx.setLineDash([]); // Reset dash line
     
     // 6. Draw Smart Pod Nodes
     smartPods.forEach(pod => {
@@ -442,7 +520,7 @@ function drawScene() {
     // 9. Draw AEOUV Vehicle Base
     drawAEOUV();
     
-    // 10. Draw Particles (seed drop, darts)
+    // 10. Draw Particles (seed drop, darts, thruster smoke)
     particles.forEach(p => {
         ctx.fillStyle = p.color;
         ctx.beginPath();
@@ -456,6 +534,73 @@ function drawScene() {
             drawDrone(drone);
         }
     });
+    
+    // 12. Futuristic HUD Overlay
+    drawHUDOverlay();
+}
+
+function drawTreeAt(x, y, sway) {
+    // Draw trunk
+    ctx.strokeStyle = '#2d1e10';
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + sway * 0.4, y - 24);
+    ctx.stroke();
+    
+    // Canopy leaf circles
+    ctx.fillStyle = 'rgba(29, 114, 59, 0.4)';
+    ctx.beginPath();
+    ctx.arc(x + sway * 0.5, y - 25, 14, 0, Math.PI * 2);
+    ctx.arc(x + sway * 0.5 - 8, y - 30, 11, 0, Math.PI * 2);
+    ctx.arc(x + sway * 0.5 + 8, y - 28, 12, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+function drawHUDOverlay() {
+    // Grid Corners
+    ctx.strokeStyle = 'rgba(44, 224, 104, 0.35)';
+    ctx.lineWidth = 1.5;
+    const pad = 12;
+    const len = 10;
+    
+    // Top-Left
+    ctx.beginPath();
+    ctx.moveTo(pad, pad + len); ctx.lineTo(pad, pad); ctx.lineTo(pad + len, pad);
+    ctx.stroke();
+    
+    // Top-Right
+    ctx.beginPath();
+    ctx.moveTo(canvas.width - pad, pad + len); ctx.lineTo(canvas.width - pad, pad); ctx.lineTo(canvas.width - pad - len, pad);
+    ctx.stroke();
+    
+    // Bottom-Left
+    ctx.beginPath();
+    ctx.moveTo(pad, canvas.height - pad - len); ctx.lineTo(pad, canvas.height - pad); ctx.lineTo(pad + len, canvas.height - pad);
+    ctx.stroke();
+    
+    // Bottom-Right
+    ctx.beginPath();
+    ctx.moveTo(canvas.width - pad, canvas.height - pad - len); ctx.lineTo(canvas.width - pad, canvas.height - pad); ctx.lineTo(canvas.width - pad - len, canvas.height - pad);
+    ctx.stroke();
+    
+    // HUD Scanline
+    let scanY = (Date.now() / 22) % (canvas.height + 40) - 20;
+    ctx.fillStyle = 'rgba(44, 224, 104, 0.03)';
+    ctx.fillRect(0, scanY - 4, canvas.width, 8);
+    ctx.strokeStyle = 'rgba(44, 224, 104, 0.12)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, scanY);
+    ctx.lineTo(canvas.width, scanY);
+    ctx.stroke();
+    
+    // HUD Labels
+    ctx.fillStyle = 'rgba(44, 224, 104, 0.65)';
+    ctx.font = '700 9px Outfit';
+    ctx.fillText('SWARM: SECURE', pad + 15, pad + 11);
+    ctx.fillText('MESH STATS: CONNECTED', canvas.width - pad - 128, pad + 11);
 }
 
 function drawAEOUV() {
@@ -478,7 +623,7 @@ function drawAEOUV() {
     // Draw LiDAR spinner (rotating line)
     ctx.strokeStyle = 'rgba(44, 224, 104, 0.8)';
     ctx.lineWidth = 1;
-    let angle = (Date.now() / 200) % (Math.PI * 2);
+    let angle = (Date.now() / 150) % (Math.PI * 2);
     ctx.beginPath();
     ctx.moveTo(aeouv.x, aeouv.y);
     ctx.lineTo(aeouv.x + Math.cos(angle) * 20, aeouv.y + Math.sin(angle) * 20);
@@ -538,16 +683,16 @@ function drawDrone(drone) {
     // Draw rotors (lines)
     ctx.strokeStyle = 'rgba(255,255,255,0.7)';
     ctx.lineWidth = 1.5;
-    let rAngle = (Date.now() / 50) % (Math.PI * 2);
+    let rAngle = (Date.now() / 35) % (Math.PI * 2);
     
     ctx.beginPath();
-    ctx.moveTo(drone.x - 10, drone.y - alt);
-    ctx.lineTo(drone.x + 10, drone.y - alt);
+    ctx.moveTo(drone.x - 10 * Math.cos(rAngle), drone.y - alt - 10 * Math.sin(rAngle));
+    ctx.lineTo(drone.x + 10 * Math.cos(rAngle), drone.y - alt + 10 * Math.sin(rAngle));
     ctx.stroke();
     
     ctx.beginPath();
-    ctx.moveTo(drone.x, drone.y - 10 - alt);
-    ctx.lineTo(drone.x, drone.y + 10 - alt);
+    ctx.moveTo(drone.x - 10 * Math.sin(rAngle), drone.y - alt + 10 * Math.cos(rAngle));
+    ctx.lineTo(drone.x + 10 * Math.sin(rAngle), drone.y - alt - 10 * Math.cos(rAngle));
     ctx.stroke();
     
     // Active label

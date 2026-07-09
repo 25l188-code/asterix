@@ -1140,6 +1140,7 @@ canvas {
     color: var(--text-muted);
     word-break: break-all;
     line-height: 1.4;
+    animation: logFadeIn 0.3s ease-out forwards;
 }
 
 .log-line.text-green {
@@ -1154,3 +1155,88 @@ canvas {
 .log-line.text-orange {
     color: var(--accent);
 }
+
+/* Advanced Micro-Animations & Glow Effects */
+
+@keyframes logFadeIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.status-on {
+    color: var(--primary-glow);
+    text-shadow: 0 0 10px rgba(44, 224, 104, 0.5);
+    animation: statusPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 0.85; text-shadow: 0 0 4px rgba(44, 224, 104, 0.4); }
+    50% { opacity: 1; text-shadow: 0 0 14px rgba(44, 224, 104, 0.8); }
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.logo-accent {
+    background: linear-gradient(270deg, #fff, var(--primary-glow), var(--accent), #fff);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientMove 8s ease infinite;
+}
+
+/* Card Glow and Zoom */
+.spec-card, .pod-card, .metric-card {
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.spec-card::before, .pod-card::before, .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(44, 224, 104, 0.08), transparent 70%);
+    opacity: 0;
+    transition: var(--transition);
+    pointer-events: none;
+}
+
+.spec-card:hover, .pod-card:hover, .metric-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-glow);
+    box-shadow: 0 10px 25px rgba(44, 224, 104, 0.12);
+}
+
+.spec-card:hover::before, .pod-card:hover::before, .metric-card:hover::before {
+    opacity: 1;
+}
+
+/* Tab button micro-indicator active animation */
+.tab-btn {
+    position: relative;
+    transition: var(--transition);
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-glow);
+    transition: var(--transition);
+    transform: translateX(-50%);
+}
+
+.tab-btn.active::after {
+    width: 80%;
+}
+
