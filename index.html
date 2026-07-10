@@ -3,45 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autonomous Conservation System (ACS) | Team Asterix</title>
+    <title>ASTERIX AEOUV Ecosystem | E-Tender Proposal</title>
     <link rel="stylesheet" href="styles.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chart.js via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Premium Header -->
+    <!-- Sticky Header & Scrollable Nav -->
     <header class="header">
         <div class="logo-container">
-            <span class="logo-accent">TEAM ASTERIX</span>
-            <span class="logo-badge">ACS SWARM</span>
+            <span class="logo-accent">ASTERIX</span>
+            <span class="logo-badge">TENDER PROPOSAL</span>
         </div>
-        <nav class="nav">
-            <a href="#pitch-hub" class="nav-link active" id="nav-pitch">Pitch Hub</a>
-            <a href="#sim-lab" class="nav-link" id="nav-sim">Swarm Sim Lab</a>
-            <a href="#calculator" class="nav-link" id="nav-calc">Financials & ROI</a>
+        <nav class="nav scrollable-nav">
+            <a href="#section-hero" class="nav-link active">Overview</a>
+            <a href="#section-summary" class="nav-link">Summary</a>
+            <a href="#section-company" class="nav-link">Company</a>
+            <a href="#section-constraints" class="nav-link">Constraints</a>
+            <a href="#section-solution" class="nav-link">Solution</a>
+            <a href="#section-architecture" class="nav-link">Architecture</a>
+            <a href="#section-tech" class="nav-link">Technical</a>
+            <a href="#section-workflow" class="nav-link">Workflow</a>
+            <a href="#section-packages" class="nav-link">Packages</a>
+            <a href="#section-manufacturing" class="nav-link">Manufacturing</a>
+            <a href="#section-financials" class="nav-link">Financials</a>
+            <a href="#section-support" class="nav-link">Support</a>
+            <a href="#section-risks" class="nav-link">Risks</a>
+            <a href="#section-sustainability" class="nav-link">Impact</a>
+            <a href="#section-timeline" class="nav-link">Timeline</a>
+            <a href="#section-conclusion" class="nav-link">CTA</a>
         </nav>
         <div class="action-btn-container">
-            <a href="slides.html" target="_blank" class="btn btn-secondary" style="margin-right: 10px;">View Slides</a>
-            <a href="#calculator" class="btn btn-primary glow-effect">View Bid ROI</a>
+            <a href="slides.html" target="_blank" class="btn btn-secondary header-btn">Slides PDF</a>
         </div>
     </header>
 
-    <!-- Main Content Grid -->
+    <!-- Main Container -->
     <main class="main-container">
 
-        <!-- Hero Section -->
-        <section class="hero-section">
+        <!-- 1. HERO SECTION -->
+        <section id="section-hero" class="hero-section">
             <div class="hero-content">
-                <div class="tagline">Next-Generation Cooperative Wilderness Protection</div>
+                <div class="tagline">E-Tender EGNI/2026/AEOUV-04</div>
                 <h1 class="hero-title">Ground-Air<br><span class="gradient-text">Conservation Swarm</span></h1>
                 <p class="hero-subtitle">
-                    An integrated, zero-disturbance ground-air swarm system coordinating autonomous electric utility vehicles, VTOL drones, and persistent static sensors.
+                    An integrated, zero-disturbance ground-air-forest conservation ecosystem designed for Rainforest Harmony National Park. Combining autonomous electric utility vehicles, biomimetic VTOL drones, and passive mesh sensor nodes.
                 </p>
                 <div class="hero-actions">
-                    <a href="#sim-lab" class="btn btn-primary glow-effect">Launch Swarm Sim</a>
-                    <a href="#pitch-hub" class="btn btn-secondary">System Blueprint</a>
+                    <a href="#section-architecture" class="btn btn-primary glow-effect">Launch Swarm Sim</a>
+                    <a href="#section-tech" class="btn btn-secondary">System Blueprint</a>
                 </div>
             </div>
             <div class="hero-image-wrapper">
@@ -50,151 +64,294 @@
             </div>
         </section>
 
-        <!-- PITCH HUB -->
-        <section id="pitch-hub" class="section-container">
+        <!-- 2. EXECUTIVE SUMMARY -->
+        <section id="section-summary" class="section-container">
             <div class="section-header">
-                <span class="section-tag">System Architecture</span>
-                <h2 class="section-title">Cooperative Swarm Blueprint</h2>
+                <span class="section-tag">Overview</span>
+                <h2 class="section-title">Executive Summary</h2>
+                <p class="section-desc">An advanced, minimally intrusive conservation and environmental-management solution engineered specifically for rugged, ecologically sensitive rainforest terrain.</p>
             </div>
-
-            <!-- Pitch Tabs -->
-            <div class="tabs-wrapper">
-                <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="switchPitchTab('tab-specs', this)">Platform & Specs</button>
-                    <button class="tab-btn" onclick="switchPitchTab('tab-amb', this)">Adaptive Mission Bay (AMB)</button>
-                    <button class="tab-btn" onclick="switchPitchTab('tab-mesh', this)">Smart Pod Mesh</button>
-                    <button class="tab-btn" onclick="switchPitchTab('tab-roi', this)">Ecological Benefits</button>
+            <div class="grid-5col">
+                <div class="summary-card">
+                    <div class="summary-icon">🤖</div>
+                    <h4>Complete Autonomy</h4>
+                    <p>Traverses independently using onboard NVIDIA Orin processors; retains local intelligence during communication drops.</p>
                 </div>
-
-                <!-- Tab 1: Specs -->
-                <div class="tab-content active" id="tab-specs">
-                    <div class="specs-grid">
-                        <div class="spec-card">
-                            <h3>AEOUV Ground Hub</h3>
-                            <ul>
-                                <li><strong>Edge Computing:</strong> Nvidia Jetson Orin Core for local computer vision and swarm task routing.</li>
-                                <li><strong>Robotic Arm:</strong> 5-DOF manipulator with hot-swappable tools for automatic water/soil sampling.</li>
-                                <li><strong>LiDAR Mapping:</strong> 360° rotating solid-state LiDAR for off-road self-driving.</li>
-                                <li><strong>Power System:</strong> 72V Nominal AIS-156 compliant battery pack (mobile power grid).</li>
-                            </ul>
-                        </div>
-                        <div class="spec-card">
-                            <h3>EcoWing-U Drones</h3>
-                            <ul>
-                                <li><strong>Hybrid VTOL:</strong> Lift rotors for vertical canopy launch; folding wings + rear pusher for 25km glide range.</li>
-                                <li><strong>Universal Airframe:</strong> Identical motors, IMUs, and navigation systems to simplify spares and logistics.</li>
-                                <li><strong>Redundancy:</strong> Dynamic hand-off: if one drone fails, the next docked drone takes over its mission pod.</li>
-                                <li><strong>Permanent Sensors:</strong> Onboard thermal and RGB cameras with edge animal recognition.</li>
-                            </ul>
-                        </div>
-                        <div class="spec-card">
-                            <h3>Sensory Suite</h3>
-                            <ul>
-                                <li><strong>Perception:</strong> Real-time visual tracking of wildlife and poachers under heavy jungle canopy.</li>
-                                <li><strong>Environment:</strong> Meteorological monitoring (CO₂, humidity, temperature, PM2.5, rain metrics).</li>
-                                <li><strong>Telemetry:</strong> Mesh networking node coordinating AEOUV-to-Drone and Drone-to-Drone data streams.</li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="summary-card">
+                    <div class="summary-icon">🤫</div>
+                    <h4>Low-Disturbance</h4>
+                    <p>Electric buggies, quiet bio-mimetic VTOL bird-drones, and acoustic-aware routing protect quiet zones.</p>
                 </div>
-
-                <!-- Tab 2: AMB -->
-                <div class="tab-content" id="tab-amb">
-                    <div class="specs-grid">
-                        <div class="spec-card">
-                            <h3>Automated Pod Swapper</h3>
-                            <ul>
-                                <li><strong>Internal Shuttle:</strong> High-precision linear rail shuttle translates pods from magazine to drone landing docks.</li>
-                                <li><strong>Weatherproof Seal:</strong> Sealed internal bay protecting sensitive pods from jungle mud, rain, and humidity.</li>
-                                <li><strong>Hot-Swapping:</strong> Automatic payload attachment completed in under 30 seconds.</li>
-                            </ul>
-                        </div>
-                        <div class="spec-card">
-                            <h3>Mission Pod Types</h3>
-                            <ul>
-                                <li><strong>Vaccination Pod:</strong> Pressurized CO₂ dart launcher with smart targeting optics.</li>
-                                <li><strong>Seed Planting Pod:</strong> Drops biodegradable seed capsules wrapped in slow-release fertilizer.</li>
-                                <li><strong>Sampling Pod:</strong> Deep canopy air collector and remote river siphon.</li>
-                                <li><strong>Emergency Delivery:</strong> Delivers medical kits and beacons to rangers.</li>
-                            </ul>
-                        </div>
-                        <div class="spec-card">
-                            <h3>Magnetic Payload Dock</h3>
-                            <ul>
-                                <li><strong>Electro-magnets:</strong> Provides rigid structural lock without moving parts.</li>
-                                <li><strong>Interface Contacts:</strong> Instant electrical power coupling and gigabit fiber communication bus.</li>
-                                <li><strong>Alignment Sensors:</strong> Guide pins ensure micrometer accuracy during docking.</li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="summary-card">
+                    <div class="summary-icon">⚙️</div>
+                    <h4>Modular Design</h4>
+                    <p>Drones, robotic arms, and smart pods leverage hot-swappable pods to adapt to changing field objectives.</p>
                 </div>
-
-                <!-- Tab 3: Smart Pod Mesh -->
-                <div class="tab-content" id="tab-mesh">
-                    <div class="specs-grid">
-                        <div class="spec-card">
-                            <h3>Persistent Nodes</h3>
-                            <ul>
-                                <li><strong>Passive Monitoring:</strong> Ultra-low power sensors placed in trees or rivers to capture forest activity.</li>
-                                <li><strong>Acoustic Listening:</strong> Detects gunshots, chainsaws, and animal distress noises 24/7.</li>
-                                <li><strong>Hydrological Probes:</strong> Submerged nodes measuring water pH, temperature, and chemicals.</li>
-                            </ul>
-                        </div>
-                        <div class="spec-card">
-                            <h3>Self-Healing Mesh</h3>
-                            <ul>
-                                <li><strong>Line-of-Sight Bypass:</strong> In dense canopy, signal hops from pod to pod to circumvent blocking geography.</li>
-                                <li><strong>AEOUV Integration:</strong> Alerts hop to the nearest trail-bound AEOUV to trigger target drone launches.</li>
-                                <li><strong>Long Battery Life:</strong> Low-power sleep states keep pods functional for over 12 months.</li>
-                            </ul>
-                        </div>
-                        <div class="spec-card">
-                            <h3>Deployment</h3>
-                            <ul>
-                                <li><strong>Drone Dropped:</strong> EcoWing-U drones fly to targeted valleys and plant pods using mechanical grippers.</li>
-                                <li><strong>Diagnostics:</strong> Ground hub runs daily remote checks to monitor battery levels of deployed pods.</li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="summary-card">
+                    <div class="summary-icon">📡</div>
+                    <h4>Resilient Mesh</h4>
+                    <p>Self-healing V2V and sub-GHz LoRa mesh network coordinates the swarm without internet/cellular infrastructure.</p>
                 </div>
-
-                <!-- Tab 4: ROI -->
-                <div class="tab-content" id="tab-roi">
-                    <div class="specs-grid">
-                        <div class="spec-card">
-                            <h3>Zero Footprint</h3>
-                            <ul>
-                                <li><strong>Trail Bound:</strong> Heavy vehicles stay on logging roads, preventing tire tracks and soil erosion in sensitive zones.</li>
-                                <li><strong>Quiet Patrol:</strong> Extremely silent electric motors avoid disrupting animal nesting cycles.</li>
-                            </ul>
-                        </div>
-                        <div class="spec-card">
-                            <h3>Operational Speed</h3>
-                            <ul>
-                                <li><strong>Rapid Response:</strong> Drones bypass river obstacles and vertical drops, arriving at hotspots in minutes.</li>
-                                <li><strong>Continuous Audits:</strong> Seamless carbon offset verification via automated tree and soil data tracking.</li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="summary-card">
+                    <div class="summary-icon">📦</div>
+                    <h4>Scalable Tiers</h4>
+                    <p>Three flexible commercial packages (CORE, SENTINEL, APEX) match budget and technology to park coverage.</p>
                 </div>
-
             </div>
         </section>
 
-        <!-- SIMULATION LAB -->
-        <section id="sim-lab" class="section-container">
+        <!-- 3. COMPANY PROFILE -->
+        <section id="section-company" class="section-container">
             <div class="section-header">
-                <span class="section-tag">Interactive Swarm Suite</span>
-                <h2 class="section-title">Cooperative Swarm Simulator</h2>
-                <p class="section-desc">Experience the ground vehicle (AEOUV) coordinating VTOL drones (EcoWing-U) and tree-mounted Smart Pods in real time. Adjust events to see how the swarm responds.</p>
+                <span class="section-tag">Backing & Experience</span>
+                <h2 class="section-title">Company Profile</h2>
+            </div>
+            <div class="grid-2col">
+                <div class="company-narrative">
+                    <h3>ASTERIX Pvt. Ltd.</h3>
+                    <p>Operating as a subsidiary of a major multinational company, ASTERIX benefits from deep financial backing, robust corporate governance, and direct access to global engineering frameworks. Our existing industrial base allows us to manufacture complex electronic, drone, and off-road mechanical systems at low incremental unit cost.</p>
+                    <p>Our focus centers on integrating advanced computer vision, off-road EV powertrains, and biomimetic flight aerodynamics into robust, deployable conservation hardware.</p>
+                </div>
+                <div class="specs-grid">
+                    <div class="spec-card">
+                        <h4>R&D Capabilities</h4>
+                        <p>Autonomy navigation stacks, deep learning vision models, bio-inspired drone wings, and linear rail mechanical swappers designed in-house.</p>
+                    </div>
+                    <div class="spec-card">
+                        <h4>Manufacturing Base</h4>
+                        <p>Chennai facility utilizes modular assembly bays, outdoor sensor testbeds, and carbon fiber curing chambers for low-rate production scaling.</p>
+                    </div>
+                    <div class="spec-card">
+                        <h4>Quality Assurance</h4>
+                        <p>Rigorous environmental chambers validating hardware performance under tropical temperatures, high humidity, and monsoon rainfall simulation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. TENDER UNDERSTANDING & CONSTRAINTS -->
+        <section id="section-constraints" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Harmony Park</span>
+                <h2 class="section-title">Tender Understanding & Constraints</h2>
+            </div>
+            <div class="grid-2col">
+                <div class="constraints-content">
+                    <div class="tabs-wrapper">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" onclick="switchTab('constraints-roles', this)">Mandated Roles</button>
+                            <button class="tab-btn" onclick="switchTab('constraints-env', this)">Section 5.2 Constraints</button>
+                        </div>
+                        <div class="tab-content active" id="constraints-roles">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Mandated Role</th>
+                                        <th>Tender Description Requirements</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Wildlife Monitoring</strong></td>
+                                        <td>Cameras, sensors, and tracking devices to monitor populations, study behavior, and track endangered species.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Forest Management</strong></td>
+                                        <td>Assistance with reforestation, planting trees in difficult zones, and monitoring forest growth, soil, and pests.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Medical Administration</strong></td>
+                                        <td>Remote vaccination for wild animals, administered via air, water, or food supply.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-content" id="constraints-env">
+                            <ul class="bullet-list">
+                                <li><strong>Minimal Wildlife Disturbance:</strong> Autonomous routing must avoid sensitive areas, and designated quiet zones must be protected through low-noise operation.</li>
+                                <li><strong>Emissions & Pollution Control:</strong> Eco-friendly operation and maintenance, waste management, and emissions reduction, with real-time monitoring of pollution and identification of contamination sources.</li>
+                                <li><strong>Harsh Operating Environment:</strong> Operations must withstand equatorial temperatures of 25–35 °C, high humidity, and roughly 3,048 mm annual rainfall with water- and heat-tolerant hardware.</li>
+                                <li><strong>Mitigation of Adverse Effects:</strong> Habitat disruption, increased pollution, soil erosion, land degradation, and human activity/disturbance must all be actively mitigated.</li>
+                                <li><strong>Infrastructure Use:</strong> Compliant use of existing park warehouses for vehicle charging, repairs, and maintenance. Emergency events must be notified via radio signals.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-visual-right map-box">
+                    <svg viewBox="0 0 400 300" class="terrain-map">
+                        <rect width="400" height="300" fill="#08100a" rx="10"/>
+                        <!-- River -->
+                        <path d="M 0,100 Q 100,120 200,180 T 400,140" fill="none" stroke="#1d4ed8" stroke-width="8" stroke-linecap="round" opacity="0.3"/>
+                        <path d="M 0,100 Q 100,120 200,180 T 400,140" fill="none" stroke="#3b82f6" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+                        <!-- Trail -->
+                        <path d="M 50,300 L 150,220 L 280,240 L 350,110" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="8" stroke-dasharray="6,6"/>
+                        <!-- Canopy Circles -->
+                        <circle cx="80" cy="80" r="60" fill="#22c55e" opacity="0.08"/>
+                        <circle cx="280" cy="80" r="70" fill="#22c55e" opacity="0.08"/>
+                        <!-- Text Callouts -->
+                        <text x="20" y="40" fill="#2ce068" font-family="Outfit" font-size="12" font-weight="bold">RAINFOREST HARMONY PARK</text>
+                        <text x="20" y="60" fill="#8b9a90" font-family="Inter" font-size="10">Area: 3,885 km²</text>
+                        <text x="20" y="75" fill="#8b9a90" font-family="Inter" font-size="10">Rainfall: ~3,048 mm/yr</text>
+                        <!-- Nodes -->
+                        <circle cx="150" cy="220" r="6" fill="#2ce068"/>
+                        <circle cx="280" cy="80" r="5" fill="#eab308"/>
+                        <line x1="150" y1="220" x2="280" y2="80" stroke="#2ce068" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.5"/>
+                    </svg>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 10px;">Illustrative SV-Grid: 3,885 km² Canopy Domain & River Basins</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. PROPOSED SOLUTION OVERVIEW -->
+        <section id="section-solution" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Swarm Blueprint</span>
+                <h2 class="section-title">Proposed Solution Overview</h2>
+            </div>
+            <div class="tabs-wrapper">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('sol-buggy', this)">AEOUV Buggy</button>
+                    <button class="tab-btn" onclick="switchTab('sol-drones', this)">AeroScout Drones</button>
+                    <button class="tab-btn" onclick="switchTab('sol-pods', this)">Mission Pods & Arms</button>
+                    <button class="tab-btn" onclick="switchTab('sol-smart', this)">Smart Pods</button>
+                </div>
+                
+                <div class="tab-content active" id="sol-buggy">
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <h4>Electric BAJA Chassis</h4>
+                            <p>Tubular steel roll cage built for extreme terrain. High ground clearance and long-travel suspension prevent bottoming out in mud.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Regenerative Braking</h4>
+                            <p>Standard EV drive controller captures energy during steep downhill trail descents, extending field operating range by up to 15%.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Edge Autonomy</h4>
+                            <p>Local NVIDIA Orin compute maps paths in real time. Quiet zones are mapped as polygon boundaries, restricting throttle response near nests.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="sol-drones">
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <h4>Bio-Mimetic VTOL</h4>
+                            <p>Carbon fiber wing structures modeled after large birds. Extremely low acoustic footprint avoids trigger startle responses in canopy nesting species.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Shared Airframe</h4>
+                            <p>All drones utilize the identical layout to ensure 100% parts modularity. 3 drones are docked on each AEOUV ground hub.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Autonomous Docks</h4>
+                            <p>Vehicle roof-mounted charging pads capture drones via guide-rails and charge batteries using weather-sealed magnetic contacts.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="sol-pods">
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <h4>6-Magazine Swapper</h4>
+                            <p>Internal adaptive cargo shuttle coordinates with electromagnets to swap modular payload pods into drone slots in under 30 seconds.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Dual 5-DOF Robotic Arms</h4>
+                            <p>Twin manipulators mounted on AEOUV chassis to drill soil samples, clear trail debris, and siphon water from river banks.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Payload Canisters</h4>
+                            <p>Weatherproof pods containing targeted CO₂ vaccine dart launchers, seed hoppers, chemical fluid siphons, and ranger supply kits.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="sol-smart">
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <h4>Persistent Tree Sensors</h4>
+                            <p>Solar-recharged passive cylinders deployed by drones. Monitor regional pollution and capture audio alerts 24/7.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Sub-GHz LoRa Mesh</h4>
+                            <p>Routes signal hops from tree-to-tree where cellular blocks occur, sending alerts to the nearest patrolling AEOUV base.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Hydrological Probes</h4>
+                            <p>Submerged sensor pods continuously monitoring river temperature, chemical runoff, and organic contaminants.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <!-- Accordion Mapping -->
+            <div class="accordion-wrapper" style="margin-top: 40px;">
+                <h3>How the Solution Meets Each Mandate</h3>
+                <div class="accordion-item">
+                    <button class="accordion-title" onclick="toggleAccordion(this)">Wildlife Monitoring Mandate</button>
+                    <div class="accordion-panel">
+                        <p>Smart Pod night-vision camera grids track species movement. Acoustic arrays identify gunshots and engine signatures. Biomimetic drones run thermal checks to locate herds without creating ground disruption.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-title" onclick="toggleAccordion(this)">Forest Management & Reforestation Mandate</button>
+                    <div class="accordion-panel">
+                        <p>EcoWing-U drones drop biodegradable seed pods wrapped in slow-release fertilizer on steep slopes. AEOUV ground manipulators bore into soil to take core samples and inspect root health in dense foliage.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-title" onclick="toggleAccordion(this)">Medical Administration Mandate</button>
+                    <div class="accordion-panel">
+                        <p>Targeted vaccines are loaded in swappable pods. Drones administer vaccines via aerial spray or micro-darting. Aquatic species are vaccinated via bait drops; land animals utilize dosed water reservoirs.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-title" onclick="toggleAccordion(this)">Pollution & Contamination Control</button>
+                    <div class="accordion-panel">
+                        <p>Passive hydrological Smart Pods sense chemical spikes. Warehouse neural networks back-trace river sensor arrays to identify point-source contamination boundaries in real time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. SYSTEM ARCHITECTURE & MESH SIM -->
+        <section id="section-architecture" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Cooperative Swarm Engine</span>
+                <h2 class="section-title">System Architecture & Mesh Sim</h2>
+                <p class="section-desc">Experience the ground vehicle (AEOUV) coordinating VTOL drones (EcoWing-U) and tree-mounted Smart Pods in real time. Adjust events to see how the swarm responds.</p>
+            </div>
+            
+            <!-- Layered Diagram -->
+            <div class="layered-arch" style="margin-bottom: 40px;">
+                <div class="layer-item" onclick="showLayerTooltip('cmd-layer')">
+                    <div class="layer-title">Command Layer</div>
+                    <div class="layer-subtitle">Headquarters + Fleet Controller AI</div>
+                    <div class="layer-tooltip" id="cmd-layer">Issues missions; AI distributes tasks and manages vehicle-to-vehicle coordinates.</div>
+                </div>
+                <div class="layer-item" onclick="showLayerTooltip('sup-layer')">
+                    <div class="layer-title">Support Layer</div>
+                    <div class="layer-subtitle">Field Stations & Solar Docks</div>
+                    <div class="layer-tooltip" id="sup-layer">Charges batteries, maintains vehicle chassis, and caches local telemetry.</div>
+                </div>
+                <div class="layer-item" onclick="showLayerTooltip('mob-layer')">
+                    <div class="layer-title">Mobile Layer</div>
+                    <div class="layer-subtitle">AEOUV Buggy + EcoWing-U Drones + Manipulators</div>
+                    <div class="layer-tooltip" id="mob-layer">Autonomous travel, sample gathering, seed dropping, and vaccination.</div>
+                </div>
+                <div class="layer-item" onclick="showLayerTooltip('sen-layer')">
+                    <div class="layer-title">Sensing/Relay Layer</div>
+                    <div class="layer-subtitle">Smart Pod Mesh Nodes</div>
+                    <div class="layer-tooltip" id="sen-layer">Continuous acoustic listening, chemical hydrological analysis, and LoRa relaying.</div>
+                </div>
+            </div>
+
+            <!-- Simulator Widget -->
             <div class="sim-wrapper">
-                <!-- Side Controls for active simulation -->
                 <div class="sim-sidebar">
                     <div class="sim-control-panel">
                         <h3>Trigger Swarm Scenarios</h3>
-                        
                         <div class="scenario-actions">
                             <button class="btn btn-secondary scenario-btn" onclick="triggerScenario('poacher')">
                                 <span class="btn-icon">🚨</span> Trigger Poacher Intrusion
@@ -210,45 +367,37 @@
                             </button>
                         </div>
                         
-                        <div class="sim-stats-card">
-                            <h4>Active Mission Payload</h4>
-                            <div class="pod-selector">
-                                <div>AMB Magazine Status:</div>
-                                <div class="pod-inventory">
-                                    <div class="inventory-item"><span class="badge badge-vac">V</span> Vaccination: <span id="inv-vac">2</span></div>
-                                    <div class="inventory-item"><span class="badge badge-seed">S</span> Seed: <span id="inv-seed">2</span></div>
-                                    <div class="inventory-item"><span class="badge badge-samp">P</span> Sampling: <span id="inv-samp">1</span></div>
-                                    <div class="inventory-item"><span class="badge badge-em">E</span> Emergency: <span id="inv-em">1</span></div>
-                                </div>
+                        <div class="sim-stats-card" style="margin-top: 15px;">
+                            <div class="toggle-group" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <label for="node-fail-toggle" style="font-size: 0.85rem; font-weight: 600; color: var(--text);">Resilience Mode:</label>
+                                <button id="node-fail-toggle" class="btn btn-secondary" style="padding: 4px 12px; font-size: 0.75rem;" onclick="toggleNodeFailure()">Healthy Network</button>
+                            </div>
+                            <div class="pod-inventory">
+                                <div class="inventory-item"><span class="badge badge-vac">V</span> Vaccination: <span id="inv-vac">2</span></div>
+                                <div class="inventory-item"><span class="badge badge-seed">S</span> Seed: <span id="inv-seed">2</span></div>
+                                <div class="inventory-item"><span class="badge badge-samp">P</span> Sampling: <span id="inv-samp">1</span></div>
+                                <div class="inventory-item"><span class="badge badge-em">E</span> Emergency: <span id="inv-em">1</span></div>
                             </div>
                         </div>
-
-                        <div class="sim-description-box">
+                        <div class="sim-description-box" style="margin-top: 15px;">
                             <p id="scenario-details">Swarm is currently in passive patrol mode. The AEOUV ground vehicle navigates the trail, collecting local weather telemetry.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Simulation Visual Output Screen -->
                 <div class="sim-viewport">
                     <div class="viewport-content">
-                        <!-- Telemetry Grid -->
                         <div class="telemetry-bar">
                             <div class="telemetry-item">AEOUV Battery: <span id="tel-aeouv-bat">94</span>%</div>
                             <div class="telemetry-item">Drone 1: <span id="tel-d1-status" class="status-off">DOCKED</span> (<span id="tel-d1-bat">100</span>%)</div>
                             <div class="telemetry-item">Drone 2: <span id="tel-d2-status" class="status-off">DOCKED</span> (<span id="tel-d2-bat">100</span>%)</div>
                             <div class="telemetry-item">Drone 3: <span id="tel-d3-status" class="status-off">DOCKED</span> (<span id="tel-d3-bat">100</span>%)</div>
                         </div>
-                        
-                        <!-- The Canvas -->
                         <canvas id="canvas-swarm" width="700" height="400"></canvas>
-                        
-                        <!-- Operations Log -->
                         <div class="log-console">
                             <h4>Swarm Decision Log</h4>
                             <div class="log-lines" id="log-console-lines">
                                 <div class="log-line text-green">[SYSTEM] Swarm Edge-Net initialized. GPS Lock established.</div>
-                                <div class="log-line">[AEOUV] Patrolling trail - Weather diagnostics: PM2.5 = 12ug, CO2 = 412ppm.</div>
                             </div>
                         </div>
                     </div>
@@ -256,72 +405,529 @@
             </div>
         </section>
 
-        <!-- FINANCIAL & CARBON CALCULATOR -->
-        <section id="calculator" class="section-container">
+        <!-- 7. TECHNICAL COMPONENTS (DEEP DIVE) -->
+        <section id="section-tech" class="section-container">
             <div class="section-header">
-                <span class="section-tag">Value Proposition</span>
-                <h2 class="section-title">ACS Bid Valuation & ROI Calculator</h2>
-                <p class="section-desc">Estimate your operational savings and environmental impact by substituting conventional diesel ATVs with the integrated ACS Ground-Air Swarm.</p>
+                <span class="section-tag">System Specs</span>
+                <h2 class="section-title">Technical Components</h2>
+            </div>
+            <div class="tabs-wrapper">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('tech-buggy', this)">AEOUV Buggy</button>
+                    <button class="tab-btn" onclick="switchTab('tech-drones', this)">AeroScout Drones</button>
+                    <button class="tab-btn" onclick="switchTab('tech-swapper', this)">Mission Bay</button>
+                    <button class="tab-btn" onclick="switchTab('tech-arms', this)">Robotic Arms</button>
+                    <button class="tab-btn" onclick="switchTab('tech-pods', this)">Smart Pods</button>
+                    <button class="tab-btn" onclick="switchTab('tech-warehouse', this)">Warehouse AI</button>
+                </div>
+
+                <div class="tab-content active" id="tech-buggy">
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <h4>Baja Chassis</h4>
+                            <p>Long-travel shocks, high-strength space frame. Safe from mud and high river crossings.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Regen Powertrain</h4>
+                            <p>72V nominal LFP pack, 9 kW motor. Regenerates charge during downhill beats.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Edge Compute</h4>
+                            <p>NVIDIA Orin NX with 100W power grid. Runs off-road pathfinding and quiet-zone throttle.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tech-drones">
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <h4>Biomimetic Wing</h4>
+                            <p>Carbon fiber shell structure mimicking bird shapes. Eliminates standard propeller rotor buzz.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>PX4 Autopilot</h4>
+                            <p>Embedded visual odometry handles orientation in dense forests during GPS loss.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Universal Bus</h4>
+                            <p>Drones are swap-compatible. Any drone can load any modular pod from the vehicle deck.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tech-swapper">
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <h4>Adaptive Mission Bay</h4>
+                            <p>Holds 6 pods in a rotary carousel. Swaps target canisters in under 30 seconds.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>EPM Latches</h4>
+                            <p>Electro-permanent magnets hold pods with zero active current. Unlocks instantly on command.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Chamber Seal</h4>
+                            <p>Enclosed, waterproof bottom door prevents moisture and river water from penetrating payload logs.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tech-arms">
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <h4>Dual Manipulators</h4>
+                            <p>Two 5-DOF arms with high-torque servo linkages. Clears trail trees and rocks.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Interactive Tooling</h4>
+                            <p>Automated tool changers select siphons, soil augers, or seed drills dynamically.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Force Feedback</h4>
+                            <p>Stops arm motion instantly if hitting hard rock, preventing link fractures.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tech-pods">
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <h4>Smart Pod Blueprint</h4>
+                            <p>Continuous environmental auditing (pH, acoustic, gases). Tree-mounted via drone grip.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>LoRa Gateway</h4>
+                            <p>8-channel IP67 transceiver routes packet data through forest canopy ridges.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Solar Charging</h4>
+                            <p>High-efficiency monocrystalline solar panels paired with 18650 Li-ion cells.</p>
+                        </div>
+                    </div>
+                    <!-- Smart Pod Hover Blueprint -->
+                    <div class="blueprint-box" style="margin-top: 30px;">
+                        <h4>Interactive Pod Parts (Hover to Latch)</h4>
+                        <div class="blueprint-container">
+                            <div class="blueprint-part" onmouseover="highlightPart('bp-solar')">Solar Panel Array</div>
+                            <div class="blueprint-part" onmouseover="highlightPart('bp-camera')">Night-Vision Optics</div>
+                            <div class="blueprint-part" onmouseover="highlightPart('bp-sensors')">Gas & Hydrology Probes</div>
+                            <div class="blueprint-part" onmouseover="highlightPart('bp-lora')">LoRa Sub-GHz Antenna</div>
+                        </div>
+                        <div class="blueprint-display" id="blueprint-details">Hover over a part to inspect its technical details.</div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tech-warehouse">
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <h4>Warehouse Intelligence</h4>
+                            <p>Central AI handles data classification. Filters out ambient rain sounds from gunshots.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Back-Trace Engine</h4>
+                            <p>Automatically maps river chemical concentrations to source point coordinate polygons.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h4>Ranger Dash</h4>
+                            <p>Unified dashboard displaying system health logs and real-time species target overlays.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. OPERATIONAL WORKFLOW -->
+        <section id="section-workflow" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Step-by-Step</span>
+                <h2 class="section-title">Operational Workflow</h2>
+            </div>
+            <!-- Timeline Stepper -->
+            <div class="stepper-wrapper">
+                <div class="stepper-nav">
+                    <div class="step-btn active" onclick="jumpToStep(1)">1. Objective</div>
+                    <div class="step-btn" onclick="jumpToStep(2)">2. Distribution</div>
+                    <div class="step-btn" onclick="jumpToStep(3)">3. Execution</div>
+                    <div class="step-btn" onclick="jumpToStep(4)">4. Sensing</div>
+                    <div class="step-btn" onclick="jumpToStep(5)">5. Alerting</div>
+                    <div class="step-btn" onclick="jumpToStep(6)">6. Logistics</div>
+                </div>
+                <div class="step-content-box" id="step-content">
+                    <h3>Step 1: Objective Issue</h3>
+                    <p>Headquarters releases mission goals (such as monitoring anomalies or planting seeds) to the Fleet Controller system.</p>
+                </div>
             </div>
 
-            <div class="calc-grid">
-                <!-- Inputs -->
-                <div class="calc-panel">
-                    <h3>Operational Parameters</h3>
-                    
-                    <div class="control-group">
-                        <div class="label-wrapper">
-                            <label for="calc-fleet">Fleet Size (AEOUV Hubs)</label>
-                            <span class="val-display" id="val-calc-fleet">5 Systems</span>
-                        </div>
-                        <input type="range" id="calc-fleet" min="1" max="25" value="5">
-                    </div>
-
-                    <div class="control-group">
-                        <div class="label-wrapper">
-                            <label for="calc-dist">Daily Drone Flight Beat (Total)</label>
-                            <span class="val-display" id="val-calc-dist">80 km</span>
-                        </div>
-                        <input type="range" id="calc-dist" min="20" max="200" value="80" step="10">
-                    </div>
-
-                    <div class="control-group">
-                        <div class="label-wrapper">
-                            <label for="calc-diesel">Local Fuel Cost (per Liter)</label>
-                            <span class="val-display" id="val-calc-diesel">₹95</span>
-                        </div>
-                        <input type="range" id="calc-diesel" min="80" max="110" value="95">
-                    </div>
-
-                    <div class="control-group">
-                        <div class="label-wrapper">
-                            <label for="calc-years">Project Evaluation Period</label>
-                            <span class="val-display" id="val-calc-years">5 Years</span>
-                        </div>
-                        <input type="range" id="calc-years" min="1" max="10" value="5">
+            <!-- Collapsible Panels -->
+            <div class="accordion-wrapper" style="margin-top: 40px;">
+                <div class="accordion-item">
+                    <button class="accordion-title" onclick="toggleAccordion(this)">Wildlife Healthcare Workflow</button>
+                    <div class="accordion-panel">
+                        <p>Drones deliver vaccines via aerial spraying or food/water bait. In critical cases, animals are tracked via cameras, and vaccines are administered remotely using micro-darting pods. Fecal matter is monitored to detect early disease presence.</p>
                     </div>
                 </div>
-
-                <!-- Outputs -->
-                <div class="calc-results">
-                    <div class="metric-card green-card">
-                        <span class="metric-title">TOTAL PATROL SAVINGS</span>
-                        <h3 class="metric-val" id="res-savings">₹0.0 Lakhs</h3>
-                        <p class="metric-desc">Operational cost reduction compared to diesel vehicle patrol.</p>
-                    </div>
-
-                    <div class="metric-card">
-                        <span class="metric-title">CO2 EMISSIONS AVOIDED</span>
-                        <h3 class="metric-val text-green" id="res-co2">0.0 Tons</h3>
-                        <p class="metric-desc">CO₂ offsets generated by fully electric swarm system.</p>
-                    </div>
-
-                    <div class="metric-card">
-                        <span class="metric-title">HABITAT PROTECTION INDEX</span>
-                        <h3 class="metric-val" id="res-payback">0 %</h3>
-                        <p class="metric-desc">Ecological footprint reduction (zero off-road compaction).</p>
+                <div class="accordion-item">
+                    <button class="accordion-title" onclick="toggleAccordion(this)">Resilience & Emergency Handling</button>
+                    <div class="accordion-panel">
+                        <p>If an AEOUV vehicle detects a system fault, it switches to satellite teleoperation. During a complete breakdown, the system dispatches a sister AEOUV to autonomously hook and tow it back to support hubs.</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- 9. BUSINESS MODEL & PACKAGES -->
+        <section id="section-packages" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Scale & Budget</span>
+                <h2 class="section-title">Business Model & Packages</h2>
+            </div>
+            <div class="grid-2col">
+                <!-- Package Selector -->
+                <div class="package-selector-card">
+                    <h3>Select Deployment Tier</h3>
+                    <div class="package-buttons">
+                        <button class="package-btn" onclick="selectPackage('CORE')">CORE</button>
+                        <button class="package-btn active" onclick="selectPackage('SENTINEL')">SENTINEL</button>
+                        <button class="package-btn" onclick="selectPackage('APEX')">APEX</button>
+                    </div>
+                    <div class="package-metrics-box" style="margin-top: 20px;">
+                        <h4 id="pkg-name">SENTINEL PACKAGE</h4>
+                        <div class="metric-row">AEOUV Vehicles: <span id="pkg-vehicles" class="text-green">6</span></div>
+                        <div class="metric-row">AeroScout Drones: <span id="pkg-drones" class="text-green">0</span></div>
+                        <div class="metric-row">Total Units Deployed: <span id="pkg-units" class="text-green">26</span></div>
+                        <div class="metric-row" style="margin-top: 15px;">Indicative Cost: <span id="pkg-cost" style="color: var(--accent); font-weight: 700;">₹ Cr</span></div>
+                    </div>
+                </div>
+                <div class="slide-visual-right">
+                    <!-- Gauge -->
+                    <div class="gauge-container">
+                        <div class="gauge-ring"></div>
+                        <div class="gauge-value" id="gauge-val">51%</div>
+                    </div>
+                    <div style="font-weight: 600; font-size: 0.9rem; margin-top: 10px;">National Park Coverage Ratio</div>
+                </div>
+            </div>
+
+            <!-- Revenue streams -->
+            <div class="grid-4col" style="margin-top: 40px;">
+                <div class="metric-card">
+                    <h4>Hardware Supply</h4>
+                    <p>Flat sale or long-term lease of AEOUV buggies, drones, and pods.</p>
+                </div>
+                <div class="metric-card">
+                    <h4>Lifelong Support</h4>
+                    <p>AMC tiers covering parts replacement, firmware updates, and calibration.</p>
+                </div>
+                <div class="metric-card">
+                    <h4>AI Module Sub</h4>
+                    <p>Monthly licenses for edge perception models and quiet-zone patches.</p>
+                </div>
+                <div class="metric-card">
+                    <h4>AI Data Partnership</h4>
+                    <p>Anonymized telemetry sets used to train and refine conservation algorithms.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. MANUFACTURING & DEPLOYMENT -->
+        <section id="section-manufacturing" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Logistics & Ramp-Up</span>
+                <h2 class="section-title">Manufacturing & Deployment Strategy</h2>
+            </div>
+            <div class="grid-2col">
+                <div class="timeline-stepper">
+                    <div style="border-left: 2px solid var(--primary-glow); padding-left: 20px; margin-bottom: 20px; text-align: left;">
+                        <h4>1. Existing Plant Utilisation</h4>
+                        <p>Assembly lines integrated in Chennai to reduce tooling costs.</p>
+                    </div>
+                    <div style="border-left: 2px solid var(--primary-glow); padding-left: 20px; margin-bottom: 20px; text-align: left;">
+                        <h4>2. Modular Production</h4>
+                        <p>Airframes, sub-drives, and pod shells use uniform molds to accelerate scaling.</p>
+                    </div>
+                    <div style="border-left: 2px solid var(--primary-glow); padding-left: 20px; text-align: left;">
+                        <h4>3. Low-Cost Sourcing</h4>
+                        <p>Supplier tie-ups for volume purchases of LiDAR and battery cells, meeting PLI rules.</p>
+                    </div>
+                </div>
+                <div class="specs-grid">
+                    <div class="spec-card">
+                        <h4>Workforce Accordion</h4>
+                        <div class="accordion-item">
+                            <button class="accordion-title" onclick="toggleAccordion(this)">Autonomy & Software</button>
+                            <div class="accordion-panel"><p>Robotics, computer vision, and fleet coordinate AI engineers.</p></div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-title" onclick="toggleAccordion(this)">Mechanical & Aero</button>
+                            <div class="accordion-panel"><p>BAJA structural and drone composite wing technicians.</p></div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-title" onclick="toggleAccordion(this)">Field Support Teams</button>
+                            <div class="accordion-panel"><p>Installation, LoRa configuration, and AMC service dispatchers.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. COST & FINANCIALS -->
+        <section id="section-financials" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Charts & Costing</span>
+                <h2 class="section-title">Cost Analysis & Financial Overview</h2>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="grid-4col" style="margin-bottom: 40px;">
+                <div class="metric-card">
+                    <span class="metric-title">Flagship Order Value</span>
+                    <h3 class="metric-val text-green">₹27.15 Cr</h3>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-title">Funding Ask</span>
+                    <h3 class="metric-val text-green">₹25.3 Cr</h3>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-title">EBITDA CAGR</span>
+                    <h3 class="metric-val text-green">32%</h3>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-title">Payback Period</span>
+                    <h3 class="metric-val text-green">3.7 Years</h3>
+                </div>
+            </div>
+
+            <!-- Cost ROI Slider -->
+            <div class="roi-slider-card" style="margin-bottom: 40px; background: var(--bg-card); padding: 25px; border-radius: var(--border-radius); border: 1px solid var(--glass-border);">
+                <h3>Interactive Fleet Scaler</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Move the slider to scale the fleet. Watch how the total contract value and payback reconcile against the flagship configuration (50 Buggies).</p>
+                <div class="control-group">
+                    <div class="label-wrapper">
+                        <label for="buggy-range-slider">Number of AEOUV Buggies:</label>
+                        <span class="val-display" id="buggy-slider-val">50 Buggies</span>
+                    </div>
+                    <input type="range" id="buggy-range-slider" min="10" max="100" value="50" step="5" oninput="updateCostSlider(this.value)">
+                </div>
+                <div class="grid-3col" style="margin-top: 20px;">
+                    <div class="metric-card">
+                        <h5>Estimated Drones</h5>
+                        <h4 id="scaler-drones" class="text-green">30 Packages</h4>
+                    </div>
+                    <div class="metric-card">
+                        <h5>Smart Pod Count</h5>
+                        <h4 id="scaler-pods" class="text-green">400 Pods</h4>
+                    </div>
+                    <div class="metric-card">
+                        <h5>Total Order Value</h5>
+                        <h4 id="scaler-cost" style="color: var(--accent);">₹27.15 Cr</h4>
+                    </div>
+                </div>
+                <div class="grid-2col" style="margin-top: 15px;">
+                    <div class="metric-card">
+                        <h5>Annual Maintenance Cost</h5>
+                        <h4 id="scaler-maint" class="text-green">₹1.25 Cr</h4>
+                    </div>
+                    <div class="metric-card">
+                        <h5>Project Payback Period</h5>
+                        <h4 id="scaler-payback" class="text-green">3.7 Years</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Canvas Grid -->
+            <div class="grid-2col">
+                <div class="chart-box" style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 8px; padding: 20px;">
+                    <h4>Unit Manufacturing Cost vs Price (₹ Lakh)</h4>
+                    <canvas id="chart-costs"></canvas>
+                </div>
+                <div class="chart-box" style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 8px; padding: 20px;">
+                    <h4>Flagship Order Value Breakdown (₹ Cr)</h4>
+                    <canvas id="chart-order"></canvas>
+                </div>
+            </div>
+            <div class="grid-2col" style="margin-top: 30px;">
+                <div class="chart-box" style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 8px; padding: 20px;">
+                    <h4>5-Year Financial Projections (₹ Cr)</h4>
+                    <canvas id="chart-projections"></canvas>
+                </div>
+                <div class="chart-box" style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 8px; padding: 20px;">
+                    <h4>Capital Requirement Ask (Total: ₹25.3 Cr)</h4>
+                    <canvas id="chart-capital"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 12. LEGAL, WARRANTY & MAINTENANCE -->
+        <section id="section-support" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Terms & AMC</span>
+                <h2 class="section-title">Legal, Warranty & Maintenance</h2>
+            </div>
+            <div class="grid-3col">
+                <div class="spec-card">
+                    <h4>Liability Terms</h4>
+                    <p>Asterix is not liable for wildlife accidents or environmental impacts during autonomous operations. Sensor and visual logs are shared with rangers upon consent.</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Warranty Exclusions</h4>
+                    <p>Covers components under standard operation. Excludes user modification, battery water immersion beyond IP67 limits, and physical damage from tree falls.</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Maintenance dispatch</h4>
+                    <p>Routine support is condition-based. Field teams are dispatched to warehouses only when smart sensors report battery failures or diagnostic drops.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 13. RISK ASSESSMENT -->
+        <section id="section-risks" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Mitigation</span>
+                <h2 class="section-title">Risk Assessment</h2>
+            </div>
+            <div class="accordion-wrapper">
+                <div class="accordion-item">
+                    <button class="accordion-title" onclick="toggleAccordion(this)">
+                        Communication Loss to Vehicle <span class="badge danger" style="margin-left: 10px;">Medium</span>
+                    </button>
+                    <div class="accordion-panel">
+                        <p><strong>Mitigation:</strong> Onboard computing carries autonomous pathfinding logic. V2V wifi mesh networks route data around canyon gaps.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-title" onclick="toggleAccordion(this)">
+                        Vehicle Breakdown in Remote Terrain <span class="badge danger" style="margin-left: 10px;">Medium</span>
+                    </button>
+                    <div class="accordion-panel">
+                        <p><strong>Mitigation:</strong> Diagnostics triggers alert. A sister AEOUV vehicle is automatically dispatched to hook and retrieve the broken buggy.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-title" onclick="toggleAccordion(this)">
+                        Harsh Climate (Rain & Heat) <span class="badge danger" style="margin-left: 10px; background-color: rgba(255, 59, 48, 0.25);">High</span>
+                    </button>
+                    <div class="accordion-panel">
+                        <p><strong>Mitigation:</strong> Electronic boards sealed in IP67 heat-damped cases. All wiring leverages military marine grade connectors.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-title" onclick="toggleAccordion(this)">
+                        Wildlife Disturbance <span class="badge danger" style="margin-left: 10px; background-color: rgba(255, 59, 48, 0.25);">High</span>
+                    </button>
+                    <div class="accordion-panel">
+                        <p><strong>Mitigation:</strong> Drones leverage quiet, bio-mimetic wings. Ground vehicles treat nest zones as strict polygon no-go zones.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-title" onclick="toggleAccordion(this)">
+                        Connectivity Dependence <span class="badge danger" style="margin-left: 10px; background-color: rgba(44, 224, 104, 0.25); color: var(--primary-glow); border-color: rgba(44,224,104,0.4);">Low</span>
+                    </button>
+                    <div class="accordion-panel">
+                        <p><strong>Mitigation:</strong> Network runs locally using sub-GHz LoRa mesh routers, requiring no active cellular/internet links.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 14. SUSTAINABILITY & IMPACT -->
+        <section id="section-sustainability" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Eco Auditing</span>
+                <h2 class="section-title">Sustainability & Environmental Impact</h2>
+            </div>
+            <div class="grid-3col">
+                <div class="summary-card">
+                    <div class="summary-icon">🔌</div>
+                    <h4>Zero-Tailpipe</h4>
+                    <p>Electric buggies reduce emissions and fuel footprints inside rainforest ecosystems.</p>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">☀️</div>
+                    <h4>Solar-Powered Sensing</h4>
+                    <p>Smart Pods rely strictly on mini-solar cells, reducing battery waste.</p>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">🤫</div>
+                    <h4>Low-Noise Wings</h4>
+                    <p>Bird-drones bypass typical buzz, reducing stress in forest fauna.</p>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">🌲</div>
+                    <h4>Zero Off-Road Footprint</h4>
+                    <p>Buggy stays on existing paths; drones handle operations in deep thickets.</p>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">🧪</div>
+                    <h4>Chemical Tracking</h4>
+                    <p>Real-time pH probes stop toxic leaks before water basins are contaminated.</p>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">🧘</div>
+                    <h4>Zero Human Intrusions</h4>
+                    <p>Once deployed, support teams enter the park only for repair alerts.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 15. PROJECT TIMELINE -->
+        <section id="section-timeline" class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Milestones</span>
+                <h2 class="section-title">Project Timeline</h2>
+            </div>
+            <!-- Gantt timeline chart -->
+            <div class="gantt-wrapper">
+                <div class="gantt-row">
+                    <div class="gantt-label">Phase 1: Design (M1-3)</div>
+                    <div class="gantt-bar-container">
+                        <div class="gantt-bar" style="width: 25%; margin-left: 0%;">Requirements & CAD</div>
+                    </div>
+                </div>
+                <div class="gantt-row">
+                    <div class="gantt-label">Phase 2: Validation (M3-7)</div>
+                    <div class="gantt-bar-container">
+                        <div class="gantt-bar" style="width: 33%; margin-left: 17%;">Lab & Sandbox trials</div>
+                    </div>
+                </div>
+                <div class="gantt-row">
+                    <div class="gantt-label">Phase 3: Production (M6-10)</div>
+                    <div class="gantt-bar-container">
+                        <div class="gantt-bar" style="width: 33%; margin-left: 42%;">Assembly scaling</div>
+                    </div>
+                </div>
+                <div class="gantt-row">
+                    <div class="gantt-label">Phase 4: Site Prep (M9-11)</div>
+                    <div class="gantt-bar-container">
+                        <div class="gantt-bar" style="width: 17%; margin-left: 67%;">Pod locations mapped</div>
+                    </div>
+                </div>
+                <div class="gantt-row">
+                    <div class="gantt-label">Phase 5: Deploy (M11-13)</div>
+                    <div class="gantt-bar-container">
+                        <div class="gantt-bar" style="width: 17%; margin-left: 75%;">Swarm integration</div>
+                    </div>
+                </div>
+                <div class="gantt-row">
+                    <div class="gantt-label">Phase 6: Support (M13+)</div>
+                    <div class="gantt-bar-container">
+                        <div class="gantt-bar" style="width: 15%; margin-left: 85%;">AMC operations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 16. CONCLUSION / CTA -->
+        <section id="section-conclusion" class="section-container" style="border-bottom: none; text-align: center;">
+            <div class="section-header">
+                <span class="section-tag">Get in Touch</span>
+                <h2 class="section-title">Engineering Conservation</h2>
+            </div>
+            <p style="max-width: 700px; margin: 0 auto 30px auto; font-size: 1.1rem; color: var(--text-muted);">
+                The ASTERIX AEOUV ecosystem offers EcoGuard Northeast India a coordinated, autonomous, and environmentally sensitive solution purpose-built for the demands of Rainforest Harmony National Park. Backed by strong engineering, local sourcing compliance, and modular R&D.
+            </p>
+            <div class="hero-actions" style="justify-content: center;">
+                <a href="mailto:proposal@asterix.in?subject=ACS%20Ecosystem%20Request" class="btn btn-primary glow-effect">Request Full Proposal</a>
+                <a href="mailto:info@asterix.in?subject=Contact%20ASTERIX" class="btn btn-secondary">Contact ASTERIX</a>
             </div>
         </section>
 
