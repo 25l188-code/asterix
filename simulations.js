@@ -16,6 +16,9 @@ let particles = [];
 let sprouts = [];
 let nodeFailureActive = false; // Toggle for mesh resilience sim
 
+// Global UI Selector
+let logLinesContainer;
+
 // Inventory
 let inventory = {
     vac: 2,
@@ -45,6 +48,8 @@ const riverPoints = [
 
 // Initializer
 window.onload = function() {
+    logLinesContainer = document.getElementById('log-console-lines');
+    
     initSwarmSimulator();
     initCalculator();
     initCharts();
@@ -808,6 +813,7 @@ function toggleNodeFailure() {
 }
 
 function addLog(text, className = '') {
+    if (!logLinesContainer) return;
     let div = document.createElement('div');
     div.className = `log-line ${className}`;
     div.innerText = text;
@@ -1073,9 +1079,17 @@ function updateCalcDisplay() {
 }
 
 // ----------------------------------------------------------------------------
-// Dynamic Chart.js Initialization (Theme Customised)
+// Dynamic Chart.js Initialization & HTML5 Canvas Fallbacks
 // ----------------------------------------------------------------------------
 function initCharts() {
+    if (typeof Chart !== 'undefined') {
+        renderChartJS();
+    } else {
+        renderCanvasFallbacks();
+    }
+}
+
+function renderChartJS() {
     const gridColor = 'rgba(255, 255, 255, 0.05)';
     const textColor = '#839587';
     
@@ -1094,7 +1108,7 @@ function initCharts() {
                 },
                 {
                     label: 'Indicative Price',
-                    data: [31.0, 2.16, 0.43, 1.25, 35.0], // Derived drone/pod unit prices
+                    data: [31.0, 2.16, 0.43, 1.25, 35.0], 
                     backgroundColor: 'rgba(34, 197, 94, 0.85)',
                     borderColor: '#22c55e',
                     borderWidth: 1.5
@@ -1103,6 +1117,7 @@ function initCharts() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: { legend: { labels: { color: textColor } } },
             scales: {
                 x: { grid: { color: gridColor }, ticks: { color: textColor } },
@@ -1132,6 +1147,7 @@ function initCharts() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: { legend: { position: 'right', labels: { color: textColor } } }
         }
     });
@@ -1170,6 +1186,7 @@ function initCharts() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: { legend: { labels: { color: textColor } } },
             scales: {
                 x: { grid: { color: gridColor }, ticks: { color: textColor } },
@@ -1198,7 +1215,226 @@ function initCharts() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: { legend: { position: 'right', labels: { color: textColor } } }
         }
     });
+}
+
+function renderCanvasFallbacks() {
+    // Canvas Fallbacks for Offline / Blocked CDN cases
+    
+    // 1. Costs Canvas
+    const canvas1 = document.getElementById('chart-costs');
+    if (canvas1) {
+        const c = canvas1.getContext('2d');
+        const w = canvas1.width = canvas1.offsetWidth || 300;
+        const h = canvas1.height = canvas1.offsetHeight || 230;
+        
+        c.fillStyle = '#111713';
+        c.fillRect(0, 0, w, h);
+        
+        // Draw grid
+        c.strokeStyle = 'rgba(255,255,255,0.05)';
+        c.lineWidth = 1;
+        for (let y = 30; y < h - 40; y += 40) {
+            c.beginPath(); c.moveTo(40, y); c.lineTo(w - 20, y); c.stroke();
+        }
+        
+        // Draw bars
+        const dataCost = [22.0, 1.5, 0.30, 0.85, 12.0];
+        const dataPrice = [31.0, 2.16, 0.43, 1.25, 35.0];
+        const labels = ['Buggy', 'Drone', 'Pod', 'Smart P.', 'Station'];
+        const barWidth = Math.floor((w - 70) / 5);
+        
+        for (let i = 0; i < 5; i++) {
+            let x = 45 + i * barWidth;
+            let valC = (dataCost[i] / 40.0) * (h - 75);
+            let valP = (dataPrice[i] / 40.0) * (h - 75);
+            
+            // Cost bar
+            c.fillStyle = 'rgba(34, 197, 94, 0.35)';
+            c.fillRect(x, h - 40 - valC, barWidth / 2.4, valC);
+            c.strokeStyle = 'rgba(34, 197, 94, 0.8)';
+            c.strokeRect(x, h - 40 - valC, barWidth / 2.4, valC);
+            
+            // Price bar
+            c.fillStyle = 'rgba(34, 197, 94, 0.85)';
+            c.fillRect(x + barWidth / 2.2, h - 40 - valP, barWidth / 2.4, valP);
+            c.strokeStyle = '#22c55e';
+            c.strokeRect(x + barWidth / 2.2, h - 40 - valP, barWidth / 2.2, valP);
+            
+            // Labels
+            c.fillStyle = '#839587';
+            c.font = '9px Outfit';
+            c.fillText(labels[i], x + 2, h - 18);
+        }
+        
+        // Legend
+        c.fillStyle = 'rgba(34, 197, 94, 0.35)';
+        c.fillRect(w - 180, 10, 12, 8);
+        c.fillStyle = '#839587';
+        c.fillText('Mfg Cost', w - 163, 17);
+        c.fillStyle = 'rgba(34, 197, 94, 0.85)';
+        c.fillRect(w - 90, 10, 12, 8);
+        c.fillStyle = '#839587';
+        c.fillText('Price (₹L)', w - 73, 17);
+    }
+    
+    // 2. Order Pie Canvas
+    const canvas2 = document.getElementById('chart-order');
+    if (canvas2) {
+        const c = canvas2.getContext('2d');
+        const w = canvas2.width = canvas2.offsetWidth || 300;
+        const h = canvas2.height = canvas2.offsetHeight || 230;
+        c.fillStyle = '#111713';
+        c.fillRect(0, 0, w, h);
+        
+        const data = [15.50, 1.95, 1.30, 5.00, 1.40, 2.00];
+        const colors = ['#154c27', '#1b6f3c', '#22c55e', '#4ade80', '#86efac', '#ff9f1c'];
+        const labels = ['Buggy', 'Drone', 'Pods', 'Smart', 'Station', 'AI Platform'];
+        
+        let total = data.reduce((a, b) => a + b, 0);
+        let startAngle = 0;
+        let centerX = w / 3.2;
+        let centerY = h / 2.0;
+        let radius = Math.min(centerX, centerY) - 20;
+        
+        for (let i = 0; i < data.length; i++) {
+            let sliceAngle = (data[i] / total) * Math.PI * 2;
+            c.fillStyle = colors[i];
+            c.beginPath();
+            c.moveTo(centerX, centerY);
+            c.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+            c.closePath();
+            c.fill();
+            
+            c.strokeStyle = '#0a0f0a';
+            c.lineWidth = 1.5;
+            c.stroke();
+            
+            // Legend
+            let legY = 25 + i * 22;
+            c.fillRect(w - 110, legY, 10, 10);
+            c.fillStyle = '#839587';
+            c.font = '9.5px Outfit';
+            c.fillText(`${labels[i]} (₹${data[i].toFixed(1)}C)`, w - 95, legY + 9);
+            
+            startAngle += sliceAngle;
+        }
+    }
+    
+    // 3. Projections Canvas
+    const canvas3 = document.getElementById('chart-projections');
+    if (canvas3) {
+        const c = canvas3.getContext('2d');
+        const w = canvas3.width = canvas3.offsetWidth || 300;
+        const h = canvas3.height = canvas3.offsetHeight || 230;
+        c.fillStyle = '#111713';
+        c.fillRect(0, 0, w, h);
+        
+        // Grid
+        c.strokeStyle = 'rgba(255,255,255,0.05)';
+        for (let y = 30; y < h - 40; y += 40) {
+            c.beginPath(); c.moveTo(40, y); c.lineTo(w - 20, y); c.stroke();
+        }
+        
+        const years = ['Y1', 'Y2', 'Y3', 'Y4', 'Y5'];
+        const rev = [27.2, 36.0, 49.0, 63.0, 82.0];
+        const gp = [8.2, 11.5, 16.5, 22.0, 30.0];
+        const ebit = [2.7, 5.0, 8.5, 12.5, 18.5];
+        
+        const pointsX = [];
+        const stepX = (w - 70) / 4;
+        
+        for (let i = 0; i < 5; i++) {
+            pointsX.push(45 + i * stepX);
+            c.fillStyle = '#839587';
+            c.font = '9px Outfit';
+            c.fillText(years[i], pointsX[i] - 5, h - 18);
+        }
+        
+        function drawLine(data, color, fill = false) {
+            c.strokeStyle = color;
+            c.lineWidth = 2.5;
+            c.beginPath();
+            
+            for (let i = 0; i < 5; i++) {
+                let py = h - 40 - (data[i] / 90.0) * (h - 75);
+                if (i === 0) c.moveTo(pointsX[i], py);
+                else c.lineTo(pointsX[i], py);
+            }
+            c.stroke();
+            
+            if (fill) {
+                c.lineTo(pointsX[4], h - 40);
+                c.lineTo(pointsX[0], h - 40);
+                c.fillStyle = 'rgba(34, 197, 94, 0.06)';
+                c.fill();
+            }
+        }
+        
+        drawLine(rev, '#22c55e', true);
+        drawLine(gp, '#4ade80');
+        drawLine(ebit, '#ff9f1c');
+        
+        // Legends
+        c.fillStyle = '#22c55e'; c.fillRect(w - 180, 10, 8, 8);
+        c.fillStyle = '#839587'; c.fillText('Rev', w - 167, 17);
+        c.fillStyle = '#4ade80'; c.fillRect(w - 120, 10, 8, 8);
+        c.fillStyle = '#839587'; c.fillText('GP', w - 107, 17);
+        c.fillStyle = '#ff9f1c'; c.fillRect(w - 70, 10, 8, 8);
+        c.fillStyle = '#839587'; c.fillText('EBITDA', w - 57, 17);
+    }
+    
+    // 4. Capital Doughnut Canvas
+    const canvas4 = document.getElementById('chart-capital');
+    if (canvas4) {
+        const c = canvas4.getContext('2d');
+        const w = canvas4.width = canvas4.offsetWidth || 300;
+        const h = canvas4.height = canvas4.offsetHeight || 230;
+        c.fillStyle = '#111713';
+        c.fillRect(0, 0, w, h);
+        
+        const data = [8.0, 5.0, 7.0, 3.0, 2.3];
+        const colors = ['#22c55e', '#1b6f3c', '#86efac', '#ff9f1c', '#ff3b30'];
+        const labels = ['R&D', 'Tooling', 'Working Cap', 'Field Infra', 'Contingency'];
+        
+        let total = data.reduce((a, b) => a + b, 0);
+        let startAngle = 0;
+        let centerX = w / 3.2;
+        let centerY = h / 2.0;
+        let radius = Math.min(centerX, centerY) - 20;
+        
+        for (let i = 0; i < data.length; i++) {
+            let sliceAngle = (data[i] / total) * Math.PI * 2;
+            c.fillStyle = colors[i];
+            c.beginPath();
+            c.moveTo(centerX, centerY);
+            c.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+            c.closePath();
+            c.fill();
+            
+            c.strokeStyle = '#0a0f0a';
+            c.lineWidth = 1.5;
+            c.stroke();
+            
+            // Legend
+            let legY = 25 + i * 22;
+            c.fillRect(w - 110, legY, 10, 10);
+            c.fillStyle = '#839587';
+            c.font = '9.5px Outfit';
+            c.fillText(`${labels[i]} (₹${data[i].toFixed(1)}C)`, w - 95, legY + 9);
+            
+            startAngle += sliceAngle;
+        }
+        
+        // Doughnut cut out
+        c.fillStyle = '#111713';
+        c.beginPath();
+        c.arc(centerX, centerY, radius * 0.5, 0, Math.PI * 2);
+        c.fill();
+        c.strokeStyle = '#0a0f0a';
+        c.stroke();
+    }
 }

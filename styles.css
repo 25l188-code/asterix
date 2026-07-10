@@ -745,7 +745,9 @@ input[type="range"] {
 }
 
 .chart-box canvas {
-    max-width: 100%;
+    display: block;
+    width: 100% !important;
+    height: 230px !important;
     margin-top: 15px;
 }
 
