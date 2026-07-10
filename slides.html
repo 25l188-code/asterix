@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACS Presentation Slides | Team Asterix</title>
+    <title>Asterix Pvt Ltd | 34-Slide Presentation Deck</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #090e0a;
-            --bg-slate: #121a14;
-            --bg-card: #18231b;
-            --primary: #1d723b;
-            --primary-glow: #2ce068;
-            --accent: #ff9f1c;
-            --text: #f1f5f2;
-            --text-muted: #8b9a90;
-            --border-radius: 16px;
+            --bg-dark: #050706;
+            --bg-slate: #0b0f0c;
+            --bg-card: #111713;
+            --primary: #154c27;
+            --primary-glow: #28b859;
+            --accent-yellow: #ffcc00;
+            --accent-red: #ff3b30;
+            --text: #f0f4f1;
+            --text-muted: #798a7e;
+            --border-radius: 12px;
+            --font-header: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
         }
 
         * {
@@ -30,124 +33,95 @@
         body {
             background-color: var(--bg-dark);
             color: var(--text);
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             overflow-x: hidden;
-            line-height: 1.5;
+            line-height: 1.35;
         }
 
         h1, h2, h3, h4 {
-            font-family: 'Outfit', sans-serif;
+            font-family: var(--font-header);
             font-weight: 600;
         }
 
-        /* Presentation Wrapper */
         .presentation-container {
-            max-width: 1100px;
+            max-width: 960px;
             margin: 40px auto;
-            padding: 0 20px;
+            padding: 0 10px;
         }
 
-        /* Slide Container */
+        /* Slide Container - 16:9 Aspect Ratio */
         .slide {
             background-color: var(--bg-slate);
-            border: 1px solid rgba(44, 224, 104, 0.15);
+            border: 1px solid rgba(40, 184, 89, 0.12);
             border-radius: var(--border-radius);
-            min-height: 600px;
-            aspect-ratio: 16 / 9;
-            padding: 50px 60px;
-            margin-bottom: 50px;
+            width: 940px;
+            height: 528.75px; /* Perfect 16:9 scale */
+            padding: 30px 45px;
+            margin-bottom: 40px;
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
             page-break-after: always;
         }
 
-        /* Slide header */
         .slide-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(44, 224, 104, 0.1);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(40, 184, 89, 0.12);
+            padding-bottom: 8px;
         }
 
         .slide-tag {
             color: var(--primary-glow);
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.9rem;
+            font-family: var(--font-header);
+            font-size: 0.75rem;
             text-transform: uppercase;
             font-weight: 600;
             letter-spacing: 2px;
         }
 
         .slide-title {
-            font-size: 2.2rem;
+            font-size: 1.6rem;
             color: var(--text);
-            margin-top: 5px;
+            margin-top: 2px;
+            font-weight: 700;
         }
 
-        /* Slide content */
         .slide-body {
             flex-grow: 1;
             display: flex;
-            gap: 40px;
+            gap: 25px;
             align-items: center;
+            overflow: hidden;
+            margin-top: 15px;
+            margin-bottom: 10px;
         }
 
         .slide-text-full {
             width: 100%;
         }
 
-        .slide-text {
-            flex: 1.2;
+        .slide-text-left {
+            flex: 1.1;
         }
 
-        .slide-visual {
-            flex: 0.8;
+        .slide-visual-right {
+            flex: 0.9;
             background-color: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 15px;
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-        }
-
-        /* Lists and typography */
-        .slide ul {
-            list-style: none;
-            margin-top: 15px;
-        }
-
-        .slide li {
-            margin-bottom: 16px;
-            position: relative;
-            padding-left: 28px;
-            font-size: 1.05rem;
-            color: var(--text-muted);
-        }
-
-        .slide li strong {
-            color: var(--text);
-        }
-
-        .slide li::before {
-            content: '✓';
-            color: var(--primary-glow);
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-        }
-
-        .highlight-text {
-            color: var(--primary-glow);
-            font-weight: 600;
+            overflow: hidden;
         }
 
         /* Slide Footer */
@@ -155,10 +129,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding-top: 15px;
-            margin-top: 20px;
-            font-size: 0.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: 8px;
+            font-size: 0.7rem;
             color: var(--text-muted);
         }
 
@@ -168,89 +141,306 @@
             letter-spacing: 1px;
         }
 
-        /* Special Slide Styles */
-        .title-slide {
+        /* Cover Slide */
+        .cover-slide {
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(135deg, #090e0a 0%, #121a14 100%);
+            background: linear-gradient(135deg, #050706 0%, #0b0f0c 100%);
+            border: 2px solid var(--accent-yellow); /* Caterpillar Yellow Border */
         }
 
-        .title-slide .hero-tagline {
-            color: var(--accent);
-            font-size: 1.2rem;
+        .cover-slide .subtitle {
+            color: var(--accent-yellow);
+            font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 4px;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             font-weight: 600;
         }
 
-        .title-slide h1 {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
+        .cover-slide h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
             line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
-        .title-slide blockquote {
+        .cover-slide blockquote {
             font-style: italic;
             color: var(--text-muted);
-            font-size: 1.2rem;
+            font-size: 1rem;
+            margin: 10px 0 15px 0;
             border-left: none;
-            margin: 20px 0;
         }
 
-        /* Diagram stylings */
-        .diagram-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .diagram-node {
-            background-color: var(--primary);
-            border: 1px solid var(--primary-glow);
-            border-radius: 8px;
-            padding: 12px;
+        .cover-slide .tender-ref {
+            border: 1px solid rgba(255, 204, 0, 0.25);
+            background-color: rgba(255, 204, 0, 0.04);
+            color: var(--accent-yellow);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
             font-weight: 600;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            display: inline-block;
         }
 
-        .diagram-node.secondary {
-            background-color: var(--bg-card);
-            border-color: rgba(255,255,255,0.1);
+        .cover-slide .team-roles {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            width: 100%;
+            margin-top: 20px;
         }
 
-        .diagram-node.active {
-            border-color: var(--accent);
-            color: var(--accent);
+        .role-card {
+            background-color: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            padding: 8px;
         }
 
-        .diagram-arrow {
-            font-size: 1.2rem;
+        .role-card h4 {
+            color: var(--text);
+            font-size: 0.8rem;
+        }
+
+        .role-card p {
+            color: var(--accent-yellow);
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Lists */
+        ul {
+            list-style: none;
+        }
+
+        li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 18px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            text-align: left;
+        }
+
+        li strong {
+            color: var(--text);
+        }
+
+        li::before {
+            content: '▪';
             color: var(--primary-glow);
-            margin: 0;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
         }
 
-        .pod-grid {
+        /* Metric Box Layouts */
+        .metric-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+        }
+
+        .metric-box {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(40, 184, 89, 0.15);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-family: var(--font-header);
+            font-weight: 800;
+            color: var(--primary-glow);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Split-screen Grids */
+        .grid-2col {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
             width: 100%;
         }
 
-        .pod-card {
-            background-color: var(--bg-slate);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 0.85rem;
+        .grid-3col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
         }
 
-        .pod-card h4 {
-            color: var(--accent);
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        th, td {
+            padding: 6px 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        th {
+            background-color: rgba(40, 184, 89, 0.08);
+            color: var(--primary-glow);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--text-muted);
+        }
+
+        td strong {
+            color: var(--text);
+        }
+
+        /* Timeline ribbon */
+        .timeline-ribbon {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            position: relative;
+            padding-top: 15px;
+        }
+
+        .timeline-ribbon::before {
+            content: '';
+            position: absolute;
+            top: 23px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: rgba(40, 184, 89, 0.15);
+            z-index: 1;
+        }
+
+        .timeline-stop {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            padding: 0 4px;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--bg-slate);
+            border: 2px solid var(--primary-glow);
+            border-radius: 50%;
+            margin: 0 auto 8px auto;
+        }
+
+        .timeline-stop.active .timeline-dot {
+            background-color: var(--primary-glow);
+            box-shadow: 0 0 8px var(--primary-glow);
+        }
+
+        .timeline-time {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .timeline-desc {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            line-height: 1.2;
+        }
+
+        /* Feasibility Matrix & Lists */
+        .matrix-box {
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 6px;
+            padding: 8px;
+            background-color: rgba(255, 255, 255, 0.01);
+            text-align: left;
+        }
+
+        .matrix-box h4 {
+            color: var(--primary-glow);
+            font-size: 0.8rem;
             margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .badge {
+            background-color: rgba(40, 184, 89, 0.12);
+            border: 1px solid rgba(40, 184, 89, 0.25);
+            color: var(--primary-glow);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .badge.accent {
+            background-color: rgba(255, 204, 0, 0.12);
+            border-color: rgba(255, 204, 0, 0.25);
+            color: var(--accent-yellow);
+        }
+
+        .badge.danger {
+            background-color: rgba(255, 59, 48, 0.12);
+            border-color: rgba(255, 59, 48, 0.25);
+            color: var(--accent-red);
+        }
+
+        /* Slide layout styles */
+        .alert-box {
+            background-color: rgba(255, 59, 48, 0.03);
+            border-left: 2px solid var(--accent-red);
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-top: 8px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: left;
+        }
+
+        .alert-box strong {
+            color: var(--text);
+        }
+
+        .tip-box {
+            background-color: rgba(255, 204, 0, 0.03);
+            border-left: 2px solid var(--accent-yellow);
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-top: 8px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: left;
+        }
+
+        .tip-box strong {
+            color: var(--text);
         }
 
         /* Printable optimization */
@@ -260,10 +450,10 @@
                 color: #000000;
             }
             .slide {
-                border: none;
+                border: 1px solid #000000;
                 box-shadow: none;
                 margin: 0;
-                padding: 30px;
+                padding: 25px 35px;
                 width: 100%;
                 height: 100%;
                 aspect-ratio: 16 / 9;
@@ -271,17 +461,22 @@
                 color: #000000;
                 page-break-after: always;
             }
+            .cover-slide {
+                border: 3px solid #ffcc00;
+                background-color: #ffffff;
+                color: #000000;
+            }
             .slide-header, .slide-footer {
                 border-color: #cccccc;
             }
             .slide-tag {
-                color: #1d723b;
+                color: #154c27;
             }
             .slide-title {
                 color: #000000;
             }
-            .slide-visual, .diagram-node.secondary, .pod-card {
-                background-color: #eeeeee;
+            .slide-visual-right, .metric-box, .role-card, .matrix-box, .alert-box, .tip-box {
+                background-color: #f6f6f6;
                 border-color: #cccccc;
                 color: #000000;
             }
@@ -289,22 +484,26 @@
                 color: #333333;
             }
             .slide li::before {
-                color: #1d723b;
+                color: #154c27;
             }
-            .diagram-node {
-                background-color: #1d723b;
-                color: #ffffff;
-                border-color: #121a14;
+            .metric-value {
+                color: #154c27;
             }
-            .diagram-arrow {
-                color: #1d723b;
+            .timeline-ribbon::before {
+                background-color: #cccccc;
             }
-            .title-slide {
-                background: #ffffff;
-                color: #000000;
+            .timeline-dot {
+                background-color: #ffffff;
+                border-color: #154c27;
             }
-            .title-slide .hero-tagline {
-                color: #1d723b;
+            .badge {
+                background-color: #e2f0e6;
+                border-color: #154c27;
+                color: #154c27;
+            }
+            th {
+                background-color: #e2f0e6;
+                color: #154c27;
             }
         }
     </style>
@@ -313,289 +512,1188 @@
 
     <div class="presentation-container">
 
-        <!-- SLIDE 1 -->
-        <div class="slide title-slide">
-            <div class="hero-tagline">TEAM ASTERIX</div>
-            <h1>Autonomous Conservation<br><span class="highlight-text">System (ACS)</span></h1>
+        <!-- SLIDE 1: COVER -->
+        <div class="slide cover-slide">
+            <div class="subtitle">ASTERIX PVT LTD</div>
+            <h1>Guardians of the Wild,<br>Engineered.</h1>
             <blockquote>"Ground when possible. Air when necessary. Disturb nature as little as possible."</blockquote>
-            <div style="font-size: 0.95rem; color: var(--text-muted); margin-top: 20px;">
-                Cooperative Ground-Air Swarm Platform for Wilderness Protection
+            <div class="tender-ref">Response to E-Tender EGNI/2026/AEOUV-04</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;">
+                Autonomous Electric Off-road Utility Vehicle for Rainforest Harmony National Park
             </div>
-            <div style="font-size: 0.8rem; color: var(--primary-glow); margin-top: 40px; border: 1px solid rgba(44, 224, 104, 0.2); padding: 8px 16px; border-radius: 20px;">
-                aBAJA 2026 Engineering Competition Entry
+            
+            <div class="team-roles">
+                <div class="role-card">
+                    <h4>Priyadharshan S</h4>
+                    <p>CEO</p>
+                </div>
+                <div class="role-card">
+                    <h4>Member 2</h4>
+                    <p>CTO</p>
+                </div>
+                <div class="role-card">
+                    <h4>Member 3</h4>
+                    <p>CFO</p>
+                </div>
+                <div class="role-card">
+                    <h4>Member 4</h4>
+                    <p>COO</p>
+                </div>
             </div>
         </div>
 
-        <!-- SLIDE 2 -->
+        <!-- SLIDE 2: EXECUTIVE SUMMARY - OVERVIEW -->
         <div class="slide">
             <div class="slide-header">
                 <div>
-                    <span class="slide-tag">The Challenge</span>
-                    <h2 class="slide-title">The Reach vs. Ecological Impact Dilemma</h2>
+                    <span class="slide-tag">Proposal Hook</span>
+                    <h2 class="slide-title">Executive Summary: Pitch Overview</h2>
                 </div>
-                <div class="logo-text">ACS / 02</div>
+                <div class="logo-text">ASTERIX / 02</div>
             </div>
             <div class="slide-body">
-                <div class="slide-text">
+                <div class="slide-text-left">
                     <ul>
-                        <li><strong>Ground Patrolling Impact:</strong> Heavy standard ATVs cause critical soil compaction, destroy sensitive forest root networks, and disturb wildlife feeding/mating beats with exhaust and loud engine noises.</li>
-                        <li><strong>Aerial Patrolling Limitations:</strong> Commercial drones provide excellent line-of-sight reach but suffer from short flight times (20–30 mins), tiny payload capacities, and cannot take physical soil or river samples.</li>
-                        <li><strong>Isolation & Blindspots:</strong> Thick forest foliage blocks GPS and radio lines of sight, leaving rangers blind to poaching or wild fires in deep valleys.</li>
+                        <li><strong>Who We Are:</strong> An electric-autonomy robotics company specializing in zero-impact conservation robotics platforms and mesh sensor arrays.</li>
+                        <li><strong>The Ask:</strong> ₹3.2 Cr grant funding to deliver a turnkey AEOUV fleet + Smart-Pod communications mesh network.</li>
+                        <li><strong>The Offer:</strong> A Ground-Air Swarm integration combining autonomous electric vehicles (AEOUV), biomimetic drones, and passive forest sensor nodes.</li>
+                        <li><strong>Capability Focus:</strong> Zero-disturbance wilderness monitoring, automatic seed drop reforestation, targeted vaccination, and emergency rescue.</li>
                     </ul>
                 </div>
-                <div class="slide-visual">
-                    <div style="font-size: 3rem;">🌲</div>
-                    <h3 style="margin-top:10px; color:var(--accent);">Zero-Disturbance</h3>
-                    <p style="font-size:0.85rem; color:var(--text-muted); margin-top:5px;">How do we protect deep forest regions without entering them with heavy machinery?</p>
+                <div class="slide-visual-right">
+                    <div style="font-size: 2.5rem;">📡 🤝 🚜</div>
+                    <div style="font-weight: 600; font-size: 0.95rem; margin-top: 10px; color: var(--text);">Swarm Integration Offering</div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">A cooperative system where the ground base station supplies energy & calculations, and drones provide reach.</p>
                 </div>
             </div>
             <div class="slide-footer">
-                <span>Autonomous Conservation System</span>
-                <span>Team Asterix</span>
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
             </div>
         </div>
 
-        <!-- SLIDE 3 -->
+        <!-- SLIDE 3: EXECUTIVE SUMMARY - KPIS -->
         <div class="slide">
             <div class="slide-header">
                 <div>
-                    <span class="slide-tag">The Innovation</span>
-                    <h2 class="slide-title">The Cooperative Ground-Air Swarm Solution</h2>
+                    <span class="slide-tag">Performance Target</span>
+                    <h2 class="slide-title">Executive Summary: Key Performance Indicators</h2>
                 </div>
-                <div class="logo-text">ACS / 03</div>
+                <div class="logo-text">ASTERIX / 03</div>
             </div>
             <div class="slide-body">
-                <div class="slide-text">
+                <div class="slide-text-left">
                     <ul>
-                        <li><strong>A Shared Ecosystem:</strong> Moving away from a standalone buggy. We propose a mobile coordinate system combining an AEOUV (ground hub) and EcoWing-U drones (aerial extensions).</li>
-                        <li><strong>Role of the AEOUV:</strong> Stays strictly on designated forest logging trails. Serves as a mobile charging grid, computing core, robotic sampler, and drone airport.</li>
-                        <li><strong>Role of the Drones:</strong> Dispatched dynamically from the vehicle to deploy sensors, drop seeds, or administer vaccines in trackless valleys.</li>
+                        <li><strong>Coverage Area:</strong> Capable of monitoring 120 km² of thick jungle canopy per system daily via coordinated aerial patrols.</li>
+                        <li><strong>Eco Footprint:</strong> Zero tailpipe emissions. Eliminates the use of destructive diesel off-road vehicles.</li>
+                        <li><strong>Emergency Response:</strong> Drone dispatch locates anomalies and drops medical aids in under 20 minutes.</li>
+                        <li><strong>Reliability Target:</strong> Guaranteed 95% autonomous uptime with self-healing routing mesh configurations.</li>
                     </ul>
                 </div>
-                <div class="slide-visual">
-                    <div style="font-size: 3.5rem;">🛸 🤝 🚜</div>
-                    <p style="font-size:0.9rem; color:var(--primary-glow); font-weight:600; margin-top:10px;">Swarm Symbiosis</p>
-                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Ground provides energy & computing. Air provides reach & speed.</p>
-                </div>
-            </div>
-            <div class="slide-footer">
-                <span>Autonomous Conservation System</span>
-                <span>Team Asterix</span>
-            </div>
-        </div>
-
-        <!-- SLIDE 4 -->
-        <div class="slide">
-            <div class="slide-header">
-                <div>
-                    <span class="slide-tag">Swarm Intelligence</span>
-                    <h2 class="slide-title">System Architecture (3-Tier Model)</h2>
-                </div>
-                <div class="logo-text">ACS / 04</div>
-            </div>
-            <div class="slide-body">
-                <div class="slide-text">
-                    <ul>
-                        <li><strong>Tier 1: Central HQ (Strategic AI):</strong> High-level pathing, satellite data analytics, and regional drone-fleet coordination.</li>
-                        <li><strong>Tier 2: AEOUV Ground Hub (Edge AI):</strong> Real-time self-driving path calculations, edge target-recognition, and local swarm management.</li>
-                        <li><strong>Tier 3: Aerial & Static Swarm (Task Execution):</strong> VTOL drones executing tasks and tree-mounted Smart Pods forming a local sensor mesh.</li>
-                    </ul>
-                </div>
-                <div class="slide-visual">
-                    <div class="diagram-container">
-                        <div class="diagram-node">HQ Central Command (Global AI)</div>
-                        <div class="diagram-arrow">▼ (Satellite/5G)</div>
-                        <div class="diagram-node secondary">AEOUV Mobile Hub (Edge AI)</div>
-                        <div class="diagram-arrow">▼ (Mesh Radio)</div>
-                        <div class="diagram-node active">EcoWing-U Drones & Smart Pods</div>
+                <div class="slide-visual-right">
+                    <div class="metric-strip" style="grid-template-columns: 1fr; gap: 8px; width: 100%;">
+                        <div class="metric-box" style="padding: 10px;">
+                            <div class="metric-value">120 km²</div>
+                            <div class="metric-label">Daily Swarm Coverage</div>
+                        </div>
+                        <div class="metric-box" style="padding: 10px;">
+                            <div class="metric-value">&lt; 20 min</div>
+                            <div class="metric-label">Emergency Response Time</div>
+                        </div>
+                        <div class="metric-box" style="padding: 10px;">
+                            <div class="metric-value">95%</div>
+                            <div class="metric-label">Autonomous Uptime SLA</div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="slide-footer">
-                <span>Autonomous Conservation System</span>
-                <span>Team Asterix</span>
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
             </div>
         </div>
 
-        <!-- SLIDE 5 -->
+        <!-- SLIDE 4: THE RAINFOREST CHALLENGE -->
         <div class="slide">
             <div class="slide-header">
                 <div>
-                    <span class="slide-tag">Ground Platform</span>
-                    <h2 class="slide-title">AEOUV: Mobile Base Station & Lab</h2>
+                    <span class="slide-tag">Operational Environment</span>
+                    <h2 class="slide-title">Rainforest Harmony: Environmental Constraints</h2>
                 </div>
-                <div class="logo-text">ACS / 05</div>
+                <div class="logo-text">ASTERIX / 04</div>
             </div>
             <div class="slide-body">
-                <div class="slide-text">
+                <div class="slide-text-left">
                     <ul>
-                        <li><strong>Environmental Diagnostics:</strong> Integrated meteorological station monitoring real-time humidity, temperature, wind, CO₂, and dust metrics.</li>
-                        <li><strong>3D Perception:</strong> Roof-mounted rotating LiDAR, stereo cameras, and mmWave radars for off-road autonomous trail navigation.</li>
-                        <li><strong>5-DOF Robotic Manipulator:</strong> Collects soil cores and water samples directly from trails with automatic tool-changing end-effectors.</li>
-                        <li><strong>Power & Logistics:</strong> High-capacity lithium battery pack that doubles as a mobile charging dock for three drones.</li>
+                        <li><strong>Vast Territory:</strong> 3,885 km² of equatorial rainforest containing rich biological species and sensitive ecosystems.</li>
+                        <li><strong>Extreme Weather:</strong> Temperatures of 25–35 °C with high humidity and heavy rainfall (~3,048 mm/yr). Wet season runs Nov–May.</li>
+                        <li><strong>Terrain Hurdles:</strong> Thick clay mud, seasonal flooding, and dense overhead canopy that blocks cellular networks.</li>
                     </ul>
                 </div>
-                <div class="slide-visual">
-                    <div style="font-size: 3rem;">🤖 🧪 ⚡</div>
-                    <h4 style="margin-top:10px; color:var(--text);">Edge Server + Carrier</h4>
-                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Heavy processing of video streams and sensor payloads takes place directly on the vehicle.</p>
+                <div class="slide-visual-right">
+                    <div style="font-size: 2.2rem; color: var(--accent-yellow);">🌧️</div>
+                    <div style="font-weight: 600; font-size: 0.85rem; margin-top: 5px; color: var(--text);">Harmony National Park Metrics</div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Average Temperature: 25–35 °C<br>Annual Precipitation: ~3,048 mm<br>Wet Season: Nov–May</p>
                 </div>
             </div>
             <div class="slide-footer">
-                <span>Autonomous Conservation System</span>
-                <span>Team Asterix</span>
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
             </div>
         </div>
 
-        <!-- SLIDE 6 -->
+        <!-- SLIDE 5: THE MISSION MANDATE -->
         <div class="slide">
             <div class="slide-header">
                 <div>
-                    <span class="slide-tag">Aerial Platform</span>
-                    <h2 class="slide-title">EcoWing-U: Universal Conservation Drone</h2>
+                    <span class="slide-tag">Scope of Work</span>
+                    <h2 class="slide-title">The Mission Mandate: Four Roles</h2>
                 </div>
-                <div class="logo-text">ACS / 06</div>
+                <div class="logo-text">ASTERIX / 05</div>
             </div>
             <div class="slide-body">
-                <div class="slide-text">
+                <div class="slide-text-left">
                     <ul>
-                        <li><strong>Hybrid VTOL Design:</strong> Vertical rotors for ascending through tight forest canopies, switching to rear pusher propeller and folding wings for efficient 25 km forward cruise flight.</li>
-                        <li><strong>Single Manufacturing Line:</strong> All drones share the identical airframe, flight computers, navigation sensors, and batteries, reducing spare parts overhead.</li>
-                        <li><strong>Full Mission Redundancy:</strong> Drones have no fixed role. If Drone 1 is damaged, Drone 2 immediately clips onto the same Mission Pod to resume the task.</li>
+                        <li><strong>1. Wildlife Monitoring:</strong> Continuous, non-intrusive tracking of species migration patterns, population health, and poacher movements.</li>
+                        <li><strong>2. Forest Management:</strong> Mapping foliage canopy density, checking tree health, and carrying out aerial seeding.</li>
+                        <li><strong>3. Medical Administration:</strong> Automated, remote target delivery of dosed vaccines to wild animals.</li>
+                        <li><strong>4. Zero Disturbance:</strong> Maintaining zero habitat footprint, avoiding soil compaction, and using silent mechanics.</li>
                     </ul>
                 </div>
-                <div class="slide-visual">
-                    <div style="font-size: 3rem;">🦅 ⚙️</div>
-                    <h4 style="margin-top:10px; color:var(--text);">VTOL Carbon Fiber Airframe</h4>
-                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Twin lift rotors, rear cruise propeller, and automatic hatch-docking interface.</p>
-                </div>
-            </div>
-            <div class="slide-footer">
-                <span>Autonomous Conservation System</span>
-                <span>Team Asterix</span>
-            </div>
-        </div>
-
-        <!-- SLIDE 7 -->
-        <div class="slide">
-            <div class="slide-header">
-                <div>
-                    <span class="slide-tag">Key Mechanical Innovation</span>
-                    <h2 class="slide-title">Adaptive Mission Bay (AMB)</h2>
-                </div>
-                <div class="logo-text">ACS / 07</div>
-            </div>
-            <div class="slide-body">
-                <div class="slide-text">
-                    <ul>
-                        <li><strong>Automated Payload Swapping:</strong> Fully enclosed, weatherproof internal compartment storing a magazine of six Mission Pods.</li>
-                        <li><strong>Robotic Linear Shuttle:</strong> Replaces payloads in under 30 seconds without human hands.</li>
-                        <li><strong>Universal Interface:</strong> Uses high-strength electro-permanent alignment magnets, pairing power and data contacts instantly.</li>
-                        <li><strong>Sealed Roof Hatches:</strong> Roof hatches open only during launch/landing to keep internal electronics free from mud and rain.</li>
-                    </ul>
-                </div>
-                <div class="slide-visual">
-                    <div style="font-size: 3rem;">🔄 🧲</div>
-                    <h4 style="margin-top:10px; color:var(--accent);">Sub-30s Swap Time</h4>
-                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Internal rail shuttle transfers pods automatically from vehicle magazine to drone.</p>
-                </div>
-            </div>
-            <div class="slide-footer">
-                <span>Autonomous Conservation System</span>
-                <span>Team Asterix</span>
-            </div>
-        </div>
-
-        <!-- SLIDE 8 -->
-        <div class="slide">
-            <div class="slide-header">
-                <div>
-                    <span class="slide-tag">Universal Payloads</span>
-                    <h2 class="slide-title">Modular Mission Pods</h2>
-                </div>
-                <div class="logo-text">ACS / 08</div>
-            </div>
-            <div class="slide-body">
-                <div class="pod-grid">
-                    <div class="pod-card">
-                        <h4>1. Vaccination Pod</h4>
-                        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:4px;">CO₂-driven micro-dart launcher and targeting optics for remote vaccine delivery to wildlife.</p>
+                <div class="slide-visual-right">
+                    <div class="badge-list" style="justify-content: center;">
+                        <span class="badge">Wildlife Monitoring</span>
+                        <span class="badge">Forest Seeding</span>
+                        <span class="badge">Remote Vaccination</span>
+                        <span class="badge">Acoustic Silencing</span>
                     </div>
-                    <div class="pod-card">
-                        <h4>2. Seed Planting Pod</h4>
-                        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:4px;">Drops biodegradable capsule seeds wrapped in nutrient shell and water-absorbent casing.</p>
-                    </div>
-                    <div class="pod-card">
-                        <h4>3. Sampling Pod</h4>
-                        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:4px;">Lowers specialized siphon tubes into remote rivers and swamps to collect and preserve samples.</p>
-                    </div>
-                    <div class="pod-card">
-                        <h4>4. Emergency Pod</h4>
-                        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:4px;">Drops emergency medical supplies, satellite signaling beacons, and walkie-talkies to ground rangers.</p>
-                    </div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 10px;">RFP requires strict compliance with zero-footprint operation parameters.</p>
                 </div>
             </div>
             <div class="slide-footer">
-                <span>Autonomous Conservation System</span>
-                <span>Team Asterix</span>
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
             </div>
         </div>
 
-        <!-- SLIDE 9 -->
+        <!-- SLIDE 6: THE TERRITORY GAP -->
         <div class="slide">
             <div class="slide-header">
                 <div>
-                    <span class="slide-tag">Persistent Monitoring</span>
-                    <h2 class="slide-title">Smart Pods & Forest Sensor Mesh</h2>
+                    <span class="slide-tag">Problem Statement</span>
+                    <h2 class="slide-title">The Territory Gap: Why Traditional Methods Fail</h2>
                 </div>
-                <div class="logo-text">ACS / 09</div>
+                <div class="logo-text">ASTERIX / 06</div>
             </div>
             <div class="slide-body">
-                <div class="slide-text">
+                <div class="slide-text-left">
                     <ul>
-                        <li><strong>Continuous Forest Auditing:</strong> Low-power nodes deployed by drones onto tree branches or rivers.</li>
-                        <li><strong>Diverse Sensors:</strong> Acoustic listening pods (detect gunshots/chainsaws), water quality probes, and motion-activated visual nodes.</li>
-                        <li><strong>Self-Healing Mesh Network:</strong> Since canopy trees block standard signals, pods automatically route data packets hop-by-hop back to the AEOUV.</li>
+                        <li><strong>Ranger Safety & Strain:</strong> Human rangers on foot beats are exposed to wild animal attacks, insect-borne diseases, and flash floods.</li>
+                        <li><strong>Heavy Vehicle Damage:</strong> Conventional diesel utility vehicles compact forest soils, create deep ruts, and damage root structures.</li>
+                        <li><strong>Acoustic Disturbance:</strong> Loud engines scare nesting birds and disrupt animal migration pathways.</li>
+                        <li><strong>RFP Conclusion:</strong> Government tender notes that "traditional methods prove insufficient" for Harmony Park.</li>
                     </ul>
                 </div>
-                <div class="slide-visual">
-                    <div style="font-size: 3rem;">📡 🟢</div>
-                    <h4 style="margin-top:10px; color:var(--text);">Self-Configuring Network</h4>
-                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Pods act as relay repeaters, removing communication blindspots in deep valleys.</p>
+                <div class="slide-visual-right">
+                    <div style="font-size: 2.2rem;">⚠️</div>
+                    <div style="font-weight: 600; font-size: 0.85rem; margin-top: 5px; color: var(--text);">Traditional Patrol Bottlenecks</div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">• Heavy Soil Compaction<br>• Engine Noise (&gt;85 dB)<br>• Communication Blindspots</p>
                 </div>
             </div>
             <div class="slide-footer">
-                <span>Autonomous Conservation System</span>
-                <span>Team Asterix</span>
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
             </div>
         </div>
 
-        <!-- SLIDE 10 -->
+        <!-- SLIDE 7: COMPANY PROFILE -->
         <div class="slide">
             <div class="slide-header">
                 <div>
-                    <span class="slide-tag">Commercial Value</span>
-                    <h2 class="slide-title">System ROI & Positioning</h2>
+                    <span class="slide-tag">Corporate Profile</span>
+                    <h2 class="slide-title">Company Overview & Chennai Facility</h2>
                 </div>
-                <div class="logo-text">ACS / 10</div>
+                <div class="logo-text">ASTERIX / 07</div>
             </div>
             <div class="slide-body">
-                <div class="slide-text">
+                <div class="slide-text-left">
                     <ul>
-                        <li><strong>Operational Cost Reduction:</strong> Shifting patrol operations from multiple high-maintenance diesel jeeps to a single electric ground hub and drones.</li>
-                        <li><strong>Zero Soil & Habit Damage:</strong> Eliminates off-road vehicle driving, stopping soil erosion and animal migration routing disruption.</li>
-                        <li><strong>Auditable Conservation:</strong> High-resolution seed placement maps and water logs provide immediate audits for carbon credit and NGO funding.</li>
+                        <li><strong>OEM Location:</strong> Headquartered with primary assembly plant in **Chennai, Tamil Nadu**.</li>
+                        <li><strong>Incorporation Status:</strong> Fully registered, Indian-owned private limited company specializing in environmental robotics.</li>
+                        <li><strong>Workforce Size:</strong> 42 full-time staff, incorporating a **40/60 diversity split** across core engineering and research teams.</li>
+                        <li><strong>Focus:</strong> Designing clean, silent ground platforms, autonomous payload bays, and low-power mesh radios.</li>
                     </ul>
                 </div>
-                <div class="slide-visual">
-                    <div style="font-size: 3rem;">📈 💰</div>
-                    <h4 style="margin-top:10px; color:var(--primary-glow);">Competitive Advantage</h4>
-                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">ACS is positioned as a comprehensive conservation platform, not just a hardware ATV.</p>
+                <div class="slide-visual-right">
+                    <div style="font-size: 0.8rem; text-align: left; width: 100%;">
+                        <div style="font-weight: 600; color: var(--primary-glow); margin-bottom: 5px;">Chennai Assembly Facility</div>
+                        <div>• Subsystem Fabrication Line</div>
+                        <div>• Sensor Calibration Chamber</div>
+                        <div>• Outdoor Canopy Sandbox Testbed</div>
+                    </div>
                 </div>
             </div>
             <div class="slide-footer">
-                <span>Autonomous Conservation System</span>
-                <span>Team Asterix</span>
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: LEADERSHIP & ORG DESIGN -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Organizational Structure</span>
+                    <h2 class="slide-title">Leadership Team & Organizational Design</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 08</div>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2col" style="width: 100%;">
+                    <div>
+                        <ul>
+                            <li><strong>Priyadharshan S (CEO):</strong> Directs corporate strategy and anchors government relations.</li>
+                            <li><strong>Member 2 (CTO):</strong> Directs edge AI, autonomy navigation stacks, and sensor fusion.</li>
+                            <li><strong>Member 3 (CFO):</strong> Manages unit economics, BOM optimization, and capital allocation.</li>
+                            <li><strong>Member 4 (COO):</strong> Oversees manufacturing, supply chain scaling, and WPC/DGCA filings.</li>
+                        </ul>
+                    </div>
+                    <div class="slide-visual-right" style="padding: 10px; justify-content: flex-start; text-align: left;">
+                        <div style="font-weight: 600; font-size: 0.85rem; color: var(--primary-glow); margin-bottom: 5px;">Board Mandate</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.3;">
+                            Our lean, matrix organization coordinates mechanical design, software validation, and environmental research under one corporate loop.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: THE 5-LAYER STACK -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Product Offering</span>
+                    <h2 class="slide-title">System-of-Systems: 5-Layer Stack</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 09</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>5. Command & Safety:</strong> HQ station controls teleoperation and handles health diagnostic overrides.</li>
+                        <li><strong>4. Aerial Swarm:</strong> VTOL bird-drones carrying modular pods to hard-to-reach zones.</li>
+                        <li><strong>3. Actuation Layer:</strong> Onboard 5-DOF robotic arms and Adaptive Mission Bay swapper.</li>
+                        <li><strong>2. Mobility Platform:</strong> Electric BAJA off-road vehicle with range-extending brakes.</li>
+                        <li><strong>1. Sensing & Mesh:</strong> Solid-state LiDAR scanners + tree-mounted Smart Pod network.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div style="width: 100%; display: flex; flex-direction: column; gap: 4px; font-size: 0.78rem;">
+                        <div style="background: rgba(255,204,0,0.1); border: 1px solid var(--accent-yellow); padding: 4px; border-radius: 4px;">5. Command & Safety Layer</div>
+                        <div style="background: rgba(40,184,89,0.1); border: 1px solid var(--primary-glow); padding: 4px; border-radius: 4px;">4. Aerial Layer (EcoWing-U Drones)</div>
+                        <div style="background: rgba(40,184,89,0.1); border: 1px solid var(--primary-glow); padding: 4px; border-radius: 4px;">3. Actuation Layer (Arms + AMB)</div>
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 4px; border-radius: 4px;">2. Mobility (AEOUV Electric ATV)</div>
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 4px; border-radius: 4px;">1. Sensing & Mesh Network</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: AEOUV BUGGY - MECHANICAL BASE -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Ground Platform Specs</span>
+                    <h2 class="slide-title">AEOUV Buggy: Mechanical & Chassis Base</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 10</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Chassis structure:</strong> High-strength tubular steel space frame (compliant with BAJA off-road standards).</li>
+                        <li><strong>Power & Motor:</strong> 9 kW Brushless DC (BLDC) motor with regenerative braking.</li>
+                        <li><strong>Battery:</strong> AIS-156 Certified Lithium-Ion Pack (80 Ah Capacity, 72V nominal).</li>
+                        <li><strong>Suspension:</strong> Double-wishbone suspension with 8-inch travel for muddy trails.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right" style="padding: 5px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mechanical Parameter</th>
+                                <th>Specification</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Suspension Travel</strong></td>
+                                <td>8 Inches (Double-wishbone)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Chassis frame</strong></td>
+                                <td>Tubular steel space frame</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Powertrain</strong></td>
+                                <td>9 kW BLDC (AIS-156 compliant)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Braking</strong></td>
+                                <td>Regenerative range extension</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: AEOUV BUGGY - AUTONOMY STACK -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Autonomy Suite</span>
+                    <h2 class="slide-title">AEOUV Buggy: Sensor Fusion & Autonomy Stack</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 11</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Autonomy Compute:</strong> NVIDIA Jetson Orin Core running edge computer vision.</li>
+                        <li><strong>Sensor Stack:</strong> Rotating solid-state LiDAR, stereo depth cameras, mmWave radar, and RTK-GNSS.</li>
+                        <li><strong>Path Planning:</strong> Local costmap generation that automatically marks forest quiet zones as no-go polygons.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div style="font-size: 2.2rem; color: var(--primary-glow);">🤖</div>
+                    <div style="font-weight: 600; font-size: 0.85rem; margin-top: 5px; color: var(--text);">Edge Navigation Core</div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Autonomy stack allows the buggy to swerve around fallen trees and navigate deep forest paths without active internet.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: AEOUV BUGGY - ROBOTIC ARMS -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Actuation Systems</span>
+                    <h2 class="slide-title">AEOUV Buggy: Dual 5-DOF Robotic Manipulators</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 12</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Twin Manipulators:</strong> Two 5-DOF robotic arms mounted on the chassis.</li>
+                        <li><strong>Water Siphon:</strong> Reaches into riverbeds to siphon water samples, running chemical diagnostics.</li>
+                        <li><strong>Soil Boring:</strong> Bores soil samples along path margins.</li>
+                        <li><strong>Fail-Safe:</strong> Actuators release in under 100 ms during manual driver overrides.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div style="font-size: 2.2rem; color: var(--accent-yellow);">🦾</div>
+                    <div style="font-weight: 600; font-size: 0.85rem; margin-top: 5px; color: var(--text);">Water & Soil Sampling</div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Arm draws samples and passes them to internal diagnostic chambers, eliminating manual exposure.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: ECOWING-U DRONE: VTOL AERODYNAMICS -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Aerial Platform Specs</span>
+                    <h2 class="slide-title">EcoWing-U Drone: Hybrid VTOL Aerodynamics</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 13</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Hybrid Propulsion:</strong> Twin vertical lift rotors paired with a rear pusher propeller for high-speed forward glide cruise.</li>
+                        <li><strong>Avionics Platform:</strong> PX4 Flight Controller paired with visual odometry (VIO) for GPS-denied canopy flight.</li>
+                        <li><strong>Airframe structure:</strong> Lightweight, bio-mimetic carbon fiber shell modeled after forest birds.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div style="font-size: 2.2rem; color: var(--primary-glow);">🦅</div>
+                    <div style="font-weight: 600; font-size: 0.85rem; margin-top: 5px; color: var(--text);">Bio-Mimetic UAV Core</div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Wingspan: 1.2 meters<br>Weight: 3.0 kg<br>Glide Range: 25 km</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: ADAPTIVE MISSION BAY -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Swapping Mechanism</span>
+                    <h2 class="slide-title">Adaptive Mission Bay (AMB): Swapping Loop</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 14</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Weatherproof Chamber:</strong> Enclosed cargo bay housing a magazine of six hot-swappable Mission Pods.</li>
+                        <li><strong>Robotic Linear Shuttle:</strong> Translates, secures, and magnetically latches pods onto the drone landing carriage.</li>
+                        <li><strong>Electro-Permanent Magnets:</strong> Delivers rigid structural locking without active power draw.</li>
+                        <li><strong>Swap Speed:</strong> Completes payload swaps in under 30 seconds.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div style="font-size: 2.2rem; color: var(--accent-yellow);">🔄</div>
+                    <div style="font-weight: 600; font-size: 0.85rem; margin-top: 5px; color: var(--text);">EPM Magnetic Docking</div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Automatic pogo-pin contacts link power and data lines instantly during pod swapping.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 15: MISSION PODS - VACCINATION & SEED -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Modular Payloads</span>
+                    <h2 class="slide-title">Modular Mission Pods: Vaccination & Seed Drop</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 15</div>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2col" style="width: 100%;">
+                    <div>
+                        <h3 style="color: var(--primary-glow); margin-bottom: 5px;">Vaccination Pod</h3>
+                        <ul>
+                            <li>CO₂-driven micro-dart launcher.</li>
+                            <li>Targeting camera array tracks animals.</li>
+                            <li>Delivers vaccines with precision.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--primary-glow); margin-bottom: 5px;">Seed Planting Pod</h3>
+                        <ul>
+                            <li>Pressurized seed hopper.</li>
+                            <li>Drops biodegradable capsule seeds.</li>
+                            <li>Slow-release fertilizer shell.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 16: MISSION PODS - SAMPLING & EMERGENCY -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Modular Payloads</span>
+                    <h2 class="slide-title">Modular Mission Pods: Sampling & Emergency</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 16</div>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2col" style="width: 100%;">
+                    <div>
+                        <h3 style="color: var(--accent-yellow); margin-bottom: 5px;">Environmental Sampling Pod</h3>
+                        <ul>
+                            <li>Retractable air siphon tube.</li>
+                            <li>Water container with preservative chemistry.</li>
+                            <li>Onboard diagnostics reads basic pollutants.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--accent-yellow); margin-bottom: 5px;">Emergency Delivery Pod</h3>
+                        <ul>
+                            <li>Fitted with first-aid kits and anti-venoms.</li>
+                            <li>Includes satellite signaling beacons.</li>
+                            <li>Mechanical drop release mechanism.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 17: SMART FOREST POD NETWORK -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Sensing Nodes</span>
+                    <h2 class="slide-title">Smart Forest Pod Network: Passive Node Sensors</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 17</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Continuous Auditing:</strong> Low-power nodes placed in trees and riverbeds by drones.</li>
+                        <li><strong>Sensor Breakdown:</strong>
+                            <br>• *Acoustic*: Identifies chainsaws, gunshots, and engines.
+                            <br>• *Hydrological*: Measures water temperature, pH, and pollutants.
+                            <br>• *Camera*: Motion-activated visual logs.
+                        </li>
+                        <li><strong>Solar Charging:</strong> Integrated solar panels keep batteries functioning over 12 months.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div style="font-size: 2.2rem; color: var(--primary-glow);">📡</div>
+                    <div style="font-weight: 600; font-size: 0.85rem; margin-top: 5px; color: var(--text);">Persistent Sensing Nodes</div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Smart Pods provide passive 24/7 monitoring, waking up the network only when anomalies are detected.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 18: MESH COMMUNICATION -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Network Design</span>
+                    <h2 class="slide-title">Mesh Communication: Self-Healing Network</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 18</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Self-Healing Protocols:</strong> Sub-GHz LoRa mesh routes signals from pod to pod around obstacles.</li>
+                        <li><strong>Resilience:</strong> Operates locally where cellular and public networks fail.</li>
+                        <li><strong>Licensing:</strong> Requires WPC (Wireless Planning & Coordination) spectrum clearance for Indian forest zones.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div style="font-size: 2.2rem; color: var(--accent-yellow);">🌐</div>
+                    <div style="font-weight: 600; font-size: 0.85rem; margin-top: 5px; color: var(--text);">LoRa Mesh Topology</div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">If Pod A is blocked, data automatically hops via Pod B and C to reach the nearest AEOUV ground hub.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 19: CONOPS - MORNING & MIDDAY -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Mission Scenario I</span>
+                    <h2 class="slide-title">Concept of Operations: Morning & Midday</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 19</div>
+            </div>
+            <div class="slide-body">
+                <div class="timeline-ribbon" style="padding-top: 30px;">
+                    <div class="timeline-stop active">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">06:00</div>
+                        <div class="timeline-desc">Acoustic Pod #2 detects chainsaw. Mesh alerts AEOUV.</div>
+                    </div>
+                    <div class="timeline-stop">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">09:00</div>
+                        <div class="timeline-desc">AEOUV deploys Drone 1 with Seed Pod to steep slope.</div>
+                    </div>
+                    <div class="timeline-stop">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">12:00</div>
+                        <div class="timeline-desc">Drone 2 launches with Vaccination Pod to treat target leopard.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 20: CONOPS - EVENING & NIGHT -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Mission Scenario II</span>
+                    <h2 class="slide-title">Concept of Operations: Evening & Night</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 20</div>
+            </div>
+            <div class="slide-body">
+                <div class="timeline-ribbon" style="padding-top: 30px;">
+                    <div class="timeline-stop">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">15:00</div>
+                        <div class="timeline-desc">Robotic arm siphons river water; runs local diagnostics.</div>
+                    </div>
+                    <div class="timeline-stop">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">18:00</div>
+                        <div class="timeline-desc">Buggy A suffers battery fault; sister Buggy B rescues.</div>
+                    </div>
+                    <div class="timeline-stop">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">21:00</div>
+                        <div class="timeline-desc">Lost trekker detected via thermal; aid dropped by drone.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 21: COMPLIANCE MATRIX -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Tender Alignment</span>
+                    <h2 class="slide-title">Compliance Matrix: RFP Requirements vs. ASTERIX</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 21</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-full">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>RFP Mandatory Requirement</th>
+                                <th>ASTERIX Proposed Feature</th>
+                                <th>Compliance Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Wildlife Monitoring</strong></td>
+                                <td>Passive sensor pods + drone thermal classification.</td>
+                                <td><span class="badge">Fully Compliant</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Reforestation</strong></td>
+                                <td>Robotic arm seed borer + drone capsule drops.</td>
+                                <td><span class="badge">Fully Compliant</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Medical Administration</strong></td>
+                                <td>Pressurized Vaccination Pod with target tracking.</td>
+                                <td><span class="badge">Fully Compliant</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Minimal Disturbance</strong></td>
+                                <td>Decibel-damped bird-drones + trail-bound pathing.</td>
+                                <td><span class="badge">Fully Compliant</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 22: UNIQUE SELLING POINTS -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Competitive Edge</span>
+                    <h2 class="slide-title">ASTERIX Unique Selling Points (USPs)</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 22</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>1. Silent Bio-Mimetic UAV:</strong> Avoids wildlife startle responses typical of commercial multirotors.</li>
+                        <li><strong>2. Buggy-Rescues-Buggy Autonomy:</strong> Integrated V2V recovery script ensures vehicle redundancy in deep ranges.</li>
+                        <li><strong>3. Integrated Human SAR:</strong> Real-time search-and-rescue via thermal drone tracking and emergency pod deployment.</li>
+                        <li><strong>4. On-Field diagnostics:</strong> Integrated physical sampling arms + testing lab inside pods.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div class="badge-list" style="justify-content: center;">
+                        <span class="badge">Silent UAV</span>
+                        <span class="badge">V2V Recovery</span>
+                        <span class="badge">Human SAR</span>
+                        <span class="badge">On-Field Diagnostics</span>
+                    </div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 10px;">Our edge centers on unified coordination rather than standalone vehicles.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 23: TECHNICAL FEASIBILITY -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Engineering Risk</span>
+                    <h2 class="slide-title">Technical Feasibility & Make-vs-Buy Stance</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 23</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Integration Risk Stance:</strong> Focusing custom engineering strictly on proprietary IP (AMB payload swapper, software coordinate AI).</li>
+                        <li><strong>Buy Category:</strong> LiDAR sensors, motors, automotive compute modules, battery cells.</li>
+                        <li><strong>Make Category:</strong> Custom carbon fiber drone structure, swapper mechanics, mesh node electronics.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div class="grid-2col" style="grid-template-columns: 1fr; gap: 8px; font-size: 0.75rem; text-align: left; width: 100%;">
+                        <div class="matrix-box">
+                            <h4>Buy (Proven Building Blocks)</h4>
+                            <div style="color: var(--text-muted);">LiDAR sensors, compute boards, battery packs.</div>
+                        </div>
+                        <div class="matrix-box">
+                            <h4>Make (Proprietary IP)</h4>
+                            <div style="color: var(--primary-glow);">Adaptive swapper, LoRa mesh nodes, coordinator AI.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 24: PROTOTYPE VALIDATION -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Quality Assurance</span>
+                    <h2 class="slide-title">Prototype Validation: Sandbox Forest Pilot</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 24</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Sandbox Phase:</strong> Indoor subsystem validation followed by sandbox testing in a dense forest plot in Tamil Nadu.</li>
+                        <li><strong>Supervised Pilot:</strong> Deployment of a 2-AEOUV + 10-pod network in Harmony National Park.</li>
+                        <li><strong>Validation Goals:</strong> Confirming drone VTOL stability under wind, mesh packet transmission rates, and autonomous buggy path safety.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div style="font-size: 2.2rem; color: var(--accent-yellow);">🧪</div>
+                    <div style="font-weight: 600; font-size: 0.85rem; margin-top: 5px; color: var(--text);">TRL Development Path</div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Lab Proof (TRL 4) ➔ Forest Sandbox (TRL 5-6) ➔ National Park Supervised Pilot (TRL 7).</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 25: VALIDATION TIMELINE -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Timeline</span>
+                    <h2 class="slide-title">Prototype Validation: Timeline & Gantt</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 25</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Month 1-3 (TRL 4):</strong> Frame assembly, sensor integration, and indoor arm calibration.</li>
+                        <li><strong>Month 4-7 (TRL 5-6):</strong> Outdoor sandbox testing, mesh range validation, and pod swapping debug.</li>
+                        <li><strong>Month 8-12 (TRL 7):</strong> Supervised forest park pilot. Initial 3-month driver-in-loop tracking.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right" style="padding: 10px; justify-content: flex-start; text-align: left;">
+                    <div style="font-weight: 600; font-size: 0.8rem; color: var(--primary-glow); margin-bottom: 5px;">Validation Milestones</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">
+                        • **M3**: Integrated chassis & computing check.<br>
+                        • **M7**: 5 km mesh communication range test.<br>
+                        • **M12**: Handover of pilot data to forest department.
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 26: MARKET ANALYSIS -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Opportunity</span>
+                    <h2 class="slide-title">Market Analysis: TAM-SAM-SOM</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 26</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>TAM (India):</strong> ₹150 Cr, based on ~100+ national parks and 500+ sanctuaries seeking modern monitoring gear.</li>
+                        <li><strong>SAM:</strong> ₹45 Cr, targeting parks with dense foliage and high budgets.</li>
+                        <li><strong>SOM (Beachhead):</strong> ₹12 Cr, focusing on protected areas in Northeast India.</li>
+                        <li><strong>Assumed Spend:</strong> ₹3 L/km² annual conservation technology spending.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div style="font-size: 2.2rem; color: var(--primary-glow);">📊</div>
+                    <div style="font-weight: 600; font-size: 0.85rem; margin-top: 5px; color: var(--text);">TAM-SAM-SOM Funnel</div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">TAM: ₹150 Cr ➔ SAM: ₹45 Cr ➔ SOM: ₹12 Cr.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 27: STRATEGIC ASSESSMENTS -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Strategic Analysis</span>
+                    <h2 class="slide-title">PESTEL & SWOT Strategic Assessments</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 27</div>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2col" style="width: 100%;">
+                    <div class="matrix-box">
+                        <h4>SWOT Highlights</h4>
+                        <div style="font-size: 0.72rem; color: var(--text-muted);">
+                            • **S**: Modular AMB swapper, silent drone IP.<br>
+                            • **W**: High initial drone R&D cost.<br>
+                            • **O**: Verifiable carbon offset audits.<br>
+                            • **T**: Legal clearances (BVLOS).
+                        </div>
+                    </div>
+                    <div class="matrix-box">
+                        <h4>PESTEL Highlights</h4>
+                        <div style="font-size: 0.72rem; color: var(--text-muted);">
+                            • **Political**: PLI Indian sourcing preference.<br>
+                            • **Environmental**: Zero soil rutting, zero noise.<br>
+                            • **Legal**: Complies with Wildlife Protection Act.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 28: MANUFACTURING PLAN -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Production Logistics</span>
+                    <h2 class="slide-title">Manufacturing Plan & Local Sourcing</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 28</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Assembly Line:</strong> Chennai assembly line handles chassis framework welding, wire harness routing, and sensor calibration.</li>
+                        <li><strong>Local Sourcing:</strong> Complying with Indian PLI guidelines by sourcing chassis fabrication and batteries locally.</li>
+                        <li><strong>Low-Rate Production:</strong> Targeting 3 prototype units for pilot phase, scaling to 10 systems/year.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right" style="padding: 5px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Sourcing Strategy</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>BLDC Motors</strong></td>
+                                <td>Indian Tier-1 Supplier (Buy)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Chassis Structure</strong></td>
+                                <td>Chennai Assembly (Make)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fiber Shell Drones</strong></td>
+                                <td>Chennai Mold line (Make)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 29: SERVICE & SUPPORT -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Field Logistics</span>
+                    <h2 class="slide-title">Service & Support: SLA & Depot Network</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 29</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Local Depots:</strong> Leveraging park warehouses as regional battery swap stations and spares depot hubs.</li>
+                        <li><strong>Uptime SLA:</strong> 95% system availability guarantee under our standard AMC contract.</li>
+                        <li><strong>Spares SLA:</strong> 24-hour shipping on critical parts from the Chennai central hub.</li>
+                        <li><strong>Desk Support:</strong> 24/7 teleoperation desk handles sensor pings and overrides.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div style="font-size: 2.2rem; color: var(--accent-yellow);">🔧</div>
+                    <div style="font-weight: 600; font-size: 0.85rem; margin-top: 5px; color: var(--text);">SLA Warranties</div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Our standard contract includes automatic "buggy-rescues-buggy" service swaps during mechanical faults.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 30: UNIT ECONOMICS -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Financial Costing</span>
+                    <h2 class="slide-title">Financial Model: Unit Economics</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 30</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>AEOUV BOM:</strong> Frame & batteries (₹4.2 L) + Autonomy sensors (₹6.8 L) + Arms (₹2.4 L). Total BOM = ₹13.4 L.</li>
+                        <li><strong>UAV Unit Cost:</strong> ₹3.8 L BOM (R&D-heavy low-acoustic composite airframe).</li>
+                        <li><strong>Smart Pod Cost:</strong> ₹0.4 L BOM (low-power processor + solar cells).</li>
+                        <li><strong>Deployment Kit:</strong> Total BOM ₹34 L. Sale Price: ₹48 L (Gross margin 41%).</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right" style="padding: 5px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product Segment</th>
+                                <th>BOM Cost</th>
+                                <th>Selling Price</th>
+                                <th>Margin %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>AEOUV Hub</strong></td>
+                                <td>₹13.4 L</td>
+                                <td>₹18.0 L</td>
+                                <td>34%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>EcoWing Drone</strong></td>
+                                <td>₹3.8 L</td>
+                                <td>₹5.2 L</td>
+                                <td>36%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Smart Pod</strong></td>
+                                <td>₹0.4 L</td>
+                                <td>₹0.6 L</td>
+                                <td>50%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 31: CAPITAL & P&L FORECAST -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Funding Profile</span>
+                    <h2 class="slide-title">Financial Model: Capital & P&L Forecast</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 31</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Capital Request:</strong> ₹3.2 Cr, allocated to assembly tooling, prototype validation, and certification checks.</li>
+                        <li><strong>P&L Projections:</strong>
+                            <br>• Year 1: Hardware sales ₹48 L.
+                            <br>• Year 3: Hardware sales ₹2.4 Cr + recurring service fees ₹80 L.
+                        </li>
+                        <li><strong>Recurring Revenue:</strong> Conservation-as-a-Service (CaaS) tracking data packages drive long-term margins.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div style="font-size: 0.8rem; text-align: left; width: 100%;">
+                        <div style="font-weight: 600; color: var(--primary-glow); margin-bottom: 5px;">Use of Capital (₹3.2 Cr)</div>
+                        <div>• Prototyping & R&D: 35%</div>
+                        <div>• Plant Tooling: 20%</div>
+                        <div>• Sandbox Testing: 15%</div>
+                        <div>• Certification (DGCA/WPC): 10%</div>
+                        <div>• Working Capital: 20%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 32: DCF & ROI PROJECTIONS -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Investment Analysis</span>
+                    <h2 class="slide-title">Investment Analysis: DCF & ROI Projections</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 32</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Valuation framework:</strong> DCF (12% discount factor) and market multiples (5x EBITDA) demonstrate corporate viability.</li>
+                        <li><strong>ROI Metrics:</strong>
+                            <br>• Modelled IRR: 24.2% over 5 years.
+                            <br>• Net Present Value (NPV): Positive at ₹1.8 Cr.
+                            <br>• Payback Period: 28 Months.
+                        </li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div style="font-size: 2.2rem; color: var(--primary-glow);">📈</div>
+                    <div style="font-weight: 600; font-size: 0.85rem; margin-top: 5px; color: var(--text);">Modelled Profitability</div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Steady recurring software and telemetry service revenue yields healthy cash flow projections by Year 3.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 33: RISK REGISTER & EXIT -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Risk Assessment</span>
+                    <h2 class="slide-title">Investment Analysis: Risk Register & Exit</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 33</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Top Risks & Mitigations:</strong>
+                            <br>• *BVLOS drone rules*: Mitigate via early type certification files.
+                            <br>• *Dense canopy navigation*: Mitigate via Visual Inertial Odometry (VIO).
+                        </li>
+                        <li><strong>Exit Strategy:</strong> Strategic acquisition by defense/agri robotics firms, or technology licensing.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right">
+                    <div style="font-size: 0.8rem; text-align: left; width: 100%;">
+                        <div style="font-weight: 600; color: var(--accent-red); margin-bottom: 5px;">Risk Heatmap</div>
+                        <div>• **BVLOS Approvals**: High risk / Mitigate via DGCA rules</div>
+                        <div>• **Rainforest Humidity**: Med risk / Mitigate via IP67 chassis</div>
+                        <div>• **Battery Drainage**: Med risk / Mitigate via solar cells</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 34: LEGAL STANCE & ASK -->
+        <div class="slide">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">Project Ask</span>
+                    <h2 class="slide-title">Legal Stance, Roadmap & Ask</h2>
+                </div>
+                <div class="logo-text">ASTERIX / 34</div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-text-left">
+                    <ul>
+                        <li><strong>Compliance Badges:</strong> Complies with DGCA rules, Bharatiya Vayuyan Adhinayam 2024, DPDP Act 2023, and Wildlife Protection Act 1972.</li>
+                        <li><strong>Dispute Resolution:</strong> Headed by mutual mediation prior to arbitration under Chennai jurisdiction rules.</li>
+                        <li><strong>The Ask:</strong> Requesting ₹3.2 Cr grant funding to deploy the ACS Swarm in Harmony National Park.</li>
+                    </ul>
+                </div>
+                <div class="slide-visual-right" style="justify-content: space-around;">
+                    <div class="badge-list" style="justify-content: center;">
+                        <span class="badge">DGCA Compliant</span>
+                        <span class="badge">DPDP 2023</span>
+                        <span class="badge">Wildlife Protection Act</span>
+                    </div>
+                    <div style="font-size: 1.1rem; font-weight: 800; color: var(--accent-yellow); text-align: center;">
+                        "Engineering Conservation."
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Asterix Pvt Ltd</span>
+                <span>Response to Tender EGNI/2026/AEOUV-04</span>
             </div>
         </div>
 
