@@ -1047,12 +1047,13 @@ function initCalculator() {
     const dieselSlider = document.getElementById('calc-diesel');
     const yearsSlider = document.getElementById('calc-years');
     
-    fleetSlider.addEventListener('input', updateCalcDisplay);
-    distSlider.addEventListener('input', updateCalcDisplay);
-    dieselSlider.addEventListener('input', updateCalcDisplay);
-    yearsSlider.addEventListener('input', updateCalcDisplay);
-    
-    updateCalcDisplay();
+    if (fleetSlider && distSlider && dieselSlider && yearsSlider) {
+        fleetSlider.addEventListener('input', updateCalcDisplay);
+        distSlider.addEventListener('input', updateCalcDisplay);
+        dieselSlider.addEventListener('input', updateCalcDisplay);
+        yearsSlider.addEventListener('input', updateCalcDisplay);
+        updateCalcDisplay();
+    }
 }
 
 function updateCalcDisplay() {
