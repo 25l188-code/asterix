@@ -16,6 +16,23 @@ let particles = [];
 let sprouts = [];
 let nodeFailureActive = false; // Toggle for mesh resilience sim
 
+// AMB Swapper State
+let canvasAmb, ctxAmb;
+let ambAngle = -Math.PI / 2;
+let ambTargetAngle = -Math.PI / 2;
+let ambEngageY = 0;
+let ambActivePodType = 'vac';
+let ambIsRotating = false;
+let ambIsEngaged = false;
+const ambPods = [
+    { name: 'Vaccination', code: 'vac', angle: 0, color: 'rgba(255, 59, 48, 0.85)' },
+    { name: 'Seed Drop', code: 'seed', angle: Math.PI / 3, color: 'rgba(34, 197, 94, 0.85)' },
+    { name: 'Sampling', code: 'samp', angle: 2 * Math.PI / 3, color: 'rgba(0, 122, 255, 0.85)' },
+    { name: 'Emergency', code: 'em', angle: Math.PI, color: 'rgba(255, 159, 28, 0.85)' },
+    { name: 'Spare Can A', code: 'spare1', angle: 4 * Math.PI / 3, color: 'rgba(100, 116, 139, 0.5)' },
+    { name: 'Spare Can B', code: 'spare2', angle: 5 * Math.PI / 3, color: 'rgba(100, 116, 139, 0.5)' }
+];
+
 // Global UI Selector
 let logLinesContainer;
 
@@ -54,6 +71,7 @@ window.onload = function() {
     initCalculator();
     initCharts();
     initScrollObserver();
+    initAMBSimulator();
     
     // Deploy pod on canvas click
     canvas.addEventListener('click', function(e) {
@@ -1439,3 +1457,228 @@ function renderCanvasFallbacks() {
         c.stroke();
     }
 }
+
+// ----------------------------------------------------------------------------
+// Adaptive Mission Bay (AMB) Mechanical Swapper Simulator
+// ----------------------------------------------------------------------------
+function initAMBSimulator() {
+    canvasAmb = document.getElementById('canvas-amb');
+    if (!canvasAmb) return;
+    ctxAmb = canvasAmb.getContext('2d');
+    
+    // Set initial angles
+    ambAngle = -Math.PI / 2;
+    ambTargetAngle = -Math.PI / 2;
+    ambActivePodType = 'vac';
+    ambIsRotating = false;
+    ambIsEngaged = false;
+    ambEngageY = 0;
+    
+    runAMBLoop();
+}
+
+function runAMBLoop() {
+    if (!canvasAmb) return;
+    updateAMBPhysics();
+    drawAMBScene();
+    requestAnimationFrame(runAMBLoop);
+}
+
+function updateAMBPhysics() {
+    let diff = ambTargetAngle - ambAngle;
+    
+    if (ambIsRotating) {
+        // First slide pod back down before rotating
+        if (ambEngageY < 0) {
+            ambEngageY += (0 - ambEngageY) * 0.15;
+            if (Math.abs(ambEngageY) < 0.5) {
+                ambEngageY = 0;
+            }
+        } else {
+            // Once pod is back down, rotate
+            ambAngle += diff * 0.08;
+            if (Math.abs(diff) < 0.005) {
+                ambAngle = ambTargetAngle;
+                ambIsRotating = false;
+                ambIsEngaged = false;
+            }
+        }
+    } else {
+        // Lock and slide pod up
+        if (ambEngageY > -55) {
+            ambEngageY += (-55 - ambEngageY) * 0.12;
+        } else {
+            ambEngageY = -55;
+            ambIsEngaged = true;
+        }
+    }
+}
+
+function drawAMBScene() {
+    const w = canvasAmb.width;
+    const h = canvasAmb.height;
+    const cx = w / 2;
+    const cy = h / 2 + 20;
+    const radius = 62;
+    
+    // Clear Canvas
+    ctxAmb.fillStyle = '#060807';
+    ctxAmb.fillRect(0, 0, w, h);
+    
+    // 1. Draw Vertical Rail Guide
+    ctxAmb.strokeStyle = 'rgba(34, 197, 94, 0.06)';
+    ctxAmb.lineWidth = 26;
+    ctxAmb.lineCap = 'round';
+    ctxAmb.beginPath();
+    ctxAmb.moveTo(cx, cy);
+    ctxAmb.lineTo(cx, 25);
+    ctxAmb.stroke();
+    
+    ctxAmb.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+    ctxAmb.lineWidth = 10;
+    ctxAmb.stroke();
+    
+    // 2. Draw Electromagnetic Coil at top
+    ctxAmb.fillStyle = '#1e291b';
+    ctxAmb.fillRect(cx - 20, 15, 40, 15);
+    
+    // Copper wire coil visual
+    ctxAmb.strokeStyle = '#b45309';
+    ctxAmb.lineWidth = 2.5;
+    for (let lx = cx - 16; lx < cx + 18; lx += 4) {
+        ctxAmb.beginPath();
+        ctxAmb.moveTo(lx, 15);
+        ctxAmb.lineTo(lx, 30);
+        ctxAmb.stroke();
+    }
+    
+    // Active engagement lock indicator
+    ctxAmb.fillStyle = ambIsEngaged ? '#22c55e' : '#3f3f46';
+    ctxAmb.beginPath();
+    ctxAmb.arc(cx, 10, 4, 0, Math.PI * 2);
+    ctxAmb.fill();
+    if (ambIsEngaged) {
+        ctxAmb.strokeStyle = 'rgba(34, 197, 94, 0.4)';
+        ctxAmb.lineWidth = 2.5;
+        ctxAmb.beginPath();
+        ctxAmb.arc(cx, 10, (Date.now() / 12) % 10 + 2, 0, Math.PI * 2);
+        ctxAmb.stroke();
+    }
+    
+    // 3. Draw Rotary Drum base
+    ctxAmb.fillStyle = '#111713';
+    ctxAmb.strokeStyle = 'rgba(34, 197, 94, 0.15)';
+    ctxAmb.lineWidth = 2;
+    ctxAmb.beginPath();
+    ctxAmb.arc(cx, cy, radius + 20, 0, Math.PI * 2);
+    ctxAmb.fill();
+    ctxAmb.stroke();
+    
+    // Gear teeth on perimeter
+    ctxAmb.strokeStyle = 'rgba(34, 197, 94, 0.25)';
+    ctxAmb.lineWidth = 3;
+    let totalTeeth = 30;
+    for (let i = 0; i < totalTeeth; i++) {
+        let angle = i * (Math.PI * 2 / totalTeeth) + ambAngle * 0.5;
+        ctxAmb.beginPath();
+        ctxAmb.moveTo(cx + Math.cos(angle) * (radius + 20), cy + Math.sin(angle) * (radius + 20));
+        ctxAmb.lineTo(cx + Math.cos(angle) * (radius + 24), cy + Math.sin(angle) * (radius + 24));
+        ctxAmb.stroke();
+    }
+    
+    // Inner bearing
+    ctxAmb.fillStyle = '#060807';
+    ctxAmb.beginPath();
+    ctxAmb.arc(cx, cy, 22, 0, Math.PI * 2);
+    ctxAmb.fill();
+    ctxAmb.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    ctxAmb.stroke();
+    
+    // 4. Draw Pods in Pockets
+    ambPods.forEach((pod, index) => {
+        let theta = pod.angle + ambAngle;
+        let px = cx + Math.cos(theta) * radius;
+        let py = cy + Math.sin(theta) * radius;
+        
+        // If this is the active selected pod type, apply slide engagement animation
+        if (pod.code === ambActivePodType) {
+            // Theta of top vertical position is -Math.PI / 2
+            // Draw relative slide along vertical rail
+            py += ambEngageY;
+        }
+        
+        // Pod body pocket circle
+        ctxAmb.fillStyle = '#181f1a';
+        ctxAmb.beginPath();
+        ctxAmb.arc(px, py, 19, 0, Math.PI * 2);
+        ctxAmb.fill();
+        ctxAmb.strokeStyle = pod.code === ambActivePodType ? '#22c55e' : 'rgba(255,255,255,0.05)';
+        ctxAmb.lineWidth = 1.5;
+        ctxAmb.stroke();
+        
+        // Canister core filled with role-specific color
+        ctxAmb.fillStyle = pod.color;
+        ctxAmb.beginPath();
+        ctxAmb.arc(px, py, 13, 0, Math.PI * 2);
+        ctxAmb.fill();
+        
+        // White outline ring
+        ctxAmb.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+        ctxAmb.lineWidth = 1;
+        ctxAmb.beginPath();
+        ctxAmb.arc(px, py, 10, 0, Math.PI * 2);
+        ctxAmb.stroke();
+        
+        // Center text label letter
+        ctxAmb.fillStyle = '#ffffff';
+        ctxAmb.font = '800 10px Outfit';
+        ctxAmb.textAlign = 'center';
+        ctxAmb.textBaseline = 'middle';
+        let label = pod.code.substring(0, 1).toUpperCase();
+        if (pod.code.startsWith('spare')) label = 'S';
+        ctxAmb.fillText(label, px, py);
+    });
+    
+    // Engaged display text overlay
+    if (ambIsEngaged) {
+        ctxAmb.fillStyle = 'rgba(34, 197, 94, 0.9)';
+        ctxAmb.font = '700 8.5px Outfit';
+        ctxAmb.fillText('ENGAGED & READY', cx, cy - 2);
+    } else if (ambIsRotating) {
+        ctxAmb.fillStyle = 'rgba(255, 159, 28, 0.9)';
+        ctxAmb.font = '700 8.5px Outfit';
+        ctxAmb.fillText('ROTATING DRUM', cx, cy - 2);
+    } else {
+        ctxAmb.fillStyle = '#839587';
+        ctxAmb.font = '700 8.5px Outfit';
+        ctxAmb.fillText('READY', cx, cy - 2);
+    }
+}
+
+function triggerAMBSwap(podType, btnElement) {
+    if (ambActivePodType === podType) return;
+    
+    // Toggle active button style
+    let btns = document.querySelectorAll('.amb-btn');
+    btns.forEach(btn => btn.classList.remove('active'));
+    btnElement.classList.add('active');
+    
+    ambActivePodType = podType;
+    
+    // Find pod index
+    let podIndex = ambPods.findIndex(p => p.code === podType);
+    if (podIndex !== -1) {
+        // Rotate so this index lines up with the top vertical position (-90 degrees, i.e., -Math.PI / 2)
+        let target = -Math.PI / 2 - ambPods[podIndex].angle;
+        
+        // Shortest path spin math
+        let current = ambAngle;
+        let diff = target - current;
+        diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+        
+        ambTargetAngle = current + diff;
+        ambIsRotating = true;
+        ambIsEngaged = false;
+    }
+}
+
