@@ -965,32 +965,25 @@ function selectPackage(pkg) {
     });
     
     let name = '';
-    let vehicles = 0;
+    let vehicles = 50; // Fixed at 50 for every package
     let drones = 0;
     let units = 0;
-    let cost = '';
     let coverage = 0;
     
     if (pkg === 'CORE') {
         name = 'CORE PACKAGE';
-        vehicles = 4;
-        drones = 0;
-        units = 2; // Exact E-Tender OCR figure
-        cost = '₹1.40 Cr';
+        drones = 20;
+        units = 70; // 50 vehicles + 20 drones
         coverage = 26;
     } else if (pkg === 'SENTINEL') {
         name = 'SENTINEL PACKAGE';
-        vehicles = 6;
-        drones = 0;
-        units = 26; // Exact E-Tender OCR figure
-        cost = '₹4.80 Cr';
+        drones = 50;
+        units = 100; // 50 vehicles + 50 drones
         coverage = 51;
     } else if (pkg === 'APEX') {
         name = 'APEX PACKAGE';
-        vehicles = 8;
-        drones = 13;
-        units = 60; // Exact E-Tender OCR figure
-        cost = '₹12.50 Cr';
+        drones = 70;
+        units = 120; // 50 vehicles + 70 drones
         coverage = 100;
     }
     
@@ -998,7 +991,6 @@ function selectPackage(pkg) {
     document.getElementById('pkg-vehicles').innerText = vehicles;
     document.getElementById('pkg-drones').innerText = drones;
     document.getElementById('pkg-units').innerText = units;
-    document.getElementById('pkg-cost').innerText = cost;
     
     // Animate Gauge conic gradient
     let gaugeRing = document.querySelector('.gauge-ring');
