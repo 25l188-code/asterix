@@ -1016,11 +1016,11 @@ function updateCostSlider(B) {
     
     // Scale parameters proportionally
     let dronePackages = Math.round(B * 0.6); // 30 packages for 50 buggies
-    let smartPods = Math.round(B * 8.0); // 400 pods for 50 buggies
+    let smartPods = 155; // FIXED AT 155
     let fieldStations = Math.ceil(B * 0.08); // 4 stations for 50 buggies
     
     document.getElementById('scaler-drones').innerText = `${dronePackages * 3} Drones`;
-    document.getElementById('scaler-pods').innerText = `${smartPods} Pods`;
+    document.getElementById('scaler-pods').innerText = `155 Pods`;
     
     // Cost calculation utilizing Table 12.2 values
     // AEOUV buggy: ₹31.0L, 3-drone pkg: ₹6.5L, 6-mission pods: ₹2.6L, Smart Pod: ₹1.25L
